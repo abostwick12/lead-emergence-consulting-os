@@ -21,14 +21,15 @@ export async function getMeetingCenter(session: PortalSession): Promise<MeetingC
   const ids = (meetingRows ?? []).map((row) => row.id);
   if (!ids.length) return { meetings: [], people, currentPersonId: session.personId, role: session.role as 'consultant' | 'client' };
 
-  const [participantsResult, notesResult, commitmentsResult, coachingResult, contextResult] = await Promise.all([
+  const [participantsResult, notesResult, commitmentsResult, coachingResult, contextResult, decisionLinksResult] = await Promise.all([
     supabase.from('meeting_participants').select('*').eq('organization_id', session.organization.id).in('meeting_id', ids),
     supabase.from('meeting_notes').select('*').eq('organization_id', session.organization.id).in('meeting_id', ids).order('created_at'),
     supabase.from('commitments').select('*').eq('organization_id', session.organization.id).in('source_meeting_id', ids).order('created_at'),
     supabase.from('coaching_sessions').select('*, coaching_relationships(*)').eq('organization_id', session.organization.id).in('id', ids),
     supabase.from('meeting_context_items').select('meeting_id, context_domain_object_id').eq('organization_id', session.organization.id).in('meeting_id', ids),
+    supabase.from('meeting_decisions').select('meeting_id, decision_id').eq('organization_id', session.organization.id).in('meeting_id', ids),
   ]);
-  for (const result of [participantsResult, notesResult, commitmentsResult, coachingResult, contextResult]) if (result.error) throw new Error(result.error.message);
+  for (const result of [participantsResult, notesResult, commitmentsResult, coachingResult, contextResult, decisionLinksResult]) if (result.error) throw new Error(result.error.message);
 
   const privateNotes = new Map<string, MeetingNoteView[]>();
   for (const id of ids) {
@@ -39,18 +40,24 @@ export async function getMeetingCenter(session: PortalSession): Promise<MeetingC
   const contextIds = [...new Set((contextResult.data ?? []).map((row) => row.context_domain_object_id))];
   const { data: contextDomains } = contextIds.length ? await supabase.from('domain_objects').select('id, object_type').eq('organization_id', session.organization.id).in('id', contextIds) : { data: [] };
   const contextMap = new Map((contextDomains ?? []).map((row) => [row.id, row.object_type]));
+  const decisionIds = [...new Set((decisionLinksResult.data ?? []).map((row) => row.decision_id))];
+  const { data: decisionRows, error: decisionsError } = decisionIds.length
+    ? await supabase.from('decisions').select('*').eq('organization_id', session.organization.id).in('id', decisionIds)
+    : { data: [], error: null };
+  if (decisionsError) throw new Error(decisionsError.message);
 
   const meetings: MeetingView[] = (meetingRows ?? []).map((row) => {
     const participants = (participantsResult.data ?? []).filter((item) => item.meeting_id === row.id).map((item) => people.find((person) => person.id === item.person_id) ?? { id: item.person_id, name: 'Named participant', relationship: 'CLIENT' as const });
     const notes: MeetingNoteView[] = (notesResult.data ?? []).filter((item) => item.meeting_id === row.id).map((item) => ({ id: item.id, kind: item.note_kind, content: item.content, authorName: names.get(item.author_person_id) ?? 'Participant', createdLabel: formatDate(item.created_at), privacy: 'SHARED' }));
     notes.push(...(privateNotes.get(row.id) ?? []));
+    const decisions = (decisionLinksResult.data ?? []).filter((item) => item.meeting_id === row.id).map((item) => (decisionRows ?? []).find((decision) => decision.id === item.decision_id)).filter(Boolean).map((decision) => ({ id: decision.id, statement: decision.statement, rationale: decision.rationale, intendedEffect: decision.intended_effect, reviewTrigger: decision.review_trigger, status: decision.decision_status, authorityName: names.get(decision.authority_person_id) ?? 'Authorized participant', decidedLabel: formatDate(decision.decided_at) }));
     const commitments: MeetingCommitmentView[] = (commitmentsResult.data ?? []).filter((item) => item.source_meeting_id === row.id).map((item) => ({ id: item.id, ownerPersonId: item.owner_person_id, ownerName: names.get(item.owner_person_id) ?? 'Participant', action: item.action, dueOn: item.due_on ?? undefined, status: item.status, sourceMeetingId: row.id }));
     const sessionRow = (coachingResult.data ?? []).find((item) => item.id === row.id);
     const relationship = sessionRow?.coaching_relationships;
     return {
       id: row.id, organizationId: row.organization_id, engagementId: row.engagement_id, type: row.meeting_type, title: row.title, purpose: row.purpose,
       scheduledStart: row.scheduled_start, scheduledEnd: row.scheduled_end ?? undefined, status: row.status, phase: row.current_phase, agenda: row.agenda,
-      sharedSummary: row.shared_summary ?? undefined, followUp: row.follow_up ?? undefined, participants, notes, commitments,
+      sharedSummary: row.shared_summary ?? undefined, followUp: row.follow_up ?? undefined, participants, notes, decisions, commitments,
       context: (contextResult.data ?? []).filter((item) => item.meeting_id === row.id).map((item) => ({ id: item.context_domain_object_id, label: titleCase(contextMap.get(item.context_domain_object_id) ?? 'PERMITTED_CONTEXT'), state: titleCase(contextMap.get(item.context_domain_object_id) ?? 'CONTEXT') })),
       coaching: relationship ? { relationshipId: relationship.id, participantName: names.get(relationship.participant_person_id) ?? 'Participant', coachName: names.get(relationship.coach_person_id) ?? 'Coach', developmentFocus: sessionRow.development_focus ?? relationship.development_focus, confidentialityStatement: relationship.confidentiality_statement, sessionNumber: sessionRow.session_number } : undefined,
     };
@@ -82,11 +89,13 @@ export async function mutateMeeting(session: PortalSession, mutation: MeetingMut
     if (!current) throw new Error('Meeting is not available.');
     if (mutation.action === 'UPDATE_MEETING') {
       if (session.role !== 'consultant' || !canMoveToPhase(current.phase, mutation.phase)) throw new Error('Move through the meeting workflow one phase at a time.');
-      await checked(supabase.from('meetings').update({ title: mutation.title, purpose: mutation.purpose, agenda: mutation.agenda, current_phase: mutation.phase, status: mutation.phase === 'PREPARE' ? 'PREPARED' : mutation.phase === 'FOLLOW_UP' ? 'COMPLETED' : 'IN_PROGRESS' }).eq('id', mutation.meetingId).eq('organization_id', session.organization.id));
+      await checked(supabase.from('meetings').update({ title: mutation.title, purpose: mutation.purpose, agenda: mutation.agenda, shared_summary: mutation.sharedSummary || null, follow_up: mutation.followUp || null, current_phase: mutation.phase, status: mutation.phase === 'PREPARE' ? 'PREPARED' : mutation.phase === 'FOLLOW_UP' ? 'COMPLETED' : 'IN_PROGRESS' }).eq('id', mutation.meetingId).eq('organization_id', session.organization.id));
     } else if (mutation.action === 'ADD_PRIVATE_NOTE') {
       await checked(supabase.rpc('create_private_meeting_note', { p_meeting_id: mutation.meetingId, p_kind: mutation.kind, p_subject_person_id: session.personId, p_content: mutation.content }));
     } else if (mutation.action === 'ADD_SHARED_NOTE') {
       await checked(supabase.rpc('add_shared_meeting_note', { p_meeting_id: current.id, p_content: mutation.content }));
+    } else if (mutation.action === 'ADD_DECISION') {
+      await checked(supabase.rpc('add_meeting_decision', { p_meeting_id: current.id, p_statement: mutation.statement, p_rationale: mutation.rationale, p_intended_effect: mutation.intendedEffect, p_review_trigger: mutation.reviewTrigger }));
     } else if (mutation.action === 'ADD_COMMITMENT') {
       if (!current.participants.some((person) => person.id === mutation.ownerPersonId)) throw new Error('Commitment owner must be a meeting participant.');
       await checked(supabase.rpc('add_meeting_commitment', { p_meeting_id: current.id, p_owner_person_id: mutation.ownerPersonId, p_action: mutation.actionText, p_due_on: mutation.dueOn ?? null }));

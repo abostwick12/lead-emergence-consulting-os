@@ -547,6 +547,60 @@ begin
 end
 $$;
 
+create or replace function consulting_os.add_meeting_decision(
+  p_meeting_id uuid,
+  p_statement text,
+  p_rationale text,
+  p_intended_effect text,
+  p_review_trigger text
+)
+returns uuid
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_actor uuid := consulting_security.current_person_id();
+  v_org uuid;
+  v_eng uuid;
+  v_scope consulting_os.visibility_scope;
+  v_id uuid := gen_random_uuid();
+begin
+  select m.organization_id, m.engagement_id, d.visibility_scope into v_org, v_eng, v_scope
+  from consulting_os.meetings m
+  join consulting_os.domain_objects d on d.id = m.id and d.organization_id = m.organization_id
+  where m.id = p_meeting_id;
+  if v_actor is null or not exists (
+    select 1 from consulting_os.meeting_participants
+    where meeting_id = p_meeting_id and organization_id = v_org and person_id = v_actor
+  ) then
+    raise exception 'only a named participant may record a meeting decision' using errcode = '42501';
+  end if;
+  if nullif(btrim(p_statement), '') is null
+    or nullif(btrim(p_rationale), '') is null
+    or nullif(btrim(p_intended_effect), '') is null
+    or nullif(btrim(p_review_trigger), '') is null
+  then
+    raise exception 'decision statement, rationale, intended effect, and review trigger are required' using errcode = '23514';
+  end if;
+
+  insert into consulting_os.domain_objects (id, organization_id, engagement_id, object_type, visibility_scope, owner_person_id, origin, created_by)
+  values (v_id, v_org, v_eng, 'DECISION', v_scope, case when v_scope = 'COACHING_SHARED' then v_actor else null end, 'HUMAN', v_actor);
+  if v_scope in ('COACHING_SHARED','TEAM_SHARED') then
+    insert into consulting_os.visibility_grants (organization_id, domain_object_id, grantee_person_id, permission, created_by)
+    select v_org, v_id, person_id, case when person_id = v_actor then 'MANAGE'::consulting_os.grant_permission else 'READ'::consulting_os.grant_permission end, v_actor
+    from consulting_os.meeting_participants where meeting_id = p_meeting_id and organization_id = v_org;
+  end if;
+  insert into consulting_os.decisions (id, organization_id, statement, authority_person_id, rationale, intended_effect, review_trigger, decision_status, decided_at, created_by)
+  values (v_id, v_org, p_statement, v_actor, p_rationale, p_intended_effect, p_review_trigger, 'APPROVED', now(), v_actor);
+  insert into consulting_os.meeting_decisions (organization_id, meeting_id, decision_id, created_by)
+  values (v_org, p_meeting_id, v_id, v_actor);
+  insert into consulting_os.audit_events (organization_id, actor_person_id, event_type, target_table, target_id, operation, reason, metadata)
+  values (v_org, v_actor, 'MEETING_DECISION_RECORDED', 'consulting_os.decisions', v_id, 'INSERT', p_rationale, jsonb_build_object('meeting_id', p_meeting_id));
+  return v_id;
+end
+$$;
+
 create or replace function consulting_os.add_meeting_commitment(p_meeting_id uuid, p_owner_person_id uuid, p_action text, p_due_on date default null)
 returns uuid
 language plpgsql
@@ -682,6 +736,7 @@ revoke all on function consulting_os.record_coaching_promotion(uuid, uuid, consu
 revoke all on function consulting_os.meeting_people_directory(uuid, uuid) from public, anon;
 revoke all on function consulting_os.private_meeting_notes_for_meeting(uuid) from public, anon;
 revoke all on function consulting_os.add_shared_meeting_note(uuid, text) from public, anon;
+revoke all on function consulting_os.add_meeting_decision(uuid, text, text, text, text) from public, anon;
 revoke all on function consulting_os.add_meeting_commitment(uuid, uuid, text, date) from public, anon;
 grant execute on function consulting_os.create_private_meeting_note(uuid, consulting_os.private_record_kind, uuid, text) to authenticated, service_role;
 grant execute on function consulting_os.create_meeting(uuid, uuid, consulting_os.meeting_type, text, text, timestamptz, text, uuid, text) to authenticated, service_role;
@@ -689,6 +744,7 @@ grant execute on function consulting_os.record_coaching_promotion(uuid, uuid, co
 grant execute on function consulting_os.meeting_people_directory(uuid, uuid) to authenticated, service_role;
 grant execute on function consulting_os.private_meeting_notes_for_meeting(uuid) to authenticated, service_role;
 grant execute on function consulting_os.add_shared_meeting_note(uuid, text) to authenticated, service_role;
+grant execute on function consulting_os.add_meeting_decision(uuid, text, text, text, text) to authenticated, service_role;
 grant execute on function consulting_os.add_meeting_commitment(uuid, uuid, text, date) to authenticated, service_role;
 
 create or replace view consulting_os.meeting_workflow_overview with (security_invoker = true) as

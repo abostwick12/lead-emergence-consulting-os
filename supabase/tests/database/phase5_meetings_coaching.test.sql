@@ -1,5 +1,5 @@
 begin;
-select plan(46);
+select plan(48);
 
 select has_table('consulting_os', 'meetings', 'shared meeting engine exists');
 select has_table('consulting_os', 'coaching_relationships', 'coaching relationship is first-class');
@@ -140,6 +140,8 @@ select results_eq($$select count(*) from consulting_os.private_meeting_notes_for
 select throws_ok($$select consulting_os.create_private_meeting_note('84000000-0000-4000-8000-000000000003', 'CONSULTANT_NOTE', '82000000-0000-4000-8000-000000000002', 'Forbidden consultant note')$$, '42501', null, 'client cannot create a consultant-private note');
 select lives_ok($$select consulting_os.add_shared_meeting_note('84000000-0000-4000-8000-000000000003', 'Participant shared coaching note')$$, 'named participant can add a shared coaching note through the bounded RPC');
 select results_eq($$select count(*) from consulting_os.meeting_notes where meeting_id = '84000000-0000-4000-8000-000000000003' and content = 'Participant shared coaching note'$$, array[1::bigint], 'shared coaching note persists and is readable');
+select lives_ok($$select consulting_os.add_meeting_decision('84000000-0000-4000-8000-000000000003', 'Use the boundary prompt for routine decisions', 'The participant accepts this as the next purpose-consistent practice.', 'Increase independent judgment inside the agreed boundary.', 'Review after two live decisions or an unexpected escalation.')$$, 'named participant can record an explicitly authorized first-class meeting decision');
+select results_eq($$select count(*) from consulting_os.meeting_decisions md join consulting_os.decisions d on d.id = md.decision_id and d.organization_id = md.organization_id where md.meeting_id = '84000000-0000-4000-8000-000000000003' and d.authority_person_id = '82000000-0000-4000-8000-000000000002' and d.decision_status = 'APPROVED'$$, array[1::bigint], 'meeting decision persists with the acting participant as authority');
 select lives_ok($$select consulting_os.add_meeting_commitment('84000000-0000-4000-8000-000000000003', '82000000-0000-4000-8000-000000000002', 'Review two live decisions', '2026-08-26')$$, 'named participant can create a durable commitment');
 select results_eq($$select count(*) from consulting_os.commitments where coaching_relationship_id = '84000000-0000-4000-8000-000000000002'$$, array[2::bigint], 'commitments persist independently across the coaching relationship');
 select lives_ok($$update consulting_os.commitments set status = 'COMPLETED', completed_at = now() where id = '84000000-0000-4000-8000-000000000005'$$, 'commitment owner can complete their commitment');

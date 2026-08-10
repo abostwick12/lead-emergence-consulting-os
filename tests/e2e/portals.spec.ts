@@ -96,12 +96,31 @@ test.describe.serial('Phase 5 meeting and coaching cycles', () => {
     await sharedForm.getByRole('button', { name: 'Save shared note' }).click();
     await expect(page.getByText('We agreed to test the boundary prompt in live decisions.')).toBeVisible();
 
+    const decisionForm = page.locator('form.decision-form');
+    await decisionForm.getByLabel('Decision').fill('Delegate defined routine decisions within the documented boundary.');
+    await decisionForm.getByLabel('Rationale').fill('The validated authority insight and meeting examples support bounded delegation.');
+    await decisionForm.getByLabel('Intended effect').fill('Reduce decision latency while preserving escalation judgment.');
+    await decisionForm.getByLabel('Review trigger').fill('Review after four weeks or an unexpected escalation.');
+    await decisionForm.getByRole('button', { name: 'Record decision' }).click();
+    await expect(page.getByText('Delegate defined routine decisions within the documented boundary.')).toBeVisible();
+
     const privateForm = page.locator('form.quick-form').filter({ hasText: 'Add private reflection' });
     await privateForm.getByRole('textbox').fill('Consultant-only reflection for the next coaching session.');
     await privateForm.getByRole('button', { name: 'Save privately' }).click();
     await expect(page.getByText('Consultant-only reflection for the next coaching session.')).toBeVisible();
+    for (const phase of ['CAPTURE', 'DECIDE', 'COMMIT'] as const) {
+      await page.getByLabel('Workflow stage').selectOption(phase);
+      await page.getByRole('button', { name: 'Save meeting plan' }).click();
+      await expect(page.getByText(/Saved\. The shared meeting record/)).toBeVisible();
+    }
+    await page.getByLabel('Shared summary').fill('Participants agreed on one bounded delegation experiment and its evidence of success.');
+    await page.getByLabel('Follow-up').fill('Review the experiment, exception rate, and escalation quality at the next session.');
+    await page.getByLabel('Workflow stage').selectOption('FOLLOW_UP');
+    await page.getByRole('button', { name: 'Save meeting plan' }).click();
+    await expect(page.getByText('COMPLETED')).toBeVisible();
     await page.reload();
     await expect(page.getByText('Consultant-only reflection for the next coaching session.')).toBeVisible();
+    await expect(page.getByText('Participants agreed on one bounded delegation experiment and its evidence of success.')).toBeVisible();
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({ path: 'test-results/consultant-meeting-desktop.png', caret: 'initial' });
   });
@@ -116,9 +135,17 @@ test.describe.serial('Phase 5 meeting and coaching cycles', () => {
     await privateForm.getByRole('textbox').fill('My private reflection remains mine.');
     await privateForm.getByRole('button', { name: 'Save privately' }).click();
     await expect(page.getByText('My private reflection remains mine.')).toBeVisible();
+    const decisionForm = page.locator('form.decision-form');
+    await decisionForm.getByLabel('Decision').fill('Use the boundary prompt for the next two routine decisions.');
+    await decisionForm.getByLabel('Rationale').fill('This is the next agreed practice for strengthening independent judgment.');
+    await decisionForm.getByLabel('Intended effect').fill('Increase confidence inside the named authority boundary.');
+    await decisionForm.getByLabel('Review trigger').fill('Review after two live decisions.');
+    await decisionForm.getByRole('button', { name: 'Record decision' }).click();
+    await expect(page.getByText('Use the boundary prompt for the next two routine decisions.')).toBeVisible();
     await page.reload();
     await page.getByRole('button', { name: /Decision judgment coaching/ }).click();
     await expect(page.getByText('My private reflection remains mine.')).toBeVisible();
+    await expect(page.getByText('Use the boundary prompt for the next two routine decisions.')).toBeVisible();
     await expect(page.getByText('Private coaching reflection retained only for Alex.')).toHaveCount(0);
   });
 });

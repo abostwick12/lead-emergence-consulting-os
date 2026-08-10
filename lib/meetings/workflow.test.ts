@@ -16,4 +16,9 @@ describe('meeting workflow', () => {
   it('normalizes a shared note mutation', () => {
     expect(validateMeetingMutation({ action: 'ADD_SHARED_NOTE', meetingId: 'm1', content: '  agreed note  ' })).toEqual({ action: 'ADD_SHARED_NOTE', meetingId: 'm1', content: 'agreed note' });
   });
+
+  it('requires complete first-class decision semantics', () => {
+    expect(() => validateMeetingMutation({ action: 'ADD_DECISION', meetingId: 'm1', statement: 'Decide', rationale: '' })).toThrow('rationale is required');
+    expect(validateMeetingMutation({ action: 'ADD_DECISION', meetingId: 'm1', statement: '  Delegate routine decisions  ', rationale: '  Authority is explicit  ', intendedEffect: '  Reduce latency  ', reviewTrigger: '  Review in four weeks  ' })).toEqual({ action: 'ADD_DECISION', meetingId: 'm1', statement: 'Delegate routine decisions', rationale: 'Authority is explicit', intendedEffect: 'Reduce latency', reviewTrigger: 'Review in four weeks' });
+  });
 });

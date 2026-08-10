@@ -29,6 +29,17 @@ export interface MeetingCommitmentView {
   sourceMeetingId: string;
 }
 
+export interface MeetingDecisionView {
+  id: string;
+  statement: string;
+  rationale: string;
+  intendedEffect: string;
+  reviewTrigger: string;
+  status: 'PROPOSED' | 'APPROVED' | 'ACTIVE' | 'RECONSIDER' | 'SUPERSEDED' | 'RETIRED';
+  authorityName: string;
+  decidedLabel: string;
+}
+
 export interface MeetingView {
   id: string;
   organizationId: string;
@@ -45,6 +56,7 @@ export interface MeetingView {
   followUp?: string;
   participants: MeetingPerson[];
   notes: MeetingNoteView[];
+  decisions: MeetingDecisionView[];
   commitments: MeetingCommitmentView[];
   context: Array<{ id: string; label: string; state: string }>;
   coaching?: {
@@ -66,8 +78,9 @@ export interface MeetingCenterData {
 
 export type MeetingMutation =
   | { action: 'CREATE_MEETING'; meetingType: MeetingType; title: string; purpose: string; scheduledStart: string; participantPersonId: string; developmentFocus?: string }
-  | { action: 'UPDATE_MEETING'; meetingId: string; title: string; purpose: string; agenda: string; phase: MeetingPhase }
+  | { action: 'UPDATE_MEETING'; meetingId: string; title: string; purpose: string; agenda: string; sharedSummary?: string; followUp?: string; phase: MeetingPhase }
   | { action: 'ADD_SHARED_NOTE'; meetingId: string; content: string }
   | { action: 'ADD_PRIVATE_NOTE'; meetingId: string; content: string; kind: 'CONSULTANT_NOTE' | 'INDIVIDUAL_REFLECTION' }
+  | { action: 'ADD_DECISION'; meetingId: string; statement: string; rationale: string; intendedEffect: string; reviewTrigger: string }
   | { action: 'ADD_COMMITMENT'; meetingId: string; ownerPersonId: string; actionText: string; dueOn?: string }
   | { action: 'UPDATE_COMMITMENT'; meetingId: string; commitmentId: string; status: CommitmentStatus };

@@ -2,10 +2,10 @@ $ErrorActionPreference = 'Stop'
 $root = Resolve-Path (Join-Path $PSScriptRoot '..\..')
 
 $checks = @(
-  @{ Path = 'supabase/migrations/20260810210000_phase5_meetings_coaching.sql'; Tokens = @('create table consulting_os.meetings', 'create table consulting_os.coaching_relationships', 'create table consulting_private.meeting_notes', 'create or replace function consulting_os.create_meeting', 'validate_meeting_context', 'record_coaching_promotion', 'phase5_organizational_intelligence_sources') },
+  @{ Path = 'supabase/migrations/20260810210000_phase5_meetings_coaching.sql'; Tokens = @('create table consulting_os.meetings', 'create table consulting_os.coaching_relationships', 'create table consulting_private.meeting_notes', 'create or replace function consulting_os.create_meeting', 'add_meeting_decision', 'validate_meeting_context', 'record_coaching_promotion', 'phase5_organizational_intelligence_sources') },
   @{ Path = 'lib/meetings/repository.ts'; Tokens = @('CREATE_MEETING', 'ADD_PRIVATE_NOTE', 'create_meeting', 'create_private_meeting_note') },
-  @{ Path = 'components/meetings/meeting-center.tsx'; Tokens = @('meetingPhases', 'Private partition', 'Commitments across sessions', 'NAMED PARTICIPANTS') },
-  @{ Path = 'tests/e2e/portals.spec.ts'; Tokens = @('creates, advances, captures, commits', 'never sees consultant-private content') },
+  @{ Path = 'components/meetings/meeting-center.tsx'; Tokens = @('meetingPhases', 'First-class decisions', 'Shared summary', 'Follow-up', 'Private partition', 'Commitments across sessions', 'NAMED PARTICIPANTS') },
+  @{ Path = 'tests/e2e/portals.spec.ts'; Tokens = @('creates, advances, captures, commits', 'Delegate defined routine decisions', 'FOLLOW_UP', 'never sees consultant-private content') },
   @{ Path = 'docs/consulting-os/implementation/PHASE-5-MEETINGS-COACHING-PLAN.md'; Tokens = @('One shared interaction engine', 'physically stores coach-private notes') }
 )
 

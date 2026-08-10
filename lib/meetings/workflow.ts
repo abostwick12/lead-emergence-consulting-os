@@ -24,7 +24,7 @@ export function validateMeetingMutation(value: unknown): MeetingMutation {
     case 'UPDATE_MEETING': {
       const phase = required('phase') as MeetingPhase;
       if (!meetingPhases.includes(phase)) throw new Error('Meeting phase is invalid.');
-      return { action: input.action, meetingId: required('meetingId'), title: required('title'), purpose: required('purpose'), agenda: required('agenda'), phase };
+      return { action: input.action, meetingId: required('meetingId'), title: required('title'), purpose: required('purpose'), agenda: required('agenda'), sharedSummary: typeof input.sharedSummary === 'string' ? input.sharedSummary.trim() : undefined, followUp: typeof input.followUp === 'string' ? input.followUp.trim() : undefined, phase };
     }
     case 'ADD_SHARED_NOTE':
       return { action: input.action, meetingId: required('meetingId'), content: required('content') };
@@ -33,6 +33,8 @@ export function validateMeetingMutation(value: unknown): MeetingMutation {
       if (kind !== 'CONSULTANT_NOTE' && kind !== 'INDIVIDUAL_REFLECTION') throw new Error('Private note kind is invalid.');
       return { action: input.action, meetingId: required('meetingId'), content: required('content'), kind };
     }
+    case 'ADD_DECISION':
+      return { action: input.action, meetingId: required('meetingId'), statement: required('statement'), rationale: required('rationale'), intendedEffect: required('intendedEffect'), reviewTrigger: required('reviewTrigger') };
     case 'ADD_COMMITMENT':
       return { action: input.action, meetingId: required('meetingId'), ownerPersonId: required('ownerPersonId'), actionText: required('actionText'), dueOn: typeof input.dueOn === 'string' && input.dueOn ? input.dueOn : undefined };
     case 'UPDATE_COMMITMENT': {
