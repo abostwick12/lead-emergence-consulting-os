@@ -66,7 +66,8 @@ Canonical roadmap identifiers:
 - The public `emergence-ministry-platform` remote default branch does not contain or depend on this private repository; the Phase 0 source branch was not present on the public remote at migration time.
 - No Ministry source, routes, migrations, dependencies, deployment configuration, or tests changed during repository-boundary execution.
 - No Consulting runtime code, dependency manifest, migration, environment, deployment configuration, or production integration exists yet.
-- The unchanged Ministry application passes design check, typecheck, lint, production build, and its previously completed full browser suite (131 passed, 1 skipped, 0 failed).
+- The unchanged Ministry application passes a fresh design check, typecheck, lint, production build, and full browser suite (131 passed, 1 skipped, 0 failed in 12.5 minutes).
+- The optional full unit suite reports 1,411 passing tests and one pre-existing Logos companion suite import failure (`SyntaxError: Invalid or unexpected token`). The test and imported script hashes exactly match the unchanged Ministry commit; no Ministry repair is included in this repository-boundary task.
 
 ## Remaining blockers and resolved directions
 
@@ -79,3 +80,5 @@ Canonical roadmap identifiers:
 ## Audit conclusion
 
 All technical and architectural Phase 0 exit evidence is **PASS**. The package is ready for the final human completion checkpoint. This audit does not authorize Phase 1: Phase 1 must not begin until a later approval explicitly says `Phase 1 authorized: yes`.
+
+The unrelated Ministry unit-suite import failure is transparently recorded but does not indicate a Consulting dependency or regression: the required Ministry browser suite, typecheck, lint, and production build pass, and repository inspection finds zero private-repository dependencies.

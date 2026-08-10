@@ -25,12 +25,13 @@ The canonical package is restored and verified, ADR-0001 through ADR-0004 are ac
 1. The private `lead-emergence-consulting-os` repository contains all canonical documents, build constraints, accepted ADRs, ERD, schema mapping, implementation records, and Consulting-only verification scripts.
 2. The public Ministry repository has no runtime, package, build, migration, CI, deployment, or documentation dependency on the private repository.
 3. No Consulting application source, proprietary business logic, prompts/workflows, migrations, tests/fixtures, dependency manifest, environment configuration, or deployment configuration has been added to the Ministry product.
-4. The Ministry application remains independently verifiable and unchanged by the repository migration.
+4. The Ministry application remains independently verifiable and unchanged by the repository migration: design check, typecheck, lint, production build, and the full browser suite pass (131 passed, 1 skipped).
 5. No production DNS, Vercel, Supabase, provider, secret, environment, or data change occurred.
 
 ## Remaining non-Phase-1 follow-up
 
 - Owner/legal review of final Consulting license terms and historical Phase 0 materials.
+- An unrelated unchanged Ministry Logos companion unit-test suite currently fails during module import while 1,411 other unit tests pass. This is recorded for Ministry follow-up and was not modified during repository-boundary execution.
 - A later explicit cleanup decision may remove Consulting-specific files from local Ministry branches without rewriting history or making retroactive legal claims.
 - Production topology requires a separate approved change plan.
 

@@ -60,6 +60,8 @@ The exact Phase 0 criteria, 77/77 entity-mapping check, roadmap identifiers, Sec
 | `npm run lint` | PASS — no warnings or errors. |
 | `npm run build` | PASS — Next.js production build completed and generated 183 static pages. |
 | `npm run test:e2e` | PASS — 131 passed, 1 skipped, 0 failed in 13.7 minutes. |
+| Refreshed Ministry boundary regression | PASS — design check, typecheck, lint, production build, and E2E (131 passed, 1 skipped) after private-repository creation. |
+| Optional Ministry unit suite | 1,411 tests pass; one unchanged Logos companion suite fails during import with `SyntaxError: Invalid or unexpected token`. Not introduced or modified by Phase 0 boundary work. |
 | Source integrity | PASS — unchanged source artifacts match their supplied sources; the restored Document 03, exact authoritative continuation, checkpoint response, and constraints match the recorded SHA-256 manifest; all canonical Markdown companions are non-empty. |
 | Extractor smoke test | PASS — bundled document runtime loads `extract_docx.py` and its CLI. |
 | Phase 0 documentation verifier | PASS — 13 manifest checksums, accepted ADR statuses, private-repository boundary, 77/77 exact entity mappings, required files/links, exact canonical tail, and one occurrence each of Sections 12-30. |
