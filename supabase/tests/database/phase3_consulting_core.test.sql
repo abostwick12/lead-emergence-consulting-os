@@ -296,12 +296,12 @@ select results_eq($$select count(*) from consulting_os.assessment_instrument_ver
 select results_eq($$select count(distinct compatibility_key) from consulting_os.assessment_instrument_versions where instrument_id = '74000000-0000-4000-8000-000000000015'$$, array[1::bigint], 'Compatible assessment versions retain an explicit comparison key');
 select throws_ok($$update consulting_os.assessment_instrument_versions set scoring_rules = '{"method":"changed"}' where id = '76000000-0000-4000-8000-000000000001'$$, null, null, 'Administered assessment version is immutable');
 
-insert into consulting_os.domain_objects (id, organization_id, object_type, visibility_scope, origin, created_by)
+insert into consulting_os.domain_objects (id, organization_id, object_type, visibility_scope, owner_person_id, origin, created_by)
 values
   ('74000000-0000-4000-8000-000000000032', 'eaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'ASSESSMENT_RESPONSE', 'CONSULTANT_PRIVATE', '72000000-0000-4000-8000-000000000001', 'HUMAN', '72000000-0000-4000-8000-000000000001'),
   ('74000000-0000-4000-8000-000000000033', 'eaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'ASSESSMENT_RESPONSE', 'CONSULTANT_PRIVATE', '72000000-0000-4000-8000-000000000001', 'HUMAN', '72000000-0000-4000-8000-000000000001'),
-  ('74000000-0000-4000-8000-000000000034', 'eaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'ASSESSMENT_ADMINISTRATION', 'ORGANIZATION_SHARED', 'HUMAN', '72000000-0000-4000-8000-000000000001'),
-  ('74000000-0000-4000-8000-000000000031', 'eaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'ASSESSMENT_INSTRUMENT', 'ORGANIZATION_SHARED', 'HUMAN', '72000000-0000-4000-8000-000000000001');
+  ('74000000-0000-4000-8000-000000000034', 'eaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'ASSESSMENT_ADMINISTRATION', 'ORGANIZATION_SHARED', null, 'HUMAN', '72000000-0000-4000-8000-000000000001'),
+  ('74000000-0000-4000-8000-000000000031', 'eaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'ASSESSMENT_INSTRUMENT', 'ORGANIZATION_SHARED', null, 'HUMAN', '72000000-0000-4000-8000-000000000001');
 select throws_ok(
   $$insert into consulting_private.assessment_responses (id, organization_id, administration_id, item_id, participant_token_hash, response_value, evidence_fragment_id, submitted_at, created_by) values ('74000000-0000-4000-8000-000000000032', 'eaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '74000000-0000-4000-8000-000000000016', '76100000-0000-4000-8000-000000000002', repeat('e',64), '{"value":3}', '75000000-0000-4000-8000-000000000002', now(), '72000000-0000-4000-8000-000000000001')$$,
   null, null, 'Response cannot use an item from a different instrument version'
