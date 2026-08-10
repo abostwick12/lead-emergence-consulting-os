@@ -6,6 +6,10 @@ on:
       - ".github/workflows/phase1-security.yml"
       - "package.json"
       - "package-lock.json"
+      - "app/**"
+      - "components/**"
+      - "lib/**"
+      - "tests/**"
       - "scripts/consulting-os/**"
       - "supabase/**"
       - "docs/consulting-os/**"
@@ -44,6 +48,32 @@ jobs:
 
           ./scripts/consulting-os/verify_phase2_meridian.ps1
           ./scripts/consulting-os/verify_phase3_consulting_core.ps1
+          ./scripts/consulting-os/verify_phase4_portals.ps1
+
+      - name: Verify portal application
+        run: |
+          npm run typecheck
+          npm run lint
+          npm run test:unit
+          npm run build
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Verify role-safe portals in browser
+        run: npm run test:e2e
+
+      - name: Upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: phase4-browser-evidence
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7
+
       - name: Start isolated Supabase database
         run: npm run db:start
 
