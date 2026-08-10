@@ -2,7 +2,7 @@
 
 ## Current outcome
 
-Phase 0 established and received human approval for the repository, licensing, domain, tenancy, and security architecture. Phases 1–4 implemented and proved the isolated security foundation, Meridian Core, Consulting Core, and cohesive role-safe portals. Phase 5 is in progress and adds one shared meeting engine plus privacy-specialized coaching workflows without creating a second domain or weakening private-data boundaries.
+Phase 0 established and received human approval for the repository, licensing, domain, tenancy, and security architecture. Phases 1–5 implemented and proved the isolated security foundation, Meridian Core, Consulting Core, cohesive role-safe portals, and one privacy-specialized meeting/coaching engine.
 
 Canonical Document 07 controls the phase sequence below. The older Full Build Plan remains explanatory reference only.
 
@@ -92,11 +92,11 @@ For each phase:
 ## Governing decisions
 
 - Phase 0 is complete and approved.
-- Phases 1–4 are complete at their evidence gates; all implementation remains confined to the private Consulting repository.
+- Phases 1–5 are complete at their evidence gates; all implementation remains confined to the private Consulting repository.
 - Separate phase-start and phase-completion permission is no longer required; evidence gates remain mandatory, and unresolved issues still require human validation.
 - Track owner/legal review of final Consulting licensing terms and historical Phase 0 materials without claiming retroactive confidentiality or licensing changes.
 - Keep production topology execution unauthorized until a separate infrastructure change plan is approved.
 
-## Current executable step
+## Next executable step
 
-Phase 5 runs on `codex/consulting-os-phase5`. It implements one typed meeting engine for consulting and coaching, a Prepare → Meet → Capture → Decide → Commit → Follow Up workflow, participant-scoped preparation, shared notes, physically partitioned private notes/reflections, durable commitments, and longitudinal history. Coaching-derived organizational knowledge requires a separate explicit promotion record with abstraction, rationale, chosen visibility, and human authorization. Production migrations and topology changes remain separately unauthorized.
+After the Phase 5 completion record merges, begin Phase 6 Alignment + Capability on a dedicated branch/worktree. Phase 6 must trace validated Insight through Decision into concrete organizational design and capability requirements, preserve the complete Role contract, compare Capability Gaps against evidence, and support dated, owned, measurable development plans. Production migrations and topology changes remain separately unauthorized.
