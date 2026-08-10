@@ -67,4 +67,71 @@ The focused shell comparison verifies the wordmark treatment, navigation icon fa
 
 No actionable P0, P1, or P2 visual findings remain. The CI browser suite's first exact-head run exposed one stale copy assertion after the login wording changed from “Synthetic local test identities” to “Local review access”; the rendered secure-entry behavior remained correct and the assertion was updated to the intentional copy.
 
+Phase 4 result: passed
+
+---
+
+# Public Landing Scroll-Reveal Visual QA
+
+## Comparison target
+
+- Source visual truth: `C:/Users/AWBOST~1/AppData/Local/Temp/codex-clipboard-9d52e4df-4071-48ec-9a2b-a6935ea216f8.png`
+- Interaction truth: `C:/Users/awbostwick/.codex/attachments/ff092b8d-a4ff-4663-8f8d-17c435600dc1/pasted-text.txt`
+- Hero implementation: `C:/Users/awbostwick/Documents/Codex/lead-emergence-consulting-os/.worktrees/landing-scroll-reveal/test-results/landing-hero-desktop.png`
+- NEW REALITY implementation: `C:/Users/awbostwick/Documents/Codex/lead-emergence-consulting-os/.worktrees/landing-scroll-reveal/test-results/landing-new-reality-desktop.png`
+- Product-entry implementation: `C:/Users/awbostwick/Documents/Codex/lead-emergence-consulting-os/.worktrees/landing-scroll-reveal/test-results/landing-product-entry-desktop.png`
+- Mobile implementation: `C:/Users/awbostwick/Documents/Codex/lead-emergence-consulting-os/.worktrees/landing-scroll-reveal/test-results/landing-new-reality-mobile.png`
+- Full-view comparison: `C:/Users/awbostwick/Documents/Codex/lead-emergence-consulting-os/.worktrees/landing-scroll-reveal/.review/landing/reference-vs-new-reality.png`
+- Focused product-entry comparison: `C:/Users/awbostwick/Documents/Codex/lead-emergence-consulting-os/.worktrees/landing-scroll-reveal/.review/landing/reference-vs-product-entry.png`
+- Desktop viewport: 1440 x 1000 CSS px at device scale factor 1; captures are 1440 x 1000 px.
+- Mobile viewport: 390 x 844 CSS px at device scale factor 1; capture is 390 x 844 px.
+- Source pixels: 1536 x 1024.
+- Comparison normalization: each source/implementation image was proportionally contained inside equal-size cells without cropping. The source is explicitly a visual-direction board rather than an exact single-state layout.
+- Browser-rendered state: public landing hero, sticky NEW REALITY stage, product entry, returning-user selector, and responsive NEW REALITY stage.
+
+## Full-view comparison evidence
+
+The implementation deliberately replaces the reference's seven simultaneous cards with the required single sticky visual narrative. The comparison confirms that the result preserves the visual-direction source's midnight navy environment, cyan structural geometry, gold arc and rays, white editorial serif hierarchy, compact mono stage metadata, thin blue-gray dividers, controlled glow, and generous negative space.
+
+At NEW REALITY, every visible component of the completed mark has an ancestor in an earlier state: the cyan origin point remains the apex, REFRAME's two structural lines remain the outer mountain edges, ALIGN's arc remains the horizon, BUILD's rays remain the capability field, and PRODUCE's lower planes remain the dimensional path. SEE AGAIN retains the completed system in secondary emphasis while a new cyan point appears beyond it.
+
+## Focused product-entry evidence
+
+The product-entry comparison verifies that the two environments read as part of the existing Lead Emergence platform rather than a separate landing-page theme. It keeps the platform's existing serif/sans/mono hierarchy, cyan and gold semantic split, compact radii, thin borders, navy panels, restrained glows, Lucide icon family, and button treatment. Public naming is `Lead Emergence Consulting`; internal `Consulting OS` wording is not exposed in the landing experience.
+
+## Required fidelity surfaces
+
+- Fonts and typography: display copy uses the platform's Cormorant/Georgia-style serif stack, body copy uses Inter/system sans, and stage labels use the JetBrains Mono/monospace stack. The scale becomes more spacious for the public narrative while preserving the portal's exact hierarchy and color relationships. No clipping or accidental truncation remains at the tested viewports.
+- Spacing and layout rhythm: the opening is intentionally restrained, the seven-stage narrative uses one full-height sticky frame, stage copy and symbol remain balanced at desktop, and mobile reflows to a centered symbol over centered copy without replacing the sequence with cards. Product cards reuse the portal's 14 px radius and bounded navy surface family.
+- Colors and visual tokens: the implementation directly reuses the established platform tokens (`#070d1b`, `#050914`, `#16d9f5`, `#d9b75f`, `#8ea0b7`) and equivalent panel, line, glow, and shadow values.
+- Image quality and asset fidelity: the supplied source contains a brand mark but no separable production asset. The mark is implemented as a crisp purpose-built vector because the user explicitly required its geometry to be drawn and transformed by scroll. The vector is not a temporary metaphor: it is the persistent source of every stage and stays sharp at desktop and mobile sizes. Standard UI icons use the platform's existing Lucide dependency.
+- Copy and content: all seven canonical stage labels, titles, and supporting statements are present verbatim from the interaction specification. Ministry and Consulting positioning is accurate; product authorization is described as independent; `Consulting OS` is kept out of public product naming.
+- Accessibility and interaction: the page includes a skip link, semantic ordered roadmap content, visible focus, a native keyboard-dismissible dialog, persistent Sign in, working role destinations, and no color-only meaning. Reduced motion uses discrete progressive states and retains the full narrative.
+- Responsive behavior: 390 x 844 verification preserves the same point → structure → arc → rays → path → complete mark sequence. The mark, stage copy, stage rail, and persistent entry control remain usable without horizontal overflow.
+
+## Comparison history
+
+### Iteration 1 — blocked
+
+- [P1] The earlier visual direction presented seven independent stage graphics and felt disconnected from the product's established interface language.
+- Fix: rebuilt the page as one sticky visual object and directly reused the private platform's typography, tokens, panel materials, labels, icon family, radii, and interaction states.
+
+### Iteration 2 — blocked
+
+- [P1] Initial direct stage-rail links overshot NEW REALITY because document anchors did not account for sticky-scroll travel distance.
+- [P2] Computed ray coordinates produced a development hydration warning at two floating-point values.
+- Fix: stage navigation now targets the midpoint of each canonical progress interval; deterministic coordinate rounding eliminated the hydration mismatch.
+
+### Iteration 3 — passed
+
+- Post-fix desktop evidence: hero, NEW REALITY, product entry, and returning-user selector were inspected in the in-app browser at 1536 x 1024, then committed evidence was captured at 1440 x 1000.
+- Post-fix mobile evidence: the same NEW REALITY state was inspected at 390 x 844.
+- Primary interactions tested: opening-to-SEE transition, direct navigation to REFRAME/ALIGN/NEW REALITY/SEE AGAIN, Sign in dialog open and close, consultant/client/ministry destination integrity, mobile sequence, and reduced-motion sequence.
+- Browser console: a fresh post-fix browser tab reported zero errors; the persistent Sign in control was visible.
+- Regression evidence: 15 Playwright tests passed, including three new landing tests; 18 unit tests passed; typecheck, lint, and production build passed.
+
+## Remaining findings
+
+No actionable P0, P1, or P2 findings remain. A future P3 brand-production pass may replace the current vector paths with a formally supplied master logo asset while preserving the same layered animation contract.
+
 final result: passed
