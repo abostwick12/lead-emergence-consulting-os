@@ -1,0 +1,28 @@
+# Lead Emergence Consulting OS
+
+This is the private repository boundary for Lead Emergence Consulting OS. It contains the canonical Consulting source package, Phase 0 architecture, and Consulting-only developer tooling.
+
+## Repository boundary
+
+- This repository owns Consulting architecture, application source, business logic, migrations, prompts/workflows, fixtures, tests, and deployment configuration.
+- The existing `emergence-ministry-platform` repository remains the independently distributable Ministry product and does not depend on this repository.
+- No shared package repository is approved. Duplication is preferred until a future ADR identifies a genuinely product-neutral capability and defines its governance and licensing.
+- No license text was created or changed during the repository migration. Owner/legal review remains responsible for final licensing terms and the historical Phase 0 materials originally committed in the Ministry repository context.
+
+## Authority and documentation
+
+The Consulting architecture source of truth begins at [`docs/consulting-os/README.md`](docs/consulting-os/README.md). Canonical Documents 01-07, the build constraints, approved ADRs, ERD, schema mapping, blockers, and Phase 0 audit are retained beneath that directory.
+
+## Current status
+
+- ADR-0001 through ADR-0004: approved for Phase 0.
+- ERD and Domain-to-Schema Mapping: approved for Phase 0.
+- Repository boundary: separate private Consulting repository selected and established.
+- Production DNS/deployment changes: not authorized.
+- Phase 1: not authorized pending the final Phase 0 completion checkpoint.
+
+Target topology remains:
+
+- `leademergence.com` / `www.leademergence.com` — future parent-brand entry experience;
+- `consulting.leademergence.com` — Consulting OS;
+- `ministry.leademergence.com` — Ministry product.
