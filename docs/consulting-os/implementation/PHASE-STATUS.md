@@ -16,6 +16,8 @@ Status values are evidence-based: `NOT STARTED`, `IN PROGRESS`, `BLOCKED`, or `P
 | 7 — Outcomes + New Reality | NOT STARTED | Required after completion | Depends on Phase 6. |
 | 8 — Grounded AI | NOT STARTED | — | Depends on secure, reviewed records and retrieval. |
 | 9 — Descriptive Signals | NOT STARTED | Required after completion | Depends on Phase 7 and 8 capabilities. |
+Phase 4's exact portal source head `4825137f06579cd4f4bea3bf54116712d7d3eaf0` passed private CI run `31429268095`: all static contracts, 14 unit tests, production build, 10 browser tests including Pixel 7, schema lint, and 104 cumulative pgTAP assertions.
+
 
 ## Phase 0 acceptance ledger
 
@@ -41,6 +43,8 @@ The exact Phase 0 criteria, 77/77 entity-mapping check, roadmap identifiers, Sec
 - `e3933357c164b05ba640f9e405be06efba252e25` — Phase 0 acceptance-audit correction, `LECO-005`, exact acceptance coverage, and the initial reproducible verifier.
 - `492d1942109f2fb07b5b947a8a280491a538dccb` — authoritative Document 03 continuation, checkpoint decisions, topology migration plan, and canon-reconciled architecture packet in the source worktree.
 - Private repository boundary commit — approved ADR statuses, final repository paths, approval provenance, and Phase 0 completion audit.
+- `98222701f47b3c013623c66c31bf875abfa24a19` — Phase 4 role-safe Consultant and Client portals with the cohesive Lead Emergence visual system.
+- `4825137f06579cd4f4bea3bf54116712d7d3eaf0` — secure-entry assertion alignment and completed desktop/mobile design QA.
 
 ## Work deliberately not claimed
 

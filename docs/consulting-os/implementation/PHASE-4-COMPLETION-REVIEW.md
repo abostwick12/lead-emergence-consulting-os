@@ -56,7 +56,8 @@ Phase 4 implements the Consultant and Client portal shells and the safe read pro
 | Next.js production build | PASS — 13 application routes plus Proxy. |
 | Playwright | PASS — 10/10 across desktop and Pixel 7 projects. |
 | Visual review | PASS — fresh Consultant desktop and Client mobile captures inspected for layout and readability. |
-| Private-repository CI | Pending exact-head run at PR creation. |
+| Retained database regression | PASS — schema lint and all 104 cumulative pgTAP assertions. |
+| Private-repository CI | PASS — run `31429268095` on portal source head `4825137f06579cd4f4bea3bf54116712d7d3eaf0`. |
 
 ## Phase boundary audit
 
@@ -80,4 +81,4 @@ All Phase 4 source, configuration, tests, fixtures, and documentation exist only
 
 ## Checkpoint
 
-Phase 4 has no mandatory human checkpoint in Canonical Document 07. Once the exact-head private-repository CI run passes, the phase may merge under the standing authorization. Phase 5 may begin from the merged result. Deployment remains separately unauthorized.
+Phase 4 has no mandatory human checkpoint in Canonical Document 07. The exact portal source head passed private-repository CI in run `31429268095`; the phase may merge under the standing authorization. Phase 5 may begin from the merged result. Deployment remains separately unauthorized.
