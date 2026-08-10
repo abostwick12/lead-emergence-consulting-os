@@ -436,8 +436,39 @@ begin
   if tg_op = 'DELETE' then
     raise exception 'assumptions are versioned and may not be deleted' using errcode = '55000';
   end if;
-  if (to_jsonb(new) - array['effective_to', 'assumption_status', 'updated_at'])
-    <> (to_jsonb(old) - array['effective_to', 'assumption_status', 'updated_at'])
+  if row(
+    new.id,
+    new.organization_id,
+    new.logical_id,
+    new.version_number,
+    new.statement,
+    new.holder_scope,
+    new.origin_history,
+    new.initial_review_state,
+    new.confidence_level,
+    new.confidence_rationale,
+    new.review_trigger,
+    new.effective_from,
+    new.supersedes_id,
+    new.created_by,
+    new.created_at
+  ) is distinct from row(
+    old.id,
+    old.organization_id,
+    old.logical_id,
+    old.version_number,
+    old.statement,
+    old.holder_scope,
+    old.origin_history,
+    old.initial_review_state,
+    old.confidence_level,
+    old.confidence_rationale,
+    old.review_trigger,
+    old.effective_from,
+    old.supersedes_id,
+    old.created_by,
+    old.created_at
+  )
   then
     raise exception 'meaning-changing assumption edits require a new version'
       using errcode = '55000';
@@ -596,7 +627,7 @@ begin
     where r.subject_id = new.source_id and r.organization_id = new.organization_id
     order by r.reviewed_at desc, r.created_at desc
     limit 1;
-    if v_latest_insight_state <> 'VALIDATED' then
+    if v_latest_insight_state is distinct from 'VALIDATED' then
       raise exception 'only a currently validated Insight may inform a Decision'
         using errcode = '23514';
     end if;
