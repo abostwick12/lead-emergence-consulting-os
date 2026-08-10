@@ -1,6 +1,6 @@
 # Phase 3 — Consulting Core
 
-**Status:** PASS — evidence gate completed 2026-08-10; mandatory human checkpoint pending
+**Status:** PASS — evidence gate and mandatory human checkpoint approved 2026-08-10
 
 **Branch/worktree:** `codex/consulting-os-phase3` / `.worktrees/consulting-os-phase3`
 

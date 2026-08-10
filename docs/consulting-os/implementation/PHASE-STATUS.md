@@ -9,7 +9,7 @@ Status values are evidence-based: `NOT STARTED`, `IN PROGRESS`, `BLOCKED`, or `P
 | 0 — Architecture Freeze | **PASS** | **APPROVED 2026-08-10** | ADR-0001–0004, ERD, mapping, private repository boundary, and final completion checkpoint are approved and verified. |
 | 1 — Security Foundation | **PASS** | **EVIDENCE GATE PASSED 2026-08-10** | Disposable-database migration, lint, 32 adversarial pgTAP assertions, static security contracts, and Ministry separability passed twice in private-repository CI. |
 | 2 — Meridian Core | **PASS** | **EVIDENCE GATE PASSED 2026-08-10** | Clean migration, schema lint, 27 Meridian assertions, 32 retained security assertions, cited/reviewable Evidence-to-Decision chain, and historical-version tests passed in private-repository CI. |
-| 3 — Consulting Core | **PASS** | **HUMAN REVIEW REQUIRED** | All seven Document 07 requirements passed; clean migrations, schema lint, and 104 cumulative assertions passed in run `31406301630`. |
+| 3 — Consulting Core | **PASS** | **APPROVED 2026-08-10** | All seven Document 07 requirements passed; clean migrations, schema lint, and 104 cumulative assertions passed in runs `31406301630` and `31407084177`. |
 | 4 — Portals V1 | NOT STARTED | — | Depends on Phase 3. |
 | 5 — Meetings + Coaching | NOT STARTED | — | Depends on secure portal/private foundations. |
 | 6 — Alignment + Capability | NOT STARTED | — | Depends on Meridian and Consulting Core. |
@@ -72,4 +72,4 @@ The first browser-suite attempt could not find worktree-local dependencies. Afte
 
 Source-document visual rendering was not available because LibreOffice is not installed; exact source retention, checksums, fresh extraction, heading/section audits, and structural OOXML/table review were used instead. The restored continuation and single occurrence of every Section 12-30 heading are structurally verified, but visual page-layout QA remains outstanding.
 
-Repository-boundary verification is recorded in `PHASE-0-ACCEPTANCE-AUDIT.md`. Phases 0–3 are complete at their evidence gates. Phase 3 evidence is recorded in `PHASE-3-COMPLETION-REVIEW.md`; its mandatory human checkpoint is pending, Phase 4 has not started, and no hosted or production execution is authorized.
+Repository-boundary verification is recorded in `PHASE-0-ACCEPTANCE-AUDIT.md`. Phases 0–3 are complete and their required checkpoints are approved. Phase 3 evidence and approval are recorded in `PHASE-3-COMPLETION-REVIEW.md` and `PHASE-3-CHECKPOINT-APPROVAL-2026-08-10.md`; Phase 4 may begin after PR #3 merges, and no hosted or production execution is authorized.

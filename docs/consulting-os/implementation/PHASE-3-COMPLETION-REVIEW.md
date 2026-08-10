@@ -1,6 +1,6 @@
 # Phase 3 completion review — Consulting Core
 
-**Decision:** PASS at the evidence gate on 2026-08-10; mandatory human checkpoint pending.
+**Decision:** PASS at the evidence gate and mandatory human checkpoint APPROVED on 2026-08-10.
 
 **Scope:** Private-repository, database-first Consulting Core for SEE REALITY and REFRAME. No hosted project, production environment, real client data, portal UI, AI model, DNS, deployment, or Ministry source was changed.
 
@@ -82,6 +82,6 @@ Docker is unavailable on the workstation, so disposable database execution is in
 
 ## Human checkpoint
 
-Phase 3 satisfies its bounded acceptance criteria and is ready for human validation. Pull request [#3](https://github.com/abostwick12/lead-emergence-consulting-os/pull/3) remains a draft until this checkpoint is reviewed.
+The owner approved the Phase 3 checkpoint in the active Codex task with the exact response “Approved.” Approval provenance is retained in `PHASE-3-CHECKPOINT-APPROVAL-2026-08-10.md`.
 
-Phase 4 must not begin until the Phase 3 checkpoint is accepted and PR #3 is merged.
+Pull request #3 may be marked ready and merged. Phase 4 may begin only after the Phase 3 merge is present on private-repository `main`.

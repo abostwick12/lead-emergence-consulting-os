@@ -22,7 +22,7 @@ The Consulting architecture source of truth begins at [`docs/consulting-os/READM
 - Phase 0: complete and approved on 2026-08-10.
 - Phase 1: complete; its isolated migration, lint, and 32 adversarial security assertions passed twice. The security foundation is not deployed.
 - Phase 2: complete at the evidence gate; its typed Meridian migration, schema lint, and 27 Phase 2 assertions passed with the 32 Phase 1 security assertions. Nothing is deployed.
-- Phase 3: PASS at its evidence gate; 45 Phase 3 and 104 cumulative database assertions passed in isolated CI. The checkpoint is pending and nothing is deployed.
+- Phase 3: complete and approved; 45 Phase 3 and 104 cumulative database assertions passed in isolated CI. Nothing is deployed.
 
 Target topology remains:
 
