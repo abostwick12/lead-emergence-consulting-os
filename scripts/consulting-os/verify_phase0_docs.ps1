@@ -156,7 +156,7 @@ if (-not (Test-Path -LiteralPath $rootReadme)) {
     throw "Missing private Consulting repository README."
 }
 $rootReadmeContent = Get-Content -LiteralPath $rootReadme -Raw -Encoding utf8
-if ($rootReadmeContent -notmatch 'private repository boundary' -or $rootReadmeContent -notmatch 'Phase 1: (authorized|in progress)') {
+if ($rootReadmeContent -notmatch 'private repository boundary' -or $rootReadmeContent -notmatch 'Phase 1: (authorized|in progress|complete)') {
     throw "Private repository README does not record the approved boundary and current Phase 1 state."
 }
 

@@ -80,4 +80,4 @@ Write-Output "PASS: Phase 1 schemas, RLS declarations, private partition, and le
 Write-Output "PASS: same-tenant relationship constraints and secure pre-retrieval projection are present."
 Write-Output "PASS: four Storage operations have explicit policies."
 Write-Output "PASS: 32 adversarial pgTAP assertions and Consulting-only API configuration are present."
-Write-Output "STATIC ONLY: database execution, pgTAP, lint, and advisors are still required before Phase 1 PASS."
+Write-Output "STATIC COMPLETE: database execution and pgTAP/lint evidence are recorded separately in the Phase 1 completion review."

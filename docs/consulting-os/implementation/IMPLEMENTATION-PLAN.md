@@ -2,7 +2,7 @@
 
 ## Current outcome
 
-Phase 0 produced and received human approval for the Product Boundary Architecture, tenancy/security architecture, typed domain architecture, auth/privacy/retrieval architecture, ERD, complete 77-entity mapping, target-domain migration plan, legacy conflict map, and Ministry-only distribution strategy. The private `lead-emergence-consulting-os` repository executes the selected repository boundary and contains the canonical and Phase 0 package. Phase 0 is complete. Phase 1 is authorized but has not yet started.
+Phase 0 produced and received human approval for the Product Boundary Architecture, tenancy/security architecture, typed domain architecture, auth/privacy/retrieval architecture, ERD, complete 77-entity mapping, target-domain migration plan, legacy conflict map, and Ministry-only distribution strategy. The private `lead-emergence-consulting-os` repository executes the selected repository boundary and contains the canonical and Phase 0 package. Phase 0 is complete. Phase 1 implemented and proved the isolated Consulting security foundation; its evidence gate passed on 2026-08-10.
 
 Canonical Document 07 controls the phase sequence below. The older Full Build Plan remains explanatory reference only.
 
@@ -99,4 +99,4 @@ For each phase:
 
 ## Next executable step
 
-Complete the Phase 1 Security Foundation on `codex/consulting-os-phase1`: tenant schema, current membership/assignment authorization, RLS, visibility, private partition, storage metadata/policies, audit, secure retrieval pre-filter, and adversarial database tests. Production migrations and topology changes remain separately unauthorized.
+Merge the passing Phase 1 branch, then begin Phase 2 Meridian Core on a dedicated branch/worktree. Phase 2 must implement typed Evidence through Decision records, source fragments, provenance, human review, competing interpretations, supersession/versioning, and a complete manual reasoning chain without weakening the Phase 1 tenant and visibility controls. Production migrations and topology changes remain separately unauthorized.

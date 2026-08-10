@@ -1,6 +1,6 @@
 # Phase 1 — Security Foundation
 
-**Status:** IN PROGRESS
+**Status:** PASS — evidence gate satisfied 2026-08-10
 
 **Branch/worktree:** `codex/consulting-os-phase1` / `.worktrees/consulting-os-phase1`
 
@@ -39,13 +39,19 @@
 
 The suite contains 32 adversarial assertions in `supabase/tests/database/phase1_security_foundation.test.sql` and rolls all synthetic fixtures back.
 
-## Remaining evidence before PASS
+## Completion evidence
 
-1. Execute migration from a clean isolated PostgreSQL/Supabase state.
-2. Run all 32 pgTAP assertions.
-3. Run database lint plus Supabase security and performance advisors.
-4. Confirm all exposed Phase 1 tables have RLS and only intended grants.
-5. Record migration/test/advisor output here and in `PHASE-STATUS.md`.
-6. Rerun the Ministry-only distribution check and confirm the Ministry repository remains independent.
+| Evidence | Result |
+|---|---|
+| Clean migration in a disposable Supabase stack | PASS — GitHub Actions run `31384043484` applied the migration from an empty isolated state. |
+| Adversarial database suite | PASS — all 32 pgTAP assertions passed. |
+| Database lint | PASS — `supabase db lint` completed with no schema error. |
+| Static RLS/grant/storage contract audit | PASS — every Phase 1 tenant/private table has RLS, explicit grants, and command-specific policies; all four private-bucket policy operations are present. |
+| Canonical security mapping | PASS — every Document 07 Phase 1 criterion and the applicable Document 05 foundation gate is mapped in `PHASE-1-COMPLETION-REVIEW.md`. |
+| Ministry separability recheck | PASS — no Consulting identifier or dependency exists in active Ministry application, migration, package, or CI paths; no Ministry dependency exists in Consulting runtime, migration, package, or CI paths. |
+| Repeatability | PASS — pull-request run `31384046716` independently repeated the complete database job. |
+| Hosted-environment safety | PASS — neither existing hosted Supabase project was linked, migrated, seeded, or modified. |
 
-Private-repository CI supplies the first isolated execution environment without touching either existing hosted Supabase project. `LECO-008` remains open until that job passes. Phase 1 must not be marked PASS until database execution evidence exists.
+Hosted-project Security and Performance Advisor reports were not run because Phase 1 intentionally used a disposable local Supabase stack in CI and no Consulting hosted project exists. The equivalent pre-hosted checks are schema lint, explicit grant/RLS inspection, and adversarial execution. Advisor review remains a deployment-environment gate before any real client data, not a reason to target an unrelated hosted project.
+
+`LECO-008` is resolved. The Phase 1 evidence gate is satisfied; production migration and real client data remain unauthorized.
