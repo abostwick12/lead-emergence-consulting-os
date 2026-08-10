@@ -36,7 +36,8 @@ insert into consulting_os.engagements (id, organization_id, name, status, starts
 
 insert into consulting_os.engagement_memberships (organization_id, engagement_id, organization_membership_id, status, created_by) values
   ('8aaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '83000000-0000-4000-8000-000000000001', '82200000-0000-4000-8000-000000000001', 'ACTIVE', '82000000-0000-4000-8000-000000000001'),
-  ('8aaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '83000000-0000-4000-8000-000000000001', '82200000-0000-4000-8000-000000000002', 'ACTIVE', '82000000-0000-4000-8000-000000000001');
+  ('8aaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '83000000-0000-4000-8000-000000000001', '82200000-0000-4000-8000-000000000002', 'ACTIVE', '82000000-0000-4000-8000-000000000001'),
+  ('8bbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', '83000000-0000-4000-8000-000000000002', '82200000-0000-4000-8000-000000000003', 'ACTIVE', '82000000-0000-4000-8000-000000000004');
 
 insert into consulting_os.domain_objects (id, organization_id, engagement_id, object_type, visibility_scope, owner_person_id, origin, created_by) values
   ('84000000-0000-4000-8000-000000000001', '8aaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '83000000-0000-4000-8000-000000000001', 'MEETING', 'ENGAGEMENT_SHARED', null, 'HUMAN', '82000000-0000-4000-8000-000000000001'),
