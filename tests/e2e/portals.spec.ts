@@ -70,5 +70,5 @@ test('current effective state defaults with historical state accessible', async 
 test('unauthenticated portal request returns to secure entry', async ({ page }) => {
   await page.goto('/consultant');
   await expect(page).toHaveURL(/\/login\?returnTo=/);
-  await expect(page.getByText('Synthetic local test identities')).toBeVisible();
+  await expect(page.getByText('Local review access')).toBeVisible();
 });

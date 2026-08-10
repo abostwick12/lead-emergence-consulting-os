@@ -6,10 +6,13 @@
 - Implementation screenshot: `C:/Users/awbostwick/.codex/visualizations/2026/08/10/019fe94d-e53d-7602-a9f6-f8a186eaa2af/consulting-cohesive-audit/03-consultant-viewport.png`
 - Full-view comparison: `C:/Users/awbostwick/.codex/visualizations/2026/08/10/019fe94d-e53d-7602-a9f6-f8a186eaa2af/consulting-cohesive-audit/04-side-by-side.png`
 - Focused shell comparison: `C:/Users/awbostwick/.codex/visualizations/2026/08/10/019fe94d-e53d-7602-a9f6-f8a186eaa2af/consulting-cohesive-audit/05-shell-focus.png`
+- Responsive implementation screenshot: `C:/Users/awbostwick/.codex/visualizations/2026/08/10/019fe94d-e53d-7602-a9f6-f8a186eaa2af/phase4-ci-artifact/test-results/client-mobile.png`
 - Viewport: 1280 x 720 CSS px in the in-app browser.
 - Source pixels: 1280 x 720.
 - Implementation pixels: 1264 x 720 after the visible scrollbar gutter.
 - Density normalization: source was proportionally normalized to 1264 x 720 for the side-by-side composite; both halves otherwise preserve the same viewport scale and state density.
+- Responsive viewport: Playwright Pixel 7 profile, 412 x 839 CSS px at 2.625 device scale factor.
+- Responsive pixels: 1082 x 2202 full-page capture (rounding from the emulated device density).
 - Source state: authenticated Ministry dashboard.
 - Implementation state: authenticated Consultant home with synthetic Northstar engagement data.
 
@@ -44,6 +47,7 @@ The focused shell comparison verifies the wordmark treatment, navigation icon fa
 - Image quality and asset fidelity: neither compared dashboard uses required raster imagery. The CSS grid treatment is a source-code-authored platform background in both products; all icons come from the shared icon library.
 - Copy and content: Consulting copy remains domain-specific, truthful, and privacy-aware. It does not copy Ministry operational language into the Consulting product.
 - Accessibility and interactions: keyboard focus remains visible, landmark structure is preserved, reduced motion is respected, active navigation updates by route, and client access hides the private consultant record.
+- Responsive behavior: the exact committed Pixel 7 capture preserves readable hierarchy, two-column context labels with safe truncation, a single-column bounded-state panel, and a five-destination fixed navigation rail with consistent Lucide icons and cyan active state. No clipping, overlap, hidden navigation, or unusable tap target is visible.
 
 ## Comparison history
 
@@ -52,14 +56,15 @@ The focused shell comparison verifies the wordmark treatment, navigation icon fa
 - [P1] The initial Consulting portal used a beige paper, forest-green sidebar, circular monogram, oversized editorial cards, and soft earth-tone state badges. It read as a separate brand rather than a related Lead Emergence product.
 - Fix: replaced the visual layer with the Ministry platform's midnight, cyan, gold, typography, navigation, grid, card, and density system; added route-aware Lucide navigation; rebuilt login as the same split secure-access family; preserved all Consulting data and privacy behavior.
 
-### Iteration 2 — desktop passed
+### Iteration 2 — desktop and mobile passed
 
 - Post-fix evidence: `04-side-by-side.png` and `05-shell-focus.png` show no remaining actionable desktop P0, P1, or P2 mismatch.
+- Responsive evidence: the exact committed Pixel 7 capture at `phase4-ci-artifact/test-results/client-mobile.png` shows no remaining actionable mobile P0, P1, or P2 issue.
 - Primary interactions tested: fixture consultant entry, consultant Home to Clients navigation, active navigation state, fixture client entry, and client exclusion of the private consultant record.
 - Browser console: no errors; only expected React development and hot-reload informational messages.
 
-## Remaining blocker
+## Remaining findings
 
-The selected in-app browser does not expose viewport emulation. A browser-rendered mobile screenshot of the revised build has therefore not yet been captured. The responsive rules are implemented and the repository contains a mobile portal test, but the Product Design browser rule requires explicit user permission before running that Playwright test browser directly.
+No actionable P0, P1, or P2 visual findings remain. The CI browser suite's first exact-head run exposed one stale copy assertion after the login wording changed from “Synthetic local test identities” to “Local review access”; the rendered secure-entry behavior remained correct and the assertion was updated to the intentional copy.
 
-final result: blocked
+final result: passed
