@@ -1,6 +1,6 @@
 # Phase 2 — Meridian Core
 
-**Status:** IN PROGRESS
+**Status:** PASS — evidence gate completed 2026-08-10
 
 **Branch/worktree:** `codex/consulting-os-phase2` / `.worktrees/consulting-os-phase2`
 
@@ -42,4 +42,17 @@ The Phase 2 suite contains 27 pgTAP assertions in `supabase/tests/database/phase
 4. All 59 database assertions pass together.
 5. The Ministry repository remains independent and untouched.
 6. The completion review records any deferred feature-specific Meridian tests without claiming later-phase functionality.
+
+## Exit evidence
+
+| Gate | Result |
+|---|---|
+| Phase 0, Phase 1, and Phase 2 static verifiers | PASS |
+| Clean migration application in disposable Supabase | PASS |
+| Consulting schema lint | PASS |
+| Phase 1 security suite | PASS — 32/32 |
+| Phase 2 Meridian suite | PASS — 27/27 |
+| Cumulative database assertions | PASS — 59/59 |
+| Authoritative CI run | [31393679120](https://github.com/abostwick12/lead-emergence-consulting-os/actions/runs/31393679120) |
+| Hosted/production change | NONE |
 

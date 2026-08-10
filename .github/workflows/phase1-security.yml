@@ -9,16 +9,6 @@ on:
       - "scripts/consulting-os/**"
       - "supabase/**"
       - "docs/consulting-os/**"
-  push:
-    branches:
-      - "codex/consulting-os-phase*"
-    paths:
-      - ".github/workflows/phase1-security.yml"
-      - "package.json"
-      - "package-lock.json"
-      - "scripts/consulting-os/**"
-      - "supabase/**"
-      - "docs/consulting-os/**"
   workflow_dispatch:
 
 permissions:
