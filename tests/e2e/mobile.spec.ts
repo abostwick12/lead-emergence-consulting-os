@@ -7,7 +7,11 @@ test('client mobile access preserves key V1 destinations and truthful phase boun
   await expect(page.getByRole('navigation', { name: 'Mobile navigation' })).toBeVisible();
   await page.getByRole('navigation', { name: 'Mobile navigation' }).getByText('Meetings').click();
   await expect(page.getByRole('heading', { name: 'Meetings' })).toBeVisible();
-  await expect(page.getByText(/Meeting preparation and follow-up become operational in Phase 5/)).toBeVisible();
+  await expect(page.getByText('Shared interaction engine')).toBeVisible();
+  await page.getByRole('button', { name: /Decision judgment coaching/ }).click();
+  await expect(page.getByText('NAMED PARTICIPANTS')).toBeVisible();
+  await expect(page.getByText('Commitments across sessions')).toBeVisible();
+  await page.screenshot({ path: 'test-results/client-mobile-meeting.png', fullPage: true });
   await page.goto('/client/my-development');
   await expect(page.getByRole('heading', { name: 'My Development' })).toBeVisible();
   await expect(page.getByText(/Private coaching content is never organizational telemetry/)).toBeVisible();

@@ -2,7 +2,7 @@
 
 ## Current outcome
 
-Phase 0 established and received human approval for the repository, licensing, domain, tenancy, and security architecture. Phases 1–3 implemented and proved the isolated security foundation, Meridian Core, and Consulting Core. Phase 4 now presents those same tenant-safe records through distinct Consultant and Client portals without creating a second domain or weakening private-data boundaries.
+Phase 0 established and received human approval for the repository, licensing, domain, tenancy, and security architecture. Phases 1–4 implemented and proved the isolated security foundation, Meridian Core, Consulting Core, and cohesive role-safe portals. Phase 5 is in progress and adds one shared meeting engine plus privacy-specialized coaching workflows without creating a second domain or weakening private-data boundaries.
 
 Canonical Document 07 controls the phase sequence below. The older Full Build Plan remains explanatory reference only.
 
@@ -97,6 +97,6 @@ For each phase:
 - Track owner/legal review of final Consulting licensing terms and historical Phase 0 materials without claiming retroactive confidentiality or licensing changes.
 - Keep production topology execution unauthorized until a separate infrastructure change plan is approved.
 
-## Next executable step
+## Current executable step
 
-After Phase 4 exact-head CI passes and the branch merges, begin Phase 5 Meetings + Coaching on a dedicated branch/worktree. Phase 5 must implement real create/edit/save/read cycles for shared meeting records, coaching relationships, partitioned private/shared notes, commitments, and history without allowing private coaching content to become organizational telemetry. Production migrations and topology changes remain separately unauthorized.
+Phase 5 runs on `codex/consulting-os-phase5`. It implements one typed meeting engine for consulting and coaching, a Prepare → Meet → Capture → Decide → Commit → Follow Up workflow, participant-scoped preparation, shared notes, physically partitioned private notes/reflections, durable commitments, and longitudinal history. Coaching-derived organizational knowledge requires a separate explicit promotion record with abstraction, rationale, chosen visibility, and human authorization. Production migrations and topology changes remain separately unauthorized.

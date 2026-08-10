@@ -11,7 +11,7 @@ Status values are evidence-based: `NOT STARTED`, `IN PROGRESS`, `BLOCKED`, or `P
 | 2 — Meridian Core | **PASS** | **EVIDENCE GATE PASSED 2026-08-10** | Clean migration, schema lint, 27 Meridian assertions, 32 retained security assertions, cited/reviewable Evidence-to-Decision chain, and historical-version tests passed in private-repository CI. |
 | 3 — Consulting Core | **PASS** | **APPROVED 2026-08-10** | All seven Document 07 requirements passed; clean migrations, schema lint, and 104 cumulative assertions passed in runs `31406301630` and `31407084177`. |
 | 4 — Portals V1 | **PASS** | **EVIDENCE GATE PASSED 2026-08-10** | Role-safe Consultant and Client portals, 14 unit assertions, 10 browser assertions, static contracts, production build, and responsive visual review passed locally; exact-head CI evidence is recorded in the completion review. |
-| 5 — Meetings + Coaching | NOT STARTED | — | Depends on secure portal/private foundations. |
+| 5 — Meetings + Coaching | **IN PROGRESS** | — | Shared engine, privacy partition, commitments, portal cycles, and adversarial tests are being implemented on `codex/consulting-os-phase5`. |
 | 6 — Alignment + Capability | NOT STARTED | — | Depends on Meridian and Consulting Core. |
 | 7 — Outcomes + New Reality | NOT STARTED | Required after completion | Depends on Phase 6. |
 | 8 — Grounded AI | NOT STARTED | — | Depends on secure, reviewed records and retrieval. |

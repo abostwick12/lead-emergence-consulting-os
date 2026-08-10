@@ -1,7 +1,9 @@
 import { notFound } from 'next/navigation';
 import { PageIntro, RecordList } from '@/components/portal/dashboard';
+import { MeetingCenter } from '@/components/meetings/meeting-center';
 import { requirePortalRole } from '@/lib/portal/context';
 import { getPortalDashboard } from '@/lib/portal/repository';
+import { getMeetingCenter } from '@/lib/meetings/repository';
 
 const sectionCopy: Record<string, { title: string; description: string }> = {
   'our-organization': { title: 'Our Organization', description: 'Validated organizational knowledge, current effective state, and shared decisions.' },
@@ -18,9 +20,9 @@ export default async function ClientSection({ params }: { params: Promise<{ sect
   if (!copy) notFound();
   const dashboard = await getPortalDashboard(session);
   if (section === 'our-organization') return <><PageIntro eyebrow={session.organization.name} {...copy} /><RecordList records={dashboard.records} role="client" title="Validated organizational records" /></>;
+  if (section === 'meetings') return <><PageIntro eyebrow={session.organization.name} {...copy} /><MeetingCenter initialData={await getMeetingCenter(session)} /></>;
   const messages: Record<string, string> = {
     'my-development': 'Development plans, commitments, and coaching-shared records will become actionable in Phase 7. Private coaching content is never organizational telemetry.',
-    meetings: 'Meeting preparation and follow-up become operational in Phase 5. This page does not claim that invitations or actions are currently synchronized.',
     progress: 'Value and outcome workflows arrive in Phase 8. Current records remain visible without implying causal proof.',
     settings: 'Your access is derived from current Consulting memberships and engagement scope.',
   };
