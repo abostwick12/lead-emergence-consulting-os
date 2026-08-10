@@ -2,7 +2,7 @@
 
 ## Current outcome
 
-Phase 0 produced and received human approval for the Product Boundary Architecture, tenancy/security architecture, typed domain architecture, auth/privacy/retrieval architecture, ERD, complete 77-entity mapping, target-domain migration plan, legacy conflict map, and Ministry-only distribution strategy. The private `lead-emergence-consulting-os` repository executes the selected repository boundary and contains the canonical and Phase 0 package. Phase 0 is complete. Phase 1 is authorized but has not yet started.
+Phase 0 produced and received human approval for the Product Boundary Architecture, tenancy/security architecture, typed domain architecture, auth/privacy/retrieval architecture, ERD, complete 77-entity mapping, target-domain migration plan, legacy conflict map, and Ministry-only distribution strategy. The private `lead-emergence-consulting-os` repository executes the selected repository boundary and contains the canonical and Phase 0 package. Phase 0 is complete. Phase 1 implemented and proved the isolated Consulting security foundation; its evidence gate passed on 2026-08-10.
 
 Canonical Document 07 controls the phase sequence below. The older Full Build Plan remains explanatory reference only.
 
@@ -87,15 +87,16 @@ For each phase:
 3. Run product-specific checks plus the repository checks required by `AGENTS.md`.
 4. Verify the relevant product can build independently and the Ministry-only distribution remains free of Consulting files and dependencies.
 5. Commit the coherent phase result on its dedicated branch.
-6. At Phases 0, 1, 3, 7, and 9, stop and request explicit human approval before starting the next phase.
+6. At Phases 0, 1, 3, 7, and 9, record the required human-review packet and evidence. Under the standing authorization dated 2026-08-10, work may continue when the gate passes; pause only when an issue requires human validation.
 
 ## Governing decisions
 
 - Phase 0 is complete and approved.
-- Phase 1 is authorized, with implementation confined to the private Consulting repository and the accepted architecture.
+- Phase 1 is active, with implementation confined to the private Consulting repository and the accepted architecture.
+- Separate phase-start and phase-completion permission is no longer required; evidence gates remain mandatory, and unresolved issues still require human validation.
 - Track owner/legal review of final Consulting licensing terms and historical Phase 0 materials without claiming retroactive confidentiality or licensing changes.
 - Keep production topology execution unauthorized until a separate infrastructure change plan is approved.
 
 ## Next executable step
 
-Create a dedicated Phase 1 Consulting branch/worktree in this private repository, then begin the Security Foundation strictly within Canonical Document 07 and the accepted ADRs. This approval-recording change does not itself begin Phase 1 implementation. Production migrations and topology changes remain separately unauthorized.
+Merge the passing Phase 1 branch, then begin Phase 2 Meridian Core on a dedicated branch/worktree. Phase 2 must implement typed Evidence through Decision records, source fragments, provenance, human review, competing interpretations, supersession/versioning, and a complete manual reasoning chain without weakening the Phase 1 tenant and visibility controls. Production migrations and topology changes remain separately unauthorized.

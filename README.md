@@ -20,7 +20,8 @@ The Consulting architecture source of truth begins at [`docs/consulting-os/READM
 - Repository boundary: separate private Consulting repository selected and established.
 - Production DNS/deployment changes: not authorized.
 - Phase 0: complete and approved on 2026-08-10.
-- Phase 1: authorized on 2026-08-10; implementation has not yet started.
+- Phase 1: complete; its isolated migration, lint, and 32 adversarial security assertions passed twice. The security foundation is not deployed.
+- Phase 2: next under the standing phase authorization after the Phase 1 branch merges.
 
 Target topology remains:
 

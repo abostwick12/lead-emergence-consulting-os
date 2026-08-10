@@ -111,4 +111,4 @@ All applicable typed records follow the Document 03 contract: stable UUID, direc
 2. Phase 2: registry, evidence/source fragments, reasoning-chain tables, relationships, decisions, versioning.
 3. Phase 3 onward: consulting, portal, meeting/coaching, design/capability, outcome/New Reality, AI, and descriptive Signals tables in Document 07 order.
 
-No table in this ERD is authorized for implementation or production migration until the final Phase 0 checkpoint explicitly authorizes Phase 1 and any target environment is separately approved.
+Phase 1 security-foundation tables are authorized for implementation in the private repository. Applying migrations to a hosted or production environment remains a separate target/environment decision.

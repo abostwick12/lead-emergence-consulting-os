@@ -1,0 +1,66 @@
+name: Phase 1 security
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/phase1-security.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "scripts/consulting-os/**"
+      - "supabase/**"
+      - "docs/consulting-os/**"
+  push:
+    branches:
+      - "codex/consulting-os-phase1"
+    paths:
+      - ".github/workflows/phase1-security.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "scripts/consulting-os/**"
+      - "supabase/**"
+      - "docs/consulting-os/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase1-security-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  security-foundation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out private repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Install pinned tooling
+        run: npm ci
+
+      - name: Verify canonical and static security contracts
+        shell: pwsh
+        run: |
+          ./scripts/consulting-os/verify_phase0_docs.ps1
+          ./scripts/consulting-os/verify_phase1_security.ps1
+
+      - name: Start isolated Supabase database
+        run: npm run db:start
+
+      - name: Lint Consulting schemas
+        run: npm run db:lint
+
+      - name: Run adversarial pgTAP suite
+        run: npm run test:db
+
+      - name: Remove disposable database
+        if: always()
+        run: npm run db:stop

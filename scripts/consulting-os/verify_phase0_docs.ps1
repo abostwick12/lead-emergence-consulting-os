@@ -5,6 +5,20 @@ $ErrorActionPreference = "Stop"
 $repoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..\..")).Path
 $docsRoot = Join-Path $repoRoot "docs\consulting-os"
 
+function Get-CanonicalSha256([string]$Path) {
+    if ([IO.Path]::GetExtension($Path) -eq ".md") {
+        $content = [IO.File]::ReadAllText($Path).Replace("`r`n", "`n").Replace("`r", "`n")
+        $bytes = [Text.UTF8Encoding]::new($false).GetBytes($content)
+        $sha = [Security.Cryptography.SHA256]::Create()
+        try {
+            return ([BitConverter]::ToString($sha.ComputeHash($bytes))).Replace("-", "")
+        } finally {
+            $sha.Dispose()
+        }
+    }
+    return (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash
+}
+
 $required = @(
     "README.md",
     "SOURCE-MANIFEST.md",
@@ -30,6 +44,7 @@ $required = @(
     "implementation\PHASE-0-CHECKPOINT-RESPONSE-2026-08-10.md",
     "implementation\PHASE-0-ARCHITECTURE-APPROVAL-2026-08-10.md",
     "implementation\PHASE-0-COMPLETION-APPROVAL-2026-08-10.md",
+    "implementation\PHASE-AUTHORIZATION-2026-08-10.md",
     "implementation\PHASE-0-ACCEPTANCE-AUDIT.md",
     "implementation\TARGET-TOPOLOGY-MIGRATION-PLAN.md",
     "adrs\ADR-0001-product-boundary-architecture.md",
@@ -49,15 +64,15 @@ $manifestRows = Get-Content -LiteralPath $manifestPath -Encoding utf8 | ForEach-
         [pscustomobject]@{ RelativePath = $Matches[1]; ExpectedHash = $Matches[2].ToUpperInvariant() }
     }
 }
-if (@($manifestRows).Count -ne 14) {
-    throw "Expected 14 checksum rows in SOURCE-MANIFEST.md; found $(@($manifestRows).Count)."
+if (@($manifestRows).Count -ne 15) {
+    throw "Expected 15 checksum rows in SOURCE-MANIFEST.md; found $(@($manifestRows).Count)."
 }
 foreach ($row in $manifestRows) {
     $path = Join-Path $docsRoot $row.RelativePath
     if (-not (Test-Path -LiteralPath $path)) {
         throw "Manifest source is missing: $($row.RelativePath)"
     }
-    $actualHash = (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash
+    $actualHash = Get-CanonicalSha256 -Path $path
     if ($actualHash -ne $row.ExpectedHash) {
         throw "Checksum mismatch: $($row.RelativePath)"
     }
@@ -141,8 +156,8 @@ if (-not (Test-Path -LiteralPath $rootReadme)) {
     throw "Missing private Consulting repository README."
 }
 $rootReadmeContent = Get-Content -LiteralPath $rootReadme -Raw -Encoding utf8
-if ($rootReadmeContent -notmatch 'private repository boundary' -or $rootReadmeContent -notmatch 'Phase 1: authorized') {
-    throw "Private repository README does not record the approved boundary and Phase 1 authorization."
+if ($rootReadmeContent -notmatch 'private repository boundary' -or $rootReadmeContent -notmatch 'Phase 1: (authorized|in progress|complete)') {
+    throw "Private repository README does not record the approved boundary and current Phase 1 state."
 }
 
 $checkpoint = Get-Content -LiteralPath (Join-Path $docsRoot "implementation\PHASE-0-CHECKPOINT.md") -Raw -Encoding utf8
@@ -163,10 +178,10 @@ foreach ($relativePath in $adrStatuses) {
     }
 }
 
-Write-Output "PASS: 14 source checksums match the manifest."
+Write-Output "PASS: 15 source checksums match the manifest."
 Write-Output "PASS: 77 canonical entities map exactly once, with no extras."
 Write-Output "PASS: required Phase 0 artifacts exist and relative Markdown links resolve."
 Write-Output "PASS: Document 03 Sections 12-30 occur exactly once and its canonical tail matches the authoritative continuation."
 Write-Output "PASS: ADR-0001 through ADR-0004 are accepted and the private-repository boundary is recorded."
 Write-Output "PASS: Phase 0 completion and Phase 1 authorization are recorded."
-Write-Output "PHASE 1: authorized but not started."
+Write-Output "PHASE 1: authorization is recorded; current execution state is tracked separately."

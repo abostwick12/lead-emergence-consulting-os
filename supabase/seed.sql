@@ -1,0 +1,2 @@
+-- Phase 1 uses only transactional synthetic fixtures in the pgTAP suite.
+-- Do not place real client data in this seed file.
