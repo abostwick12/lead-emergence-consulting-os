@@ -87,15 +87,16 @@ For each phase:
 3. Run product-specific checks plus the repository checks required by `AGENTS.md`.
 4. Verify the relevant product can build independently and the Ministry-only distribution remains free of Consulting files and dependencies.
 5. Commit the coherent phase result on its dedicated branch.
-6. At Phases 0, 1, 3, 7, and 9, stop and request explicit human approval before starting the next phase.
+6. At Phases 0, 1, 3, 7, and 9, record the required human-review packet and evidence. Under the standing authorization dated 2026-08-10, work may continue when the gate passes; pause only when an issue requires human validation.
 
 ## Governing decisions
 
 - Phase 0 is complete and approved.
-- Phase 1 is authorized, with implementation confined to the private Consulting repository and the accepted architecture.
+- Phase 1 is active, with implementation confined to the private Consulting repository and the accepted architecture.
+- Separate phase-start and phase-completion permission is no longer required; evidence gates remain mandatory, and unresolved issues still require human validation.
 - Track owner/legal review of final Consulting licensing terms and historical Phase 0 materials without claiming retroactive confidentiality or licensing changes.
 - Keep production topology execution unauthorized until a separate infrastructure change plan is approved.
 
 ## Next executable step
 
-Create a dedicated Phase 1 Consulting branch/worktree in this private repository, then begin the Security Foundation strictly within Canonical Document 07 and the accepted ADRs. This approval-recording change does not itself begin Phase 1 implementation. Production migrations and topology changes remain separately unauthorized.
+Complete the Phase 1 Security Foundation on `codex/consulting-os-phase1`: tenant schema, current membership/assignment authorization, RLS, visibility, private partition, storage metadata/policies, audit, secure retrieval pre-filter, and adversarial database tests. Production migrations and topology changes remain separately unauthorized.

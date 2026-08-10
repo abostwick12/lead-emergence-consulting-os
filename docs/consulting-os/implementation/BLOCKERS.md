@@ -41,3 +41,17 @@
 - **Evidence:** Phase 0 Consulting documents and scripts were committed locally in the Ministry repository context before the private repository boundary was executed. A remote branch check at migration time found no published `codex/consulting-os-phase0` branch on the public GitHub remote.
 - **Boundary:** Preserve repository history. Do not claim that copying or later deleting files changes historical rights, licensing consequences, or confidentiality.
 - **Required follow-up:** Owner/legal review should address the final Consulting license terms and the status of those historical materials before commercialization. Codex must not supply that legal conclusion.
+
+## LECO-007 - Recurring phase approval pauses
+
+- **Status:** RESOLVED by owner direction on 2026-08-10.
+- **Decision:** Separate permission is no longer required to start or complete a phase. Phase evidence gates and review packets remain mandatory.
+- **Human validation boundary:** Pause only when a concrete issue requires owner validation, including an unresolved canonical conflict, security-sensitive unsupported assumption, destructive production action, external cost confirmation, or materially ambiguous target/environment decision.
+- **Evidence:** `PHASE-AUTHORIZATION-2026-08-10.md`.
+
+## LECO-008 - Isolated PostgreSQL execution target for Phase 1 security tests
+
+- **Status:** RESOLUTION IN PROGRESS through private-repository CI; no hosted target decision currently required.
+- **Issue:** The workstation has no Docker engine or local PostgreSQL server, so the Supabase migration and pgTAP suite cannot be executed locally. The existing hosted projects are the Ministry production project and a Ministry/Meridian sandbox; neither is assumed to be the Consulting test target.
+- **Safety boundary:** Do not apply this migration to either existing project merely to obtain a test run. Do not claim Phase 1 security completion from static checks.
+- **Resolution path:** `.github/workflows/phase1-security.yml` starts an isolated disposable Supabase database in GitHub Actions, applies the migration, lints the schemas, runs pgTAP, and removes the database. If that runner cannot provide the required environment, human validation will then be requested for a dedicated hosted Consulting target or local Docker installation. Any hosted project/branch cost must be shown and confirmed before creation.

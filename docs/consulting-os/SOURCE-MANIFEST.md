@@ -1,5 +1,7 @@
 # Source manifest
 
+Markdown SHA-256 values use UTF-8 content with LF-normalized line endings so authority checks remain stable across Windows worktrees. Binary DOCX hashes are byte-exact.
+
 The retained DOCX files are exact copies of the supplied sources except Canonical Document 03, which incorporates the exact owner-supplied authoritative continuation after Section 11. Its pre-existing Section 26-to-end tail was replaced by the same authoritative tail to avoid duplication. Markdown companions are searchable representations. The build Goal, Product Separation constraint, checkpoint response, architecture approval, and Phase 0 completion/Phase 1 authorization are retained as human authority records.
 
 | Source | Classification | SHA-256 |
@@ -12,12 +14,13 @@ The retained DOCX files are exact copies of the supplied sources except Canonica
 | `canonical/06-portal-ux.docx` | Canonical 06 | `664a7f7332f62b22a571e19f092231ba6dcb7ff2ef8c08e8ef5eb015d68ab6fa` |
 | `canonical/07-v1-scope-acceptance.docx` | Canonical 07 | `33be6d96d4726824dba61a6d975181295c34e660d2ec1d2b261f2075b3697f03` |
 | `reference/full-build-plan.docx` | Supporting reference | `8d3be06d7ccad9ed70966da4ee05bafefac16e94b829cf70f575a712a719c0be` |
-| `constraints/product-separation-repository-architecture.md` | Hard constraint | `607f56c61d4bbf1aad913fbba89425ceed217ce28469e75c1ff7280ece53c096` |
-| `constraints/build-goal.md` | Highest authority | `5964b080c462ad636a6fbad1be6f4c8e9e4889866ca6bfbe4dbe0dd15d2ee00c` |
+| `constraints/product-separation-repository-architecture.md` | Hard constraint | `e7c7c24a19a42ab312be81af35497d26903acf773a8a5d02891c3f3984ff8361` |
+| `constraints/build-goal.md` | Highest authority | `b6fd62fce85e6c67602ee4ba457204ed39a112d00bae703a574c6166724fc8a3` |
 | `canonical/03-domain-model-authoritative-continuation-2026-08-10.md` | Canonical 03 authoritative continuation | `0b328f2ba245177bed860513c33f015758ef1c6ebdf8519b3f82e6bcd8119267` |
 | `implementation/PHASE-0-CHECKPOINT-RESPONSE-2026-08-10.md` | Human checkpoint direction | `5562ab45ebc02a1f01be639fcf56948ebd6730967dffe8e282d6a8e6ac1b5c59` |
 | `implementation/PHASE-0-ARCHITECTURE-APPROVAL-2026-08-10.md` | Human architecture approval and private-repository decision | `a49db74f07a2ec2a5e65b4e833bab7c8f76fb5c2cff9a5333e2bb50a8d25aaff` |
 | `implementation/PHASE-0-COMPLETION-APPROVAL-2026-08-10.md` | Human Phase 0 completion approval and Phase 1 authorization | `23d4faa658788228c2f3318943019e59a7e320a1853787a5db8e40005d3daad2` |
+| `implementation/PHASE-AUTHORIZATION-2026-08-10.md` | Standing phase authorization and human-validation boundary | `9583e2ac96dd35337a1b2f1c84c648349805885ca5c26675592f88defabff58d` |
 
 ## Review and conversion notes
 
@@ -29,3 +32,4 @@ The retained DOCX files are exact copies of the supplied sources except Canonica
 - Conversion is reproducible through `scripts/consulting-os/extract_docx.py`, and the Document 03 restoration through `scripts/consulting-os/restore_doc03_continuation.py`, using the bundled document runtime.
 - Phase 0 documentation integrity and Appendix A mapping coverage are reproducible through `scripts/consulting-os/verify_phase0_docs.ps1`.
 - The architecture approval selects this separate private repository, prohibits future Consulting implementation in the Ministry repository, and defers shared extraction. The later completion approval marks Phase 0 complete and authorizes Phase 1 within that accepted boundary.
+- The standing phase authorization removes recurring phase-start and phase-completion permission pauses while preserving evidence gates and human validation for concrete issues.

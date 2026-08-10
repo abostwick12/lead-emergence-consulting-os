@@ -1,0 +1,4 @@
+docs/consulting-os/**/*.md text eol=lf
+scripts/**/*.ps1 text eol=crlf
+supabase/**/*.sql text eol=lf
+supabase/**/*.toml text eol=lf

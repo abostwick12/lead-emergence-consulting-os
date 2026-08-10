@@ -52,9 +52,12 @@ Do not silently reconcile a material conflict. Record it in [`implementation/BLO
 - [`implementation/PHASE-0-ACCEPTANCE-AUDIT.md`](implementation/PHASE-0-ACCEPTANCE-AUDIT.md) - exact Document 07 and Goal checkpoint evidence matrix.
 - [`implementation/PHASE-0-CHECKPOINT-RESPONSE-2026-08-10.md`](implementation/PHASE-0-CHECKPOINT-RESPONSE-2026-08-10.md) - exact owner checkpoint direction.
 - [`implementation/PHASE-0-COMPLETION-APPROVAL-2026-08-10.md`](implementation/PHASE-0-COMPLETION-APPROVAL-2026-08-10.md) - exact owner approval completing Phase 0 and authorizing Phase 1.
+- [`implementation/PHASE-AUTHORIZATION-2026-08-10.md`](implementation/PHASE-AUTHORIZATION-2026-08-10.md) - standing authorization to start and complete phases without separate approval unless an issue requires human validation.
+- [`implementation/PHASE-1-SECURITY-PLAN.md`](implementation/PHASE-1-SECURITY-PLAN.md) - Phase 1 scope, security controls, acceptance mapping, and execution evidence.
+- [`implementation/SERVICE-ROLE-INVENTORY.md`](implementation/SERVICE-ROLE-INVENTORY.md) - approved privileged-operation inventory and explicit non-uses.
 - [`implementation/TARGET-TOPOLOGY-MIGRATION-PLAN.md`](implementation/TARGET-TOPOLOGY-MIGRATION-PLAN.md) - staged, reversible production topology plan; no execution authorization.
 
-Consulting OS implementation work must use dedicated `codex/consulting-os-*` branches and worktrees in this private repository. Phase 0 is recorded on `main`; Phase 1 is authorized but no Phase 1 implementation branch or worktree has been created yet.
+Consulting OS implementation work uses dedicated `codex/consulting-os-*` branches and worktrees in this private repository. Phase 0 is recorded on `main`; Phase 1 is active on `codex/consulting-os-phase1` in `.worktrees/consulting-os-phase1`.
 
 ## Approved repository boundary
 
