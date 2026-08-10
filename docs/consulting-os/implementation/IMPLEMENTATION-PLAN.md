@@ -2,7 +2,7 @@
 
 ## Current outcome
 
-Phase 0 has produced and received human approval for the Product Boundary Architecture, tenancy/security architecture, typed domain architecture, auth/privacy/retrieval architecture, ERD, complete 77-entity mapping, target-domain migration plan, legacy conflict map, and Ministry-only distribution strategy. The private `lead-emergence-consulting-os` repository executes the selected repository boundary and now contains the canonical and Phase 0 package. Phase 0 is ready for its final completion checkpoint. Phase 1 remains unauthorized.
+Phase 0 produced and received human approval for the Product Boundary Architecture, tenancy/security architecture, typed domain architecture, auth/privacy/retrieval architecture, ERD, complete 77-entity mapping, target-domain migration plan, legacy conflict map, and Ministry-only distribution strategy. The private `lead-emergence-consulting-os` repository executes the selected repository boundary and contains the canonical and Phase 0 package. Phase 0 is complete. Phase 1 is authorized but has not yet started.
 
 Canonical Document 07 controls the phase sequence below. The older Full Build Plan remains explanatory reference only.
 
@@ -43,7 +43,7 @@ No later phase begins merely because code from an older implementation resembles
 
 ## Dependencies and ordering constraints
 
-1. The private Consulting repository and canonical source boundary are established; Phase 1 still requires explicit authorization before application source or migrations are introduced.
+1. The private Consulting repository and canonical source boundary are established; Phase 1 was explicitly authorized on 2026-08-10.
 2. Tenant attribution, access helpers, RLS, private partitions, audit, and storage policy land before domain features.
 3. Meridian provenance and human review land before consulting synthesis or AI.
 4. Consulting records land before portals; portals are projections over the same domain, not parallel databases.
@@ -89,13 +89,13 @@ For each phase:
 5. Commit the coherent phase result on its dedicated branch.
 6. At Phases 0, 1, 3, 7, and 9, stop and request explicit human approval before starting the next phase.
 
-## Decisions required now
+## Governing decisions
 
-- Complete the final Phase 0 checkpoint review and explicitly mark Phase 0 complete or request revisions.
-- Keep Phase 1 unauthorized unless a later approval explicitly says `Phase 1 authorized: yes`.
+- Phase 0 is complete and approved.
+- Phase 1 is authorized, with implementation confined to the private Consulting repository and the accepted architecture.
 - Track owner/legal review of final Consulting licensing terms and historical Phase 0 materials without claiming retroactive confidentiality or licensing changes.
 - Keep production topology execution unauthorized until a separate infrastructure change plan is approved.
 
 ## Next executable step
 
-Present the private-repository verification and final Phase 0 completion checkpoint. Do not create Phase 1 application structure, code, dependencies, migrations, environments, or deployments until a later approval explicitly says `Phase 1 authorized: yes`.
+Create a dedicated Phase 1 Consulting branch/worktree in this private repository, then begin the Security Foundation strictly within Canonical Document 07 and the accepted ADRs. This approval-recording change does not itself begin Phase 1 implementation. Production migrations and topology changes remain separately unauthorized.

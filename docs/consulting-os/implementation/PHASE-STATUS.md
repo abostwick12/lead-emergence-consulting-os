@@ -6,8 +6,8 @@ Status values are evidence-based: `NOT STARTED`, `IN PROGRESS`, `BLOCKED`, or `P
 
 | Phase | Status | Checkpoint | Evidence / blocker |
 |---|---|---|---|
-| 0 — Architecture Freeze | **IN PROGRESS** | **READY FOR FINAL COMPLETION CHECKPOINT** | ADR-0001–0004, ERD, and mapping are approved; the private Consulting repository boundary is executed and verified. Final Phase 0 completion approval remains pending. |
-| 1 — Security Foundation | NOT STARTED | Required after completion | Must not start before approved Phase 0. |
+| 0 — Architecture Freeze | **PASS** | **APPROVED 2026-08-10** | ADR-0001–0004, ERD, mapping, private repository boundary, and final completion checkpoint are approved and verified. |
+| 1 — Security Foundation | **NOT STARTED** | **AUTHORIZED TO BEGIN** | Authorized by the owner on 2026-08-10; no Phase 1 implementation exists yet. |
 | 2 — Meridian Core | NOT STARTED | — | Depends on Phase 1. |
 | 3 — Consulting Core | NOT STARTED | Required after completion | Depends on Phase 2. |
 | 4 — Portals V1 | NOT STARTED | — | Depends on Phase 3. |
@@ -31,7 +31,7 @@ Status values are evidence-based: `NOT STARTED`, `IN PROGRESS`, `BLOCKED`, or `P
 | Product auth, private coaching, secure retrieval, and entry routing decided | PASS | Accepted `ADR-0004`; target topology selected and production execution remains unauthorized. |
 | Ministry-only distribution strategy documented and testable | PASS FOR PHASE 0 | Public Ministry repository has no dependency on this private repository; no Consulting implementation exists. |
 | Independent repository/distribution boundary resolved | PASS | `LECO-002`; private Consulting repository established. Historical-material licensing remains owner/legal review, not a technical separability ambiguity for future code. |
-| Final Phase 0 completion checkpoint approved | PENDING | `PHASE-0-CHECKPOINT.md`; explicit completion approval required. |
+| Final Phase 0 completion checkpoint approved | PASS | `PHASE-0-CHECKPOINT.md`; exact owner authorization retained in `PHASE-0-COMPLETION-APPROVAL-2026-08-10.md`. |
 
 The exact Phase 0 criteria, 77/77 entity-mapping check, roadmap identifiers, Section 29 ADR coverage, and checkpoint deliverables are audited in `PHASE-0-ACCEPTANCE-AUDIT.md`.
 
@@ -64,11 +64,11 @@ The exact Phase 0 criteria, 77/77 entity-mapping check, roadmap identifiers, Sec
 | Optional Ministry unit suite | 1,411 tests pass; one unchanged Logos companion suite fails during import with `SyntaxError: Invalid or unexpected token`. Not introduced or modified by Phase 0 boundary work. |
 | Source integrity | PASS — unchanged source artifacts match their supplied sources; the restored Document 03, exact authoritative continuation, checkpoint response, and constraints match the recorded SHA-256 manifest; all canonical Markdown companions are non-empty. |
 | Extractor smoke test | PASS — bundled document runtime loads `extract_docx.py` and its CLI. |
-| Phase 0 documentation verifier | PASS — 13 manifest checksums, accepted ADR statuses, private-repository boundary, 77/77 exact entity mappings, required files/links, exact canonical tail, and one occurrence each of Sections 12-30. |
+| Phase 0 documentation verifier | PASS — 14 manifest checksums, accepted ADR statuses, private-repository boundary, final approval, 77/77 exact entity mappings, required files/links, exact canonical tail, and one occurrence each of Sections 12-30. |
 | Restored DOCX structural QA | PASS — heading/section audits and appended-table geometry/repeating-header checks. Visual render QA unavailable as noted below. |
 
 The first browser-suite attempt could not find worktree-local dependencies. After the required `npm ci`, a ten-minute run reached test 121 but timed out after one transient event-form failure; that exact case passed alone (1/1), and the definitive expanded full run passed as reported above. No application or test code was changed.
 
 Source-document visual rendering was not available because LibreOffice is not installed; exact source retention, checksums, fresh extraction, heading/section audits, and structural OOXML/table review were used instead. The restored continuation and single occurrence of every Section 12-30 heading are structurally verified, but visual page-layout QA remains outstanding.
 
-Repository-boundary verification is recorded in `PHASE-0-ACCEPTANCE-AUDIT.md`. Phase 1 remains `NOT STARTED` and unauthorized.
+Repository-boundary verification is recorded in `PHASE-0-ACCEPTANCE-AUDIT.md`. Phase 0 is complete. Phase 1 is authorized and remains `NOT STARTED` until its dedicated implementation work begins.

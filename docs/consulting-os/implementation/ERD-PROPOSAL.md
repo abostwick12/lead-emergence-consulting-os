@@ -2,7 +2,7 @@
 
 **Status:** Accepted for Phase 0 on 2026-08-10.
 
-This design translates the restored Canonical Document 03 without reusing Ministry tables. It is not a migration. Production migration and Phase 1 remain separately unauthorized.
+This design translates the restored Canonical Document 03 without reusing Ministry tables. It is not a migration. Phase 1 is now authorized within this accepted design; production migration remains separately unauthorized.
 
 ## Tenancy and identity
 

@@ -1,8 +1,10 @@
 # Final Phase 0 completion checkpoint
 
-## Recommendation
+**Status: APPROVED — 2026-08-10**
 
-**Approve Phase 0 completion. Do not authorize Phase 1 in this checkpoint.**
+## Decision
+
+**Phase 0 is complete. Phase 1 is authorized.**
 
 The canonical package is restored and verified, ADR-0001 through ADR-0004 are accepted, the ERD and Domain-to-Schema Mapping are accepted, and the separate private Consulting repository boundary is established. Production topology changes remain unauthorized.
 
@@ -37,12 +39,12 @@ The canonical package is restored and verified, ADR-0001 through ADR-0004 are ac
 
 ## Completion record
 
-- Reviewer:
-- Date:
-- Phase 0 complete: approve / revise
-- Historical licensing review acknowledged: yes / notes
+- Reviewer: Lead Emergence product owner
+- Date: 2026-08-10
+- Phase 0 complete: **yes**
+- Historical licensing review acknowledged: **yes; remains an owner/legal follow-up**
 - Production topology execution authorized: **no**
-- Phase 1 authorized: **no**
-- Conditions or notes:
+- Phase 1 authorized: **yes**
+- Conditions or notes: Phase 1 remains subject to the accepted private-repository, security, privacy, tenancy, migration, and checkpoint boundaries.
 
-Phase 1 begins only after a later checkpoint explicitly says `Phase 1 authorized: yes`.
+Phase 1 is authorized but has not yet started. Its first implementation work must occur only in this private Consulting repository on a dedicated Consulting branch/worktree. Production topology changes remain separately unauthorized.

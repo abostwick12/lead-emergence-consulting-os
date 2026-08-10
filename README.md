@@ -19,7 +19,8 @@ The Consulting architecture source of truth begins at [`docs/consulting-os/READM
 - ERD and Domain-to-Schema Mapping: approved for Phase 0.
 - Repository boundary: separate private Consulting repository selected and established.
 - Production DNS/deployment changes: not authorized.
-- Phase 1: not authorized pending the final Phase 0 completion checkpoint.
+- Phase 0: complete and approved on 2026-08-10.
+- Phase 1: authorized on 2026-08-10; implementation has not yet started.
 
 Target topology remains:
 

@@ -1,6 +1,6 @@
 # Phase 0 acceptance audit
 
-This is the final requirement-by-requirement Phase 0 audit from the private Consulting repository. Canonical Document 07 controls Phase 0 acceptance and its exit gate. The Goal adds product-boundary and checkpoint deliverables. Phase 1 remains unauthorized.
+This is the final requirement-by-requirement Phase 0 audit from the private Consulting repository. Canonical Document 07 controls Phase 0 acceptance and its exit gate. The Goal adds product-boundary and checkpoint deliverables. The owner approved Phase 0 completion and authorized Phase 1 on 2026-08-10.
 
 ## Canonical Document 07 acceptance
 
@@ -73,12 +73,12 @@ Canonical roadmap identifiers:
 
 - `LECO-001`: **Resolved.** The authoritative Document 03 continuation is retained, restored, and structurally verified.
 - `LECO-002`: **Resolved for future implementation.** Separate private Consulting repository established. Final license terms and historical materials remain owner/legal review.
-- `LECO-003`: **Architecture packet approved.** Final Phase 0 completion checkpoint remains required; Phase 1 is unauthorized.
+- `LECO-003`: **Resolved.** The final Phase 0 completion checkpoint is approved and Phase 1 is authorized.
 - `LECO-004`: **Resolved target direction.** Production domain/deployment execution is not authorized.
 - `LECO-005`: **Resolved.** The owner confirmed the authoritative V1 Definition of Done and Document 07 phase authority.
 
 ## Audit conclusion
 
-All technical and architectural Phase 0 exit evidence is **PASS**. The package is ready for the final human completion checkpoint. This audit does not authorize Phase 1: Phase 1 must not begin until a later approval explicitly says `Phase 1 authorized: yes`.
+All technical, architectural, and human Phase 0 exit evidence is **PASS**. Phase 0 is complete. The exact owner approval is retained in `PHASE-0-COMPLETION-APPROVAL-2026-08-10.md`; Phase 1 is authorized but remains not started at this approval-recording checkpoint.
 
 The unrelated Ministry unit-suite import failure is transparently recorded but does not indicate a Consulting dependency or regression: the required Ministry browser suite, typecheck, lint, and production build pass, and repository inspection finds zero private-repository dependencies.

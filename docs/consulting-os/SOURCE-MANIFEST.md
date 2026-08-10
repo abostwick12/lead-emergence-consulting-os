@@ -1,6 +1,6 @@
 # Source manifest
 
-The retained DOCX files are exact copies of the supplied sources except Canonical Document 03, which incorporates the exact owner-supplied authoritative continuation after Section 11. Its pre-existing Section 26-to-end tail was replaced by the same authoritative tail to avoid duplication. Markdown companions are searchable representations. The build Goal, Product Separation constraint, checkpoint response, and architecture approval are retained as human authority records.
+The retained DOCX files are exact copies of the supplied sources except Canonical Document 03, which incorporates the exact owner-supplied authoritative continuation after Section 11. Its pre-existing Section 26-to-end tail was replaced by the same authoritative tail to avoid duplication. Markdown companions are searchable representations. The build Goal, Product Separation constraint, checkpoint response, architecture approval, and Phase 0 completion/Phase 1 authorization are retained as human authority records.
 
 | Source | Classification | SHA-256 |
 |---|---|---|
@@ -17,6 +17,7 @@ The retained DOCX files are exact copies of the supplied sources except Canonica
 | `canonical/03-domain-model-authoritative-continuation-2026-08-10.md` | Canonical 03 authoritative continuation | `0b328f2ba245177bed860513c33f015758ef1c6ebdf8519b3f82e6bcd8119267` |
 | `implementation/PHASE-0-CHECKPOINT-RESPONSE-2026-08-10.md` | Human checkpoint direction | `5562ab45ebc02a1f01be639fcf56948ebd6730967dffe8e282d6a8e6ac1b5c59` |
 | `implementation/PHASE-0-ARCHITECTURE-APPROVAL-2026-08-10.md` | Human architecture approval and private-repository decision | `a49db74f07a2ec2a5e65b4e833bab7c8f76fb5c2cff9a5333e2bb50a8d25aaff` |
+| `implementation/PHASE-0-COMPLETION-APPROVAL-2026-08-10.md` | Human Phase 0 completion approval and Phase 1 authorization | `23d4faa658788228c2f3318943019e59a7e320a1853787a5db8e40005d3daad2` |
 
 ## Review and conversion notes
 
@@ -27,4 +28,4 @@ The retained DOCX files are exact copies of the supplied sources except Canonica
 - The packaged DOCX renderer could not run because LibreOffice/`soffice` is unavailable in the environment. Structural review and extraction checks were completed; visual page-render QA was not available.
 - Conversion is reproducible through `scripts/consulting-os/extract_docx.py`, and the Document 03 restoration through `scripts/consulting-os/restore_doc03_continuation.py`, using the bundled document runtime.
 - Phase 0 documentation integrity and Appendix A mapping coverage are reproducible through `scripts/consulting-os/verify_phase0_docs.ps1`.
-- The architecture approval selects this separate private repository, prohibits future Consulting implementation in the Ministry repository, defers shared extraction, and keeps Phase 1 unauthorized.
+- The architecture approval selects this separate private repository, prohibits future Consulting implementation in the Ministry repository, and defers shared extraction. The later completion approval marks Phase 0 complete and authorizes Phase 1 within that accepted boundary.

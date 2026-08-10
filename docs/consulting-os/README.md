@@ -51,12 +51,13 @@ Do not silently reconcile a material conflict. Record it in [`implementation/BLO
 - [`implementation/PHASE-0-CHECKPOINT.md`](implementation/PHASE-0-CHECKPOINT.md) - decision packet and explicit approval record.
 - [`implementation/PHASE-0-ACCEPTANCE-AUDIT.md`](implementation/PHASE-0-ACCEPTANCE-AUDIT.md) - exact Document 07 and Goal checkpoint evidence matrix.
 - [`implementation/PHASE-0-CHECKPOINT-RESPONSE-2026-08-10.md`](implementation/PHASE-0-CHECKPOINT-RESPONSE-2026-08-10.md) - exact owner checkpoint direction.
+- [`implementation/PHASE-0-COMPLETION-APPROVAL-2026-08-10.md`](implementation/PHASE-0-COMPLETION-APPROVAL-2026-08-10.md) - exact owner approval completing Phase 0 and authorizing Phase 1.
 - [`implementation/TARGET-TOPOLOGY-MIGRATION-PLAN.md`](implementation/TARGET-TOPOLOGY-MIGRATION-PLAN.md) - staged, reversible production topology plan; no execution authorization.
 
-Consulting OS work must use dedicated `codex/consulting-os-*` branches and worktrees. The initial Phase 0 boundary is branch `codex/consulting-os-phase0` in `.worktrees/consulting-os-phase0`.
+Consulting OS implementation work must use dedicated `codex/consulting-os-*` branches and worktrees in this private repository. Phase 0 is recorded on `main`; Phase 1 is authorized but no Phase 1 implementation branch or worktree has been created yet.
 
 ## Approved repository boundary
 
 The 2026-08-10 architecture approval selected this separate private repository for all Consulting-specific implementation, architecture, migrations, prompts/workflows, tests, fixtures, and deployment configuration. No third shared repository/package is approved. Future shared-neutral extraction requires a new ADR; duplication is preferred until neutrality is proven.
 
-ADR-0001 through ADR-0004, the ERD, and Domain-to-Schema Mapping are approved for Phase 0. Phase 1 remains unauthorized pending the final Phase 0 completion checkpoint.
+ADR-0001 through ADR-0004, the ERD, and Domain-to-Schema Mapping are approved. Phase 0 is complete, and Phase 1 is authorized but has not yet started.

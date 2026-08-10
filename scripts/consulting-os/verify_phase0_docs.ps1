@@ -29,6 +29,7 @@ $required = @(
     "implementation\PHASE-0-CHECKPOINT.md",
     "implementation\PHASE-0-CHECKPOINT-RESPONSE-2026-08-10.md",
     "implementation\PHASE-0-ARCHITECTURE-APPROVAL-2026-08-10.md",
+    "implementation\PHASE-0-COMPLETION-APPROVAL-2026-08-10.md",
     "implementation\PHASE-0-ACCEPTANCE-AUDIT.md",
     "implementation\TARGET-TOPOLOGY-MIGRATION-PLAN.md",
     "adrs\ADR-0001-product-boundary-architecture.md",
@@ -48,8 +49,8 @@ $manifestRows = Get-Content -LiteralPath $manifestPath -Encoding utf8 | ForEach-
         [pscustomobject]@{ RelativePath = $Matches[1]; ExpectedHash = $Matches[2].ToUpperInvariant() }
     }
 }
-if (@($manifestRows).Count -ne 13) {
-    throw "Expected 13 checksum rows in SOURCE-MANIFEST.md; found $(@($manifestRows).Count)."
+if (@($manifestRows).Count -ne 14) {
+    throw "Expected 14 checksum rows in SOURCE-MANIFEST.md; found $(@($manifestRows).Count)."
 }
 foreach ($row in $manifestRows) {
     $path = Join-Path $docsRoot $row.RelativePath
@@ -140,8 +141,13 @@ if (-not (Test-Path -LiteralPath $rootReadme)) {
     throw "Missing private Consulting repository README."
 }
 $rootReadmeContent = Get-Content -LiteralPath $rootReadme -Raw -Encoding utf8
-if ($rootReadmeContent -notmatch 'private repository boundary' -or $rootReadmeContent -notmatch 'Phase 1: not authorized') {
-    throw "Private repository README does not record the approved boundary and Phase 1 hold."
+if ($rootReadmeContent -notmatch 'private repository boundary' -or $rootReadmeContent -notmatch 'Phase 1: authorized') {
+    throw "Private repository README does not record the approved boundary and Phase 1 authorization."
+}
+
+$checkpoint = Get-Content -LiteralPath (Join-Path $docsRoot "implementation\PHASE-0-CHECKPOINT.md") -Raw -Encoding utf8
+if ($checkpoint -notmatch 'Phase 0 complete: \*\*yes\*\*' -or $checkpoint -notmatch 'Phase 1 authorized: \*\*yes\*\*') {
+    throw "Final Phase 0 completion and Phase 1 authorization are not recorded."
 }
 
 $adrStatuses = @(
@@ -157,9 +163,10 @@ foreach ($relativePath in $adrStatuses) {
     }
 }
 
-Write-Output "PASS: 13 source checksums match the manifest."
+Write-Output "PASS: 14 source checksums match the manifest."
 Write-Output "PASS: 77 canonical entities map exactly once, with no extras."
 Write-Output "PASS: required Phase 0 artifacts exist and relative Markdown links resolve."
 Write-Output "PASS: Document 03 Sections 12-30 occur exactly once and its canonical tail matches the authoritative continuation."
 Write-Output "PASS: ADR-0001 through ADR-0004 are accepted and the private-repository boundary is recorded."
-Write-Output "READY FOR CHECKPOINT: technical Phase 0 evidence passes; Phase 1 remains unauthorized."
+Write-Output "PASS: Phase 0 completion and Phase 1 authorization are recorded."
+Write-Output "PHASE 1: authorized but not started."

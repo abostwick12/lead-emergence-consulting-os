@@ -15,11 +15,12 @@
 - **Checkpoint direction:** Consulting OS is intended to remain proprietary and commercially separable; existing Ministry obligations remain unchanged; shared packages require intentional classification. Codex must not change licenses or make legal conclusions automatically.
 - **Decision:** All future Consulting implementation, migrations, prompts/workflows, tests/fixtures, deployment configuration, and business logic belong only in the private Consulting repository. No third shared repository/package is approved. Owner/legal review remains required for final license terms and the historical Phase 0 materials; no retroactive legal conclusion is made.
 
-## LECO-003 - Phase 0 architecture checkpoint approval
+## LECO-003 - Phase 0 completion and Phase 1 authorization
 
-- **Status:** ARCHITECTURE PACKET APPROVED; FINAL PHASE 0 COMPLETION CHECKPOINT REQUIRED.
+- **Status:** RESOLVED on 2026-08-10.
 - **Approved:** ADR-0001 through ADR-0004, ERD, Domain-to-Schema Mapping, private repository boundary, and target topology direction.
-- **Safety boundary:** Phase 1 remains unauthorized until a later checkpoint explicitly says `Phase 1 authorized: yes`.
+- **Final checkpoint:** The owner approved Phase 0 completion and authorized Phase 1. The exact authorization is retained in `PHASE-0-COMPLETION-APPROVAL-2026-08-10.md`.
+- **Safety boundary:** Phase 1 implementation remains confined to the private Consulting repository. Production topology execution remains separately unauthorized.
 
 ## LECO-004 - Public-domain and deployment topology
 
