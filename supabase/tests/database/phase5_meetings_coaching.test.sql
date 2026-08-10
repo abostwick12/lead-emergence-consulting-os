@@ -121,19 +121,19 @@ select lives_ok(
   'participant may be restored after inaccessible preparation context is removed');
 select throws_ok(
   $$insert into consulting_os.meeting_participants (organization_id, meeting_id, person_id, created_by) values ('8bbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', '84000000-0000-4000-8000-000000000001', '82000000-0000-4000-8000-000000000004', '82000000-0000-4000-8000-000000000004')$$,
-  '23503', null, 'meeting participants cannot cross tenant boundaries');
+  '42501', null, 'meeting participants cannot cross tenant boundaries');
 select throws_ok(
   $$insert into consulting_os.meeting_participants (organization_id, meeting_id, person_id, created_by) values ('8aaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '84000000-0000-4000-8000-000000000001', '82000000-0000-4000-8000-000000000004', '82000000-0000-4000-8000-000000000001')$$,
   '42501', null, 'a person from another tenant cannot be smuggled into a same-tenant participant row');
+select ok(not has_table_privilege('authenticated', 'consulting_private.meeting_notes', 'SELECT'), 'authenticated has no direct private-note SELECT privilege');
+select ok(not has_table_privilege('authenticated', 'consulting_os.meeting_notes', 'UPDATE'), 'shared meeting notes cannot be rewritten by ordinary authenticated users');
+select ok(has_column_privilege('authenticated', 'consulting_os.commitments', 'status', 'UPDATE'), 'commitment completion state remains updateable');
+select ok(not has_column_privilege('authenticated', 'consulting_os.commitments', 'action', 'UPDATE'), 'commitment meaning cannot be rewritten through ordinary update grants');
 
 set local role authenticated;
 select set_config('request.jwt.claim.sub', '81000000-0000-4000-8000-000000000002', true);
 select results_eq($$select count(*) from consulting_os.meetings where id = '84000000-0000-4000-8000-000000000003'$$, array[1::bigint], 'named coaching participant can read the session');
 select results_eq($$select count(*) from consulting_os.meetings where organization_id = '8bbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb'$$, array[0::bigint], 'client cannot read another tenant meeting');
-select ok(not has_table_privilege('authenticated', 'consulting_private.meeting_notes', 'SELECT'), 'authenticated has no direct private-note SELECT privilege');
-select ok(not has_table_privilege('authenticated', 'consulting_os.meeting_notes', 'UPDATE'), 'shared meeting notes cannot be rewritten by ordinary authenticated users');
-select ok(has_column_privilege('authenticated', 'consulting_os.commitments', 'status', 'UPDATE'), 'commitment completion state remains updateable');
-select ok(not has_column_privilege('authenticated', 'consulting_os.commitments', 'action', 'UPDATE'), 'commitment meaning cannot be rewritten through ordinary update grants');
 select throws_ok($$select consulting_os.create_meeting('8aaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '83000000-0000-4000-8000-000000000001', 'CONSULTING', 'Unauthorized meeting', 'Must not be created', '2026-08-28 10:00+00', 'None', '82000000-0000-4000-8000-000000000003', null)$$, '42501', null, 'client participant cannot invoke consultant meeting creation');
 select lives_ok($$select consulting_os.create_private_meeting_note('84000000-0000-4000-8000-000000000003', 'INDIVIDUAL_REFLECTION', '82000000-0000-4000-8000-000000000002', 'Participant private reflection')$$, 'participant can create an individual-private reflection through the narrow RPC');
 select results_eq($$select count(*) from consulting_os.private_meeting_notes_for_meeting('84000000-0000-4000-8000-000000000003') where kind = 'INDIVIDUAL_REFLECTION'$$, array[1::bigint], 'participant can read their own private reflection through the safe projection');
