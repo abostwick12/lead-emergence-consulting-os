@@ -95,7 +95,7 @@ values
 insert into consulting_os.entity_relationships
   (id, organization_id, relationship_type, source_type, source_id, target_type, target_id, origin, review_status, rationale, created_by)
 values
-  ('42000000-0000-4000-8000-000000000001', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'SUGGESTS', 'OBSERVATION', '40000000-0000-4000-8000-000000000001', 'INSIGHT', '40000000-0000-4000-8000-000000000006', 'HUMAN', 'ACCEPTED', 'Synthetic same-tenant edge', '20000000-0000-4000-8000-000000000005');
+  ('42000000-0000-4000-8000-000000000001', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'ASSOCIATED_WITH', 'OBSERVATION', '40000000-0000-4000-8000-000000000001', 'INSIGHT', '40000000-0000-4000-8000-000000000006', 'HUMAN', 'ACCEPTED', 'Synthetic same-tenant edge', '20000000-0000-4000-8000-000000000005');
 
 set local role authenticated;
 select set_config('request.jwt.claim.sub', '10000000-0000-4000-8000-000000000001', true);

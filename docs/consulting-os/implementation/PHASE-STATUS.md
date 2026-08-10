@@ -8,7 +8,7 @@ Status values are evidence-based: `NOT STARTED`, `IN PROGRESS`, `BLOCKED`, or `P
 |---|---|---|---|
 | 0 — Architecture Freeze | **PASS** | **APPROVED 2026-08-10** | ADR-0001–0004, ERD, mapping, private repository boundary, and final completion checkpoint are approved and verified. |
 | 1 — Security Foundation | **PASS** | **EVIDENCE GATE PASSED 2026-08-10** | Disposable-database migration, lint, 32 adversarial pgTAP assertions, static security contracts, and Ministry separability passed twice in private-repository CI. |
-| 2 — Meridian Core | NOT STARTED | — | Depends on Phase 1. |
+| 2 — Meridian Core | **PASS** | **EVIDENCE GATE PASSED 2026-08-10** | Clean migration, schema lint, 27 Meridian assertions, 32 retained security assertions, cited/reviewable Evidence-to-Decision chain, and historical-version tests passed in private-repository CI. |
 | 3 — Consulting Core | NOT STARTED | Required after completion | Depends on Phase 2. |
 | 4 — Portals V1 | NOT STARTED | — | Depends on Phase 3. |
 | 5 — Meetings + Coaching | NOT STARTED | — | Depends on secure portal/private foundations. |
@@ -48,7 +48,7 @@ The exact Phase 0 criteria, 77/77 entity-mapping check, roadmap identifiers, Sec
 - No production environment, Supabase project, Vercel project, domain, secrets, or data has been changed.
 - No canonical continuation language was reconstructed, reinterpreted, or summarized; the explicit owner-supplied continuation is retained and merged deterministically.
 - No later-phase feature is credited based on similar Ministry implementation.
-- Phase 2 has not been credited from the Phase 1 registry/security placeholders; its typed Meridian behavior and acceptance chain remain unimplemented.
+- Phase 2 provides the database-only Meridian core. AI generation, artifacts, Consulting workflows, portals, coaching, outcomes, New Reality, and descriptive-signal intelligence remain unimplemented and uncredited.
 
 ## Validation evidence
 
@@ -71,4 +71,4 @@ The first browser-suite attempt could not find worktree-local dependencies. Afte
 
 Source-document visual rendering was not available because LibreOffice is not installed; exact source retention, checksums, fresh extraction, heading/section audits, and structural OOXML/table review were used instead. The restored continuation and single occurrence of every Section 12-30 heading are structurally verified, but visual page-layout QA remains outstanding.
 
-Repository-boundary verification is recorded in `PHASE-0-ACCEPTANCE-AUDIT.md`. Phase 0 and Phase 1 are complete. Phase 1 evidence is recorded in `PHASE-1-COMPLETION-REVIEW.md`; Phase 2 may begin under the standing authorization in `PHASE-AUTHORIZATION-2026-08-10.md` after the Phase 1 branch is merged.
+Repository-boundary verification is recorded in `PHASE-0-ACCEPTANCE-AUDIT.md`. Phases 0, 1, and 2 are complete at their evidence gates. Phase 1 evidence is recorded in `PHASE-1-COMPLETION-REVIEW.md`; Phase 2 evidence is recorded in `PHASE-2-COMPLETION-REVIEW.md`. Phase 3 may begin after the Phase 2 branch is merged under the standing authorization in `PHASE-AUTHORIZATION-2026-08-10.md`.
