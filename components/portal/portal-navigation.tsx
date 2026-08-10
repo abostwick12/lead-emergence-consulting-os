@@ -44,7 +44,7 @@ export function PortalNavigation({ items, mobile = false }: { items: PortalNavIt
       {items.map((item) => {
         const Icon = icons[item.icon] ?? FolderKanban;
         return (
-          <Link className={isActive(pathname, item.href) ? 'active' : undefined} key={item.href} href={item.href}>
+          <Link className={isActive(pathname ?? '', item.href) ? 'active' : undefined} key={item.href} href={item.href}>
             <Icon aria-hidden="true" />
             <span>{item.label}</span>
           </Link>
