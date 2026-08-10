@@ -43,6 +43,7 @@ jobs:
           ./scripts/consulting-os/verify_phase1_security.ps1
 
           ./scripts/consulting-os/verify_phase2_meridian.ps1
+          ./scripts/consulting-os/verify_phase3_consulting_core.ps1
       - name: Start isolated Supabase database
         run: npm run db:start
 
