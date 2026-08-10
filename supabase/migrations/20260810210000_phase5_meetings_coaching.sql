@@ -294,7 +294,7 @@ begin
   select object_type, visibility_scope into v_type, v_visibility
   from consulting_os.domain_objects where id = new.id and organization_id = new.organization_id;
   v_expected := case tg_table_name
-    when 'meetings' then case when new.meeting_type = 'COACHING' then 'COACHING_SESSION' else 'MEETING' end
+    when 'meetings' then case when to_jsonb(new)->>'meeting_type' = 'COACHING' then 'COACHING_SESSION' else 'MEETING' end
     when 'meeting_notes' then 'MEETING_NOTE'
     when 'coaching_relationships' then 'COACHING_RELATIONSHIP'
     when 'commitments' then 'COMMITMENT'
