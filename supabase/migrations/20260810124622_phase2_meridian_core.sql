@@ -385,14 +385,28 @@ as $$
 declare
   v_creator uuid;
   v_origin consulting_os.record_origin;
+  v_registry_type text;
+  v_expected_type text;
 begin
-  select d.created_by, d.origin into v_creator, v_origin
+  v_expected_type := case tg_table_name
+    when 'evidence_sources' then 'EVIDENCE_SOURCE'
+    when 'evidence_items' then 'EVIDENCE'
+    when 'observations' then 'OBSERVATION'
+    when 'patterns' then 'PATTERN'
+    when 'assumptions' then 'ASSUMPTION'
+    when 'hypotheses' then 'HYPOTHESIS'
+    when 'interpretations' then 'INTERPRETATION'
+    when 'insights' then 'INSIGHT'
+    when 'decisions' then 'DECISION'
+    when 'record_reviews' then 'RECORD_REVIEW'
+  end;
+
+  select d.created_by, d.origin, d.object_type into v_creator, v_origin, v_registry_type
   from consulting_os.domain_objects d
   where d.id = new.id
-    and d.organization_id = new.organization_id
-    and d.object_type = new.object_type;
+    and d.organization_id = new.organization_id;
 
-  if v_creator is null or v_creator <> new.created_by then
+  if v_creator is null or v_creator <> new.created_by or v_registry_type <> v_expected_type then
     raise exception 'typed record must match its domain registry creator and type'
       using errcode = '23514';
   end if;
