@@ -8,7 +8,7 @@ Status values are evidence-based: `NOT STARTED`, `IN PROGRESS`, `BLOCKED`, or `P
 |---|---|---|---|
 | 0 — Architecture Freeze | **PASS** | **APPROVED 2026-08-10** | ADR-0001–0004, ERD, mapping, private repository boundary, and final completion checkpoint are approved and verified. |
 | 1 — Security Foundation | **PASS** | **EVIDENCE GATE PASSED 2026-08-10** | Disposable-database migration, lint, 32 adversarial pgTAP assertions, static security contracts, and Ministry separability passed twice in private-repository CI. |
-| 2 — Meridian Core | NOT STARTED | — | Depends on Phase 1. |
+| 2 — Meridian Core | **IN PROGRESS** | **EVIDENCE GATE REQUIRED** | Started 2026-08-10 on `codex/consulting-os-phase2`; exit requires the complete cited and reviewable Evidence-to-Decision chain plus historical-version tests. |
 | 3 — Consulting Core | NOT STARTED | Required after completion | Depends on Phase 2. |
 | 4 — Portals V1 | NOT STARTED | — | Depends on Phase 3. |
 | 5 — Meetings + Coaching | NOT STARTED | — | Depends on secure portal/private foundations. |
@@ -48,7 +48,7 @@ The exact Phase 0 criteria, 77/77 entity-mapping check, roadmap identifiers, Sec
 - No production environment, Supabase project, Vercel project, domain, secrets, or data has been changed.
 - No canonical continuation language was reconstructed, reinterpreted, or summarized; the explicit owner-supplied continuation is retained and merged deterministically.
 - No later-phase feature is credited based on similar Ministry implementation.
-- Phase 2 has not been credited from the Phase 1 registry/security placeholders; its typed Meridian behavior and acceptance chain remain unimplemented.
+- Phase 2 is active but not yet credited as complete; its migration and 27-test acceptance suite still require disposable-database execution evidence.
 
 ## Validation evidence
 

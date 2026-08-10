@@ -1,4 +1,4 @@
-name: Phase 1 security
+name: Consulting database gates
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ on:
       - "docs/consulting-os/**"
   push:
     branches:
-      - "codex/consulting-os-phase1"
+      - "codex/consulting-os-phase*"
     paths:
       - ".github/workflows/phase1-security.yml"
       - "package.json"
@@ -25,11 +25,11 @@ permissions:
   contents: read
 
 concurrency:
-  group: phase1-security-${{ github.head_ref || github.ref_name }}
+  group: consulting-database-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
-  security-foundation:
+  database-foundation:
     runs-on: ubuntu-latest
     timeout-minutes: 25
 
@@ -46,12 +46,13 @@ jobs:
       - name: Install pinned tooling
         run: npm ci
 
-      - name: Verify canonical and static security contracts
+      - name: Verify canonical and static database contracts
         shell: pwsh
         run: |
           ./scripts/consulting-os/verify_phase0_docs.ps1
           ./scripts/consulting-os/verify_phase1_security.ps1
 
+          ./scripts/consulting-os/verify_phase2_meridian.ps1
       - name: Start isolated Supabase database
         run: npm run db:start
 
