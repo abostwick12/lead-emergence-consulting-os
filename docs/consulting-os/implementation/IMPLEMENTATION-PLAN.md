@@ -2,7 +2,7 @@
 
 ## Current outcome
 
-Phase 0 produced and received human approval for the Product Boundary Architecture, tenancy/security architecture, typed domain architecture, auth/privacy/retrieval architecture, ERD, complete 77-entity mapping, target-domain migration plan, legacy conflict map, and Ministry-only distribution strategy. The private `lead-emergence-consulting-os` repository executes the selected repository boundary and contains the canonical and Phase 0 package. Phase 0 is complete. Phase 1 implemented and proved the isolated Consulting security foundation; its evidence gate passed on 2026-08-10.
+Phase 0 established and received human approval for the repository, licensing, domain, tenancy, and security architecture. Phases 1–3 implemented and proved the isolated security foundation, Meridian Core, and Consulting Core. Phase 4 now presents those same tenant-safe records through distinct Consultant and Client portals without creating a second domain or weakening private-data boundaries.
 
 Canonical Document 07 controls the phase sequence below. The older Full Build Plan remains explanatory reference only.
 
@@ -92,11 +92,11 @@ For each phase:
 ## Governing decisions
 
 - Phase 0 is complete and approved.
-- Phase 1 is active, with implementation confined to the private Consulting repository and the accepted architecture.
+- Phases 1–4 are complete at their evidence gates; all implementation remains confined to the private Consulting repository.
 - Separate phase-start and phase-completion permission is no longer required; evidence gates remain mandatory, and unresolved issues still require human validation.
 - Track owner/legal review of final Consulting licensing terms and historical Phase 0 materials without claiming retroactive confidentiality or licensing changes.
 - Keep production topology execution unauthorized until a separate infrastructure change plan is approved.
 
 ## Next executable step
 
-Merge the passing Phase 1 branch, then begin Phase 2 Meridian Core on a dedicated branch/worktree. Phase 2 must implement typed Evidence through Decision records, source fragments, provenance, human review, competing interpretations, supersession/versioning, and a complete manual reasoning chain without weakening the Phase 1 tenant and visibility controls. Production migrations and topology changes remain separately unauthorized.
+After Phase 4 exact-head CI passes and the branch merges, begin Phase 5 Meetings + Coaching on a dedicated branch/worktree. Phase 5 must implement real create/edit/save/read cycles for shared meeting records, coaching relationships, partitioned private/shared notes, commitments, and history without allowing private coaching content to become organizational telemetry. Production migrations and topology changes remain separately unauthorized.

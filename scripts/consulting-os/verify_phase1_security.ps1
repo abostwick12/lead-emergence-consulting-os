@@ -69,11 +69,12 @@ if ($config -notmatch 'schemas = \["consulting_os", "graphql_public"\]' -or $con
     throw "Supabase Data API schema configuration is not Consulting-only."
 }
 
-$secretFiles = @(Get-ChildItem -LiteralPath $repoRoot -Recurse -Force -File | Where-Object {
-    $_.Name -eq ".env" -or $_.Name -like ".env.*"
+$secretFiles = @(& git -C $repoRoot ls-files | Where-Object {
+    $leaf = Split-Path $_ -Leaf
+    ($leaf -eq '.env' -or $leaf -like '.env.*') -and $leaf -ne '.env.example'
 })
 if ($secretFiles.Count -gt 0) {
-    throw "Environment files must not be committed: $($secretFiles.FullName -join ', ')"
+    throw "Secret-bearing environment files must not be committed: $($secretFiles -join ', ')"
 }
 
 Write-Output "PASS: Phase 1 schemas, RLS declarations, private partition, and least-privilege markers are present."

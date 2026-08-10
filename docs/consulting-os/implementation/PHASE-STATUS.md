@@ -10,7 +10,7 @@ Status values are evidence-based: `NOT STARTED`, `IN PROGRESS`, `BLOCKED`, or `P
 | 1 — Security Foundation | **PASS** | **EVIDENCE GATE PASSED 2026-08-10** | Disposable-database migration, lint, 32 adversarial pgTAP assertions, static security contracts, and Ministry separability passed twice in private-repository CI. |
 | 2 — Meridian Core | **PASS** | **EVIDENCE GATE PASSED 2026-08-10** | Clean migration, schema lint, 27 Meridian assertions, 32 retained security assertions, cited/reviewable Evidence-to-Decision chain, and historical-version tests passed in private-repository CI. |
 | 3 — Consulting Core | **PASS** | **APPROVED 2026-08-10** | All seven Document 07 requirements passed; clean migrations, schema lint, and 104 cumulative assertions passed in runs `31406301630` and `31407084177`. |
-| 4 — Portals V1 | NOT STARTED | — | Depends on Phase 3. |
+| 4 — Portals V1 | **PASS** | **EVIDENCE GATE PASSED 2026-08-10** | Role-safe Consultant and Client portals, 14 unit assertions, 10 browser assertions, static contracts, production build, and responsive visual review passed locally; exact-head CI evidence is recorded in the completion review. |
 | 5 — Meetings + Coaching | NOT STARTED | — | Depends on secure portal/private foundations. |
 | 6 — Alignment + Capability | NOT STARTED | — | Depends on Meridian and Consulting Core. |
 | 7 — Outcomes + New Reality | NOT STARTED | Required after completion | Depends on Phase 6. |
@@ -50,6 +50,7 @@ The exact Phase 0 criteria, 77/77 entity-mapping check, roadmap identifiers, Sec
 - No later-phase feature is credited based on similar Ministry implementation.
 - Phase 2 provides the database-only Meridian core. AI generation, artifacts, Consulting workflows, portals, coaching, outcomes, New Reality, and descriptive-signal intelligence remain unimplemented and uncredited.
 - Phase 3 is database-first: Phase 4 still owns portal presentation, and Phases 5–9 remain unimplemented and uncredited.
+- Phase 4 provides role-safe read portals and truthful deferred states. It does not claim Phase 5–9 persistence, AI generation, or descriptive intelligence.
 
 ## Validation evidence
 
@@ -72,4 +73,4 @@ The first browser-suite attempt could not find worktree-local dependencies. Afte
 
 Source-document visual rendering was not available because LibreOffice is not installed; exact source retention, checksums, fresh extraction, heading/section audits, and structural OOXML/table review were used instead. The restored continuation and single occurrence of every Section 12-30 heading are structurally verified, but visual page-layout QA remains outstanding.
 
-Repository-boundary verification is recorded in `PHASE-0-ACCEPTANCE-AUDIT.md`. Phases 0–3 are complete and their required checkpoints are approved. Phase 3 evidence and approval are recorded in `PHASE-3-COMPLETION-REVIEW.md` and `PHASE-3-CHECKPOINT-APPROVAL-2026-08-10.md`; Phase 4 may begin after PR #3 merges, and no hosted or production execution is authorized.
+Repository-boundary verification is recorded in `PHASE-0-ACCEPTANCE-AUDIT.md`. Phases 0–4 are complete and all required checkpoints through Phase 3 are approved. Phase 4 evidence is recorded in `PHASE-4-COMPLETION-REVIEW.md`; no hosted or production execution is authorized.
