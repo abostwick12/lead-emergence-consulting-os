@@ -637,8 +637,8 @@ for each row execute function consulting_security.validate_evidence_visibility()
 create trigger record_reviews_validate before insert or update on consulting_os.record_reviews
 for each row execute function consulting_security.validate_record_review();
 
-drop trigger relationship_endpoints_validate on consulting_os.entity_relationships;
-create trigger relationship_endpoints_validate before insert or update on consulting_os.entity_relationships
+drop trigger entity_relationships_validate on consulting_os.entity_relationships;
+create trigger entity_relationships_validate before insert or update on consulting_os.entity_relationships
 for each row execute function consulting_security.validate_relationship_endpoints();
 
 create trigger evidence_sources_immutable before update or delete on consulting_os.evidence_sources
