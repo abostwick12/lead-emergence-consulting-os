@@ -99,4 +99,4 @@ For each phase:
 
 ## Next executable step
 
-Phase 7 is the next executable phase. It must preserve Intended Future State and observed Emergent Reality as distinct, traceable records while implementing Goals, Indicators, Measurements, Outcomes, Value Evaluation, Harvest & Soil, Learning, Emergent Organization Profile, Emergent Reality Difference, and Baseline. Phase 7 completion requires the next human checkpoint. Production migrations and topology changes remain separately unauthorized.
+Phase 7 runs on `codex/consulting-os-phase7` from verified Phase 6 merge `1723416`. It implements the prospective value → observed outcome → Harvest & Soil → human Learning/Decision → Emergent Organization Profile → immutable Baseline chain while preserving Intended Future State separately. Phase 7 completion requires the next human checkpoint. Production migrations and topology changes remain separately unauthorized.
