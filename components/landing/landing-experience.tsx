@@ -121,7 +121,7 @@ export function LandingExperience() {
     pathway: discrete(rangeProgress(progress, 0.38, 0.51)),
     arc: discrete(rangeProgress(progress, 0.51, 0.64)),
     rays: discrete(rangeProgress(progress, 0.64, 0.71)),
-    resolved: discrete(rangeProgress(progress, 0.71, 0.76)),
+    resolved: discrete(rangeProgress(progress, 0.64, 0.70)),
     cycle: discrete(rangeProgress(progress, 0.82, 1)),
   }), [discrete, progress]);
 
@@ -256,19 +256,12 @@ export function LandingExperience() {
             </div>
           </article>
 
-          <aside className={styles.returningPanel}>
-            <div className={styles.returningIcon}><UserRound aria-hidden="true" /></div>
-            <h3>Returning user?</h3>
-            <p>Sign in to quickly access your environment.</p>
-            <button type="button" onClick={openEntry}>Sign in <ArrowRight aria-hidden="true" /></button>
-          </aside>
         </div>
       </section>
 
       <footer className={styles.footer}>
         <BrandLockup compact />
         <p>People · Purpose · Systems</p>
-        <button type="button" onClick={openEntry}>Returning user? Sign in</button>
       </footer>
 
       <dialog className={styles.entryDialog} ref={dialogRef} onClick={(event) => { if (event.target === dialogRef.current) closeEntry(); }}>

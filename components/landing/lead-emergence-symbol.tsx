@@ -45,7 +45,7 @@ export function LeadEmergenceSymbol({ progress, className, title = 'Lead Emergen
         <Image
           alt=""
           aria-hidden="true"
-          className={symbolStyles.frame}
+          className={`${symbolStyles.frame} ${symbolStyles.buildFrame}`}
           fill
           key={progressKey}
           priority
@@ -62,7 +62,7 @@ export function LeadEmergenceSymbol({ progress, className, title = 'Lead Emergen
         fill
         priority
         sizes="(max-width: 720px) 90vw, 42vw"
-        src="/brand/roadmap/symbol-resolved-v6.png"
+        src="/brand/roadmap/symbol-resolved-v7.png"
         style={{ opacity: resolvedOpacity, transform: `translateY(${resolvedOffset}%) scale(${resolvedScale})` }}
         unoptimized
       />

@@ -28,7 +28,8 @@ test.describe('public Lead Emergence landing experience', () => {
     await expect(page.getByRole('link', { name: /Team member login/ })).toHaveAttribute('href', 'https://ministry.leademergence.com/login');
     await expect(page.getByRole('link', { name: /Guest access/ })).toHaveAttribute('href', 'https://ministry.leademergence.com/api/auth/guest');
     await expect(page.getByRole('link', { name: /Client login/ })).toHaveAttribute('href', '/login?returnTo=%2Fclient');
-    await expect(page.getByRole('button', { name: 'Sign in', exact: true })).toHaveCount(2);
+    await expect(page.getByRole('button', { name: 'Sign in', exact: true })).toHaveCount(1);
+    await expect(page.getByText('Returning user?')).toHaveCount(0);
     await page.screenshot({ path: 'test-results/landing-product-entry-desktop.png' });
   });
 

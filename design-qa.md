@@ -2,74 +2,62 @@
 
 ## Comparison target
 
-- Source visual truth: `C:\Users\AWBOST~1\AppData\Local\Temp\codex-clipboard-9d52e4df-4071-48ec-9a2b-a6935ea216f8.png`
+- Source visual truth: `C:\Users\awbostwick\Pictures\ChatGPT Image Aug 10, 2026, 03_57_29 PM.png`.
+- Explicit user correction: remove the bottom universal sign-in; keep only the Ministry and Consulting login cards; make the resolved symbol vibrant; and make the NEW REALITY summit light visibly illuminate the mountain planes.
+- Pre-fix evidence: `C:\Users\AWBOST~1\AppData\Local\Temp\codex-clipboard-410828db-e839-4d8c-983c-0258c992adb0.png`.
 - Source dimensions: 1536 x 1024 pixels.
-- User-reported pre-fix transition evidence: `C:\Users\AWBOST~1\AppData\Local\Temp\codex-clipboard-570149f7-8395-4e80-a6e7-0412cd03aea5.png` and `C:\Users\AWBOST~1\AppData\Local\Temp\codex-clipboard-65d187ac-2ea6-4df2-bb56-f60a6b44685d.png`.
-- Rendered implementation: `http://localhost:3179/`.
-- Desktop viewport: 1680 x 1120 CSS pixels, device scale factor 1; implementation captures are 1680 x 1120 pixels.
-- Mobile viewport: 390 x 844 CSS pixels, device scale factor 1; implementation captures are 390 x 844 pixels.
-- Full-view evidence: `docs/consulting-os/implementation/evidence/landing/v6-top-1680x1120.png`, `v6-login-cards-1680x1120.png`, and `v6-mobile-login-390x844.png`.
-- Focused same-input comparisons: `docs/consulting-os/implementation/evidence/landing/v6-comparison-symbol.jpg` and `v6-comparison-entry.jpg`.
-- Transition evidence: `v6-build-1680x1120.png`, `v6-produce-mid-1680x1120.png`, `v6-produce-transition-1680x1120.png`, `v6-new-reality-1680x1120.png`, and `v6-see-again-1680x1120.png`.
-- Responsive evidence: `v6-mobile-build-390x844.png` and `v6-mobile-login-390x844.png`.
-- States checked: opening, BUILD, PRODUCE, the PRODUCE-to-NEW REALITY transition, NEW REALITY, SEE AGAIN, desktop product entry, mobile BUILD, and mobile product entry.
+- Rendered implementation: local Lead Emergence landing page.
+- Desktop comparison viewport: 1536 x 1024 CSS pixels, device scale factor 1; implementation capture is 1536 x 1024 pixels.
+- Mobile verification viewport: 390 x 844 CSS pixels, device scale factor 1; implementation capture is 390 x 844 pixels.
+- Full-view evidence: `docs/consulting-os/implementation/evidence/landing/v7-new-reality-1536x1024.png`, `v7-login-cards-1536x1024.png`, and `v7-new-reality-mobile-390x844.png`.
+- Focused same-input comparison: `docs/consulting-os/implementation/evidence/landing/v7-comparison-new-reality.jpg`.
+- In-app browser evidence: `docs/consulting-os/implementation/evidence/landing/v7-new-reality-1265x720.png` and `v7-login-cards-footer-1265x720.png`.
+- States checked: NEW REALITY immediately after selecting stage 06, desktop product entry and footer, and mobile NEW REALITY.
 
 ## Findings
 
 No actionable P0, P1, or P2 differences remain in the requested correction.
 
-- Fonts and typography: the Lead Emergence serif, italic emphasis, monospaced stage metadata, restrained tracking, and copy hierarchy remain consistent with the source. The seamless layout change does not alter copy or typography.
-- Spacing and layout rhythm: the opening, roadmap, progress rail, brand reveal, and product-entry background now read as one uninterrupted page. Their former borders, rounded containers, shadows, and segmented rail backgrounds are removed. Only the Ministry and Lead Emergence Consulting environment cards retain card boundaries.
-- Colors and visual tokens: the existing deep navy, cyan, blue, and warm-gold platform tokens are preserved. Removing container fills does not introduce a competing visual language.
-- Image quality and asset fidelity: the active symbol is no longer a crossfade of seven independently registered full-frame rasters. It is assembled from one locked registration using cumulative source-derived seed, stem, triangle, pathway, arc, and ray layers. BUILD, PRODUCE, and NEW REALITY now follow the source order, and the arc, rays, apex, and pathway do not jump or double during scrolling.
-- Copy and content: stage names, statements, supporting copy, product names, and login labels are unchanged.
-- Responsiveness and accessibility: the journey remains readable and unclipped at 390 x 844. The symbol stays above the copy, the stage rail remains operable, the two environment cards stack on mobile, reduced-motion behavior remains discrete, and the persistent Sign in control stays visible.
-- Interaction and console health: the stage-rail controls reached their intended states; the Sign in selector opened and closed; a fresh in-app browser tab reported no console errors.
+- Fonts and typography: the existing Lead Emergence serif, italic stage statements, monospaced metadata, tracking, and hierarchy are unchanged. The correction preserves the established platform rather than introducing a separate visual language.
+- Spacing and layout rhythm: the roadmap remains a seamless full-bleed journey. The finish now contains exactly two bounded product environments. Removing the universal sign-in panel and footer action leaves a balanced two-card composition and an uncluttered footer.
+- Colors and visual tokens: the deep navy, cyan, cobalt/ice blue, and warm-gold palette remains consistent with the supplied mock. The resolved mark is deliberately brighter than the pre-fix state because the user explicitly requested stronger vibrancy.
+- Image quality and asset fidelity: the resolved symbol is a real transparent raster asset, not CSS or SVG approximation. Its summit is the visible light source; ice-blue highlights travel down the mountain ridges; cobalt planes remain distinct; and the gold arch/rays remain crisp against the navy field. Transparent edges were inspected without a rectangular raster boundary.
+- Copy and content: roadmap and product copy are unchanged. The removed `Returning user?` content no longer appears in the page body or footer. Header sign-in remains available and still opens the environment selector.
+- Responsiveness and accessibility: at 390 x 844, NEW REALITY is fully illuminated as soon as stage 06 becomes active, the symbol is uncropped, copy remains readable, and the stage rail remains operable. Reduced-motion behavior remains discrete.
+- Interaction and runtime health: stage selection, sign-in selector, and product links remain covered. The final run passed all 29 end-to-end tests; typecheck, lint, 33 unit tests, and the production build also passed.
 
 ## Full-view comparison evidence
 
-`v6-top-1680x1120.png` shows the opening as a full-bleed continuation of the page rather than an inset card. `v6-login-cards-1680x1120.png` and `v6-mobile-login-390x844.png` show the requested endpoint: the surrounding entry composition is unframed, while the two product environments are the only distinct cards. The returning-user action is an inline row, not a third card.
+`v7-new-reality-1536x1024.png` uses the same pixel dimensions and density as the 1536 x 1024 source board. The source board presents all seven stages simultaneously while the implementation presents one sticky stage at a time, so full-view evaluation focuses on the selected NEW REALITY state: typography, palette, hierarchy, symbol registration, illumination, and surrounding negative space.
 
-The supplied source is a visual-direction board rather than a sticky single-stage viewport. Full-view comparison therefore evaluates hierarchy, palette, typography, whitespace, border restraint, and the two-environment finish rather than identical simultaneous placement of all seven stages.
+`v7-login-cards-1536x1024.png` verifies the explicit user override to the source board: Ministry and Lead Emergence Consulting are the only separate cards. There is no universal returning-user card, row, or footer button.
+
+`v7-new-reality-mobile-390x844.png` verifies that the same luminous state is visible immediately on mobile without needing additional scrolling inside stage 06.
 
 ## Focused region comparison evidence
 
-`v6-comparison-symbol.jpg` places the source BUILD, PRODUCE, and NEW REALITY panels above the corresponding browser-rendered scroll states. It verifies the corrected source order:
+`v7-comparison-new-reality.jpg` places the source NEW REALITY symbol and the final browser-rendered symbol in one comparison input. Both use the same core composition: cyan central node and four connections, vertical axis, rounded gold arch and outward rays, and blue mountain planes descending from the summit. The implementation intentionally strengthens the cyan-white summit illumination and the ice-blue ridge highlights to satisfy the user's explicit correction.
 
-1. cyan seed;
-2. vertical stem;
-3. skeletal triangle;
-4. blue pathway and planes at BUILD;
-5. warm-gold arc at PRODUCE;
-6. warm-gold rays at NEW REALITY;
-7. the completed symbol recedes continuously while a new cyan seed appears at SEE AGAIN.
-
-`v6-produce-transition-1680x1120.png` is the critical scroll-transition capture. It shows one gold arc and one registered set of emerging rays, with no duplicate ring, shifted apex, rectangular raster panel, or competing full-size symbol.
-
-`v6-comparison-entry.jpg` places the source entry composition and the rendered two-card finish in the same comparison input. The product separation remains clear without wrapping the entire section in another card.
+The focused comparison also verifies that the final art remains centered, symmetrical, fully contained, and free of a visible square background.
 
 ## Comparison history
 
-1. Earlier P1: generated artwork did not match the existing platform or approved mockup.
-   - Fix: replaced it with source-derived artwork and retained the established platform palette and typography.
-2. Earlier P1: independently sourced full-frame rasters were crossfaded during scroll, causing doubled gold arcs, shifted rays, and an odd transition through NEW REALITY.
-   - Evidence: the two user-supplied pre-fix screenshots show the duplicate ring and rectangular image boundary.
-   - Fix: rebuilt the active symbol as cumulative layers cut from one locked final registration; SEE AGAIN now transforms that same resolved image rather than crossfading to another full-frame raster.
-3. Earlier P1: the stage order did not follow the source board closely enough.
-   - Fix: restored the source sequence: stem at REFRAME, triangle at ALIGN, pathway at BUILD, arc at PRODUCE, and rays at NEW REALITY.
-4. Earlier P1: the page looked like stacked standalone cards through the journey, brand reveal, and entry container.
-   - Fix: removed the opening frame, story frame, segmented progress-card treatment, brand panel frame, and entry wrapper frame. Kept only the two product login environments as cards.
-5. Earlier P2: SEE AGAIN used a second full-frame raster, which could create another overlapping-symbol transition.
-   - Fix: the single resolved symbol now scales and recedes continuously while the registered cyan seed fades in above it.
-6. Post-fix evidence: desktop and mobile captures are clean, the focused comparison follows the source stage order, the Sign in selector works, and the fresh browser console is empty.
+1. Earlier P1: the resolved symbol looked dull and the NEW REALITY mountain planes were not visibly illuminated.
+   - Fix: generated a new transparent resolved asset grounded in the supplied mock, with a concentrated cyan-white summit light, vivid ice-blue ridge illumination, cobalt planes, and warm-gold arch/rays.
+2. Earlier P1: selecting stage 06 initially showed the dim construction layers before the bright resolved state completed later in the stage.
+   - Evidence: the first mobile NEW REALITY capture still showed dark mountain planes even though the stage label already read `06 NEW REALITY`.
+   - Fix: moved the resolved transition to the beginning of stage 06. The final desktop and mobile captures now show the illuminated mountain state immediately when NEW REALITY becomes active.
+3. Earlier P1: the page ended with a universal `Returning user?` sign-in treatment in addition to the two product environments.
+   - Fix: removed both the body panel and footer action, while preserving the persistent header sign-in selector.
+4. Post-fix evidence: equal-density desktop comparison, mobile capture, two-card footer capture, and the full repository test suite all pass.
 
 ## Primary interactions tested
 
-- Roadmap controls for BUILD, PRODUCE, NEW REALITY, and SEE AGAIN.
-- Manual scroll through the PRODUCE-to-NEW REALITY transition.
-- Desktop and mobile responsive states.
-- Persistent Sign in button, modal open, and modal close.
-- Browser console error inspection in a fresh tab.
+- Selected NEW REALITY from the roadmap rail and verified stage 06 activation.
+- Verified immediate resolved-symbol illumination on desktop and mobile.
+- Opened and closed the persistent header sign-in selector.
+- Verified Ministry and Consulting login links.
+- Verified that `Returning user?` has a rendered count of zero outside the modal flow.
 
 ## Open questions
 
@@ -77,15 +65,15 @@ None for this correction.
 
 ## Implementation checklist
 
-- [x] Rebuild the roadmap symbol on one locked registration.
-- [x] Restore the source stage order.
-- [x] Eliminate duplicated arc/ray geometry during scroll.
-- [x] Remove rectangular raster haze from the active artwork.
-- [x] Remove journey, brand, and entry-wrapper card framing.
-- [x] Keep only Ministry and Consulting as distinct cards.
+- [x] Remove the body-level universal sign-in panel.
+- [x] Remove the footer universal sign-in action.
+- [x] Keep only the Ministry and Consulting product cards.
+- [x] Replace the dull resolved symbol with a vibrant reference-grounded asset.
+- [x] Make summit light visibly illuminate the mountain planes.
+- [x] Show the resolved illumination immediately when NEW REALITY becomes active.
 - [x] Verify desktop and mobile layouts.
-- [x] Compare source and implementation in the same normalized evidence boards.
-- [x] Verify interactions and a clean console.
+- [x] Compare source and implementation in the same normalized evidence board.
+- [x] Run typecheck, lint, unit tests, build, and end-to-end tests.
 
 ## Follow-up polish
 

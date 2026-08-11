@@ -11,6 +11,11 @@
   transition: opacity 180ms linear, transform 180ms linear;
 }
 
+.buildFrame,
+.cycleSeed {
+  filter: saturate(1.18) brightness(1.12) contrast(1.04);
+}
+
 .resolvedFrame {
   transform-origin: 50% 50%;
 }
