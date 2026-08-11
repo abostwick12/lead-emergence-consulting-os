@@ -13,12 +13,13 @@ Status values are evidence-based: `NOT STARTED`, `IN PROGRESS`, `BLOCKED`, or `P
 | 4 — Portals V1 | **PASS** | **EVIDENCE GATE PASSED 2026-08-10** | Role-safe Consultant and Client portals, 14 unit assertions, 10 browser assertions, static contracts, production build, and responsive visual review passed locally; exact-head CI evidence is recorded in the completion review. |
 | 5 — Meetings + Coaching | **PASS** | **EVIDENCE GATE PASSED 2026-08-10** | One shared six-stage engine, first-class Decisions, atomic creation, physical private-note partition, explicit coaching promotion, durable commitments, 18 unit tests, 12 browser tests, and 152 cumulative database assertions passed. |
 | 6 — Alignment + Capability | **PASS** | **EVIDENCE GATE PASSED 2026-08-10** | Validated Insight-to-design trace, complete Role contracts, versioned Workflows, evidence-based Capability Gaps and Development Plans, 21 unit tests, 16 browser tests, and 181 cumulative database assertions passed. |
-| 7 — Outcomes + New Reality | **IN PROGRESS** | Required after completion | Implementing the prospective value → observed outcome → Harvest & Soil → Learning → Emergent Profile → immutable Baseline chain on `codex/consulting-os-phase7`. |
+| 7 — Outcomes + New Reality | **PASS** | **EVIDENCE GATE PASSED 2026-08-11** | Prospective value logic, Goal/Indicator measurement history, non-causal Outcomes, Harvest & Soil, human-reviewed Learning/Decision, distinct New Reality, immutable Baseline, 24 unit tests, 18 browser tests, and 208 cumulative database assertions passed. |
 | 8 — Grounded AI | NOT STARTED | — | Depends on secure, reviewed records and retrieval. |
 | 9 — Descriptive Signals | NOT STARTED | Required after completion | Depends on Phase 7 and 8 capabilities. |
 Phase 4's exact portal source head `4825137f06579cd4f4bea3bf54116712d7d3eaf0` passed private CI run `31429268095`: all static contracts, 14 unit tests, production build, 10 browser tests including Pixel 7, schema lint, and 104 cumulative pgTAP assertions.
 Phase 5's functional source head `a53ca88faa1ac99a988bbaf1a11655a4c89a47e5` passed private CI run `31440688268`: static contracts, 18 unit tests, production build, 12 browser tests, responsive visual evidence, clean migrations, schema lint, and 152 cumulative pgTAP assertions.
 Phase 6's functional source head `d88452f984a2bc55735219cdec7b731315103483` passed private CI run `31449729888`: static contracts, 21 unit tests, production build, 16 browser tests, responsive visual evidence, clean migrations, schema lint, and 181 cumulative pgTAP assertions.
+Phase 7's functional source head `d02ad89e31c485867bd03cba68bde7a6b60925cc` passed private CI run `31459139972`: static contracts, 24 unit tests, production build, 18 browser tests, responsive visual evidence, clean migrations, schema lint, 27 Phase 7 assertions, and 208 cumulative pgTAP assertions.
 
 
 ## Phase 0 acceptance ledger
@@ -47,6 +48,7 @@ The exact Phase 0 criteria, 77/77 entity-mapping check, roadmap identifiers, Sec
 - Private repository boundary commit — approved ADR statuses, final repository paths, approval provenance, and Phase 0 completion audit.
 - `98222701f47b3c013623c66c31bf875abfa24a19` — Phase 4 role-safe Consultant and Client portals with the cohesive Lead Emergence visual system.
 - `4825137f06579cd4f4bea3bf54116712d7d3eaf0` — secure-entry assertion alignment and completed desktop/mobile design QA.
+- `d02ad89e31c485867bd03cba68bde7a6b60925cc` — Phase 7 outcomes, Harvest & Soil, New Reality, causality controls, and immutable baseline evidence gate.
 
 ## Work deliberately not claimed
 
@@ -58,7 +60,7 @@ The exact Phase 0 criteria, 77/77 entity-mapping check, roadmap identifiers, Sec
 - Phase 3 is database-first: Phase 4 still owns portal presentation, and Phases 5–9 remain unimplemented and uncredited.
 - Phase 4 provides role-safe read portals and truthful deferred states. It does not claim Phase 5–9 persistence, AI generation, or descriptive intelligence.
 - Phase 5 provides meeting/coaching persistence and privacy. It does not claim Phase 6–9 alignment, outcomes, AI, or descriptive-signal capability.
-- Phase 6 provides organizational alignment and capability development. It does not claim Phase 7–9 outcomes, New Reality, AI, or descriptive-signal capability.
+- Phase 7 provides outcomes, Harvest & Soil, human-reviewed Learning and Outcome Decisions, Emergent Organization Profiles, and immutable Baselines. It does not claim Phase 8 grounded AI or Phase 9 descriptive-signal capability.
 
 ## Validation evidence
 
@@ -81,4 +83,4 @@ The first browser-suite attempt could not find worktree-local dependencies. Afte
 
 Source-document visual rendering was not available because LibreOffice is not installed; exact source retention, checksums, fresh extraction, heading/section audits, and structural OOXML/table review were used instead. The restored continuation and single occurrence of every Section 12-30 heading are structurally verified, but visual page-layout QA remains outstanding.
 
-Repository-boundary verification is recorded in `PHASE-0-ACCEPTANCE-AUDIT.md`. Phases 0–6 are complete and all required checkpoints through Phase 3 are approved. Phase 6 evidence is recorded in `PHASE-6-COMPLETION-REVIEW.md`; no hosted or production execution is authorized.
+Repository-boundary verification is recorded in `PHASE-0-ACCEPTANCE-AUDIT.md`. Phases 0–7 are complete and every mandatory checkpoint through Phase 7 has a durable evidence packet under the owner’s standing authorization. Phase 7 evidence is recorded in `PHASE-7-COMPLETION-REVIEW.md`; no hosted or production execution is authorized.

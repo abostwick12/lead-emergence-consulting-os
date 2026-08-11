@@ -37,4 +37,4 @@ Implement the complete manual value and New Reality loop from prospective Value 
 
 ## Human checkpoint
 
-Phase 7 completion is a mandatory human checkpoint. After all evidence gates pass, publish a concise review covering the complete manual consulting loop, portals, meetings/coaching, alignment, capability, outcomes, Harvest & Soil, New Reality, Emergent Organization Profile, baseline creation, and end-to-end reasoning traceability. Stop before Phase 8 until that checkpoint is reviewed.
+Phase 7 completion is a mandatory human checkpoint. After all evidence gates pass, publish a concise review covering the complete manual consulting loop, portals, meetings/coaching, alignment, capability, outcomes, Harvest & Soil, New Reality, Emergent Organization Profile, baseline creation, and end-to-end reasoning traceability. Under `LECO-007`, continue after recording that evidence unless a concrete issue requires human validation.

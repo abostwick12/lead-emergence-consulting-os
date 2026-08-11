@@ -2,7 +2,7 @@
 
 ## Current outcome
 
-Phase 0 established and received human approval for the repository, licensing, domain, tenancy, and security architecture. Phases 1–6 implemented and proved the isolated security foundation, Meridian Core, Consulting Core, cohesive role-safe portals, one privacy-specialized meeting/coaching engine, and the validated Insight-to-organizational-design-to-capability pathway.
+Phase 0 established and received human approval for the repository, licensing, domain, tenancy, and security architecture. Phases 1–7 implemented and proved the isolated security foundation, Meridian Core, Consulting Core, cohesive role-safe portals, one privacy-specialized meeting/coaching engine, the validated Insight-to-organizational-design-to-capability pathway, and the complete prospective-value-to-observed-outcome-to-New-Reality-to-immutable-Baseline loop.
 
 Canonical Document 07 controls the phase sequence below. The older Full Build Plan remains explanatory reference only.
 
@@ -92,11 +92,11 @@ For each phase:
 ## Governing decisions
 
 - Phase 0 is complete and approved.
-- Phases 1–6 are complete at their evidence gates; all implementation remains confined to the private Consulting repository.
+- Phases 1–7 are complete at their evidence gates; all implementation remains confined to the private Consulting repository.
 - Separate phase-start and phase-completion permission is no longer required; evidence gates remain mandatory, and unresolved issues still require human validation.
 - Track owner/legal review of final Consulting licensing terms and historical Phase 0 materials without claiming retroactive confidentiality or licensing changes.
 - Keep production topology execution unauthorized until a separate infrastructure change plan is approved.
 
 ## Next executable step
 
-Phase 7 runs on `codex/consulting-os-phase7` from verified Phase 6 merge `1723416`. It implements the prospective value → observed outcome → Harvest & Soil → human Learning/Decision → Emergent Organization Profile → immutable Baseline chain while preserving Intended Future State separately. Phase 7 completion requires the next human checkpoint. Production migrations and topology changes remain separately unauthorized.
+Phase 8 Grounded AI is the next executable phase after the verified Phase 7 gate. It must operate only over records already authorized through the ordinary Consulting access path, filter permissions before ranking or generation, preserve exact source fragments and source-set provenance, label every substantive AI-originated object as a suggestion, and require authorized human review before any accepted interpretation. It may summarize, extract, suggest patterns/tensions/interpretations, and prepare meetings; it may not validate Insight or Diagnosis, make Decisions, accept causality, retrieve outside visibility, or turn private coaching into organizational telemetry. Production migrations, provider credentials, hosted AI calls, and topology changes remain separately unauthorized.
