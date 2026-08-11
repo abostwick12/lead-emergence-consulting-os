@@ -162,3 +162,58 @@ The earlier passed state was reopened after the user determined that the program
 - Typecheck passed, lint passed, 21 unit tests passed, the production build passed, and `git diff --check` passed. Dependencies were unchanged, so `npm ci` was not rerun. The external Playwright CLI was not used; interaction and visual verification were completed in the selected in-app browser.
 
 corrected final result: passed
+
+## User-review correction 2 - exact symbol-system fidelity
+
+The Iteration 5 artwork was superseded after the owner determined that its rough mountain silhouette, uneven ray field, and changing geometry still did not match the approved mockup closely enough.
+
+### Latest comparison target
+
+- Source visual truth: `C:/Users/AWBOST~1/AppData/Local/Temp/codex-clipboard-9d52e4df-4071-48ec-9a2b-a6935ea216f8.png`
+- Interaction truth: `C:/Users/awbostwick/.codex/attachments/ff092b8d-a4ff-4663-8f8d-17c435600dc1/pasted-text.txt`
+- Desktop NEW REALITY: `C:/Users/awbostwick/Documents/Codex/lead-emergence-consulting-os/.worktrees/landing-scroll-reveal/.review/landing-v2/new-reality-desktop.png`
+- Mobile NEW REALITY: `C:/Users/awbostwick/Documents/Codex/lead-emergence-consulting-os/.worktrees/landing-scroll-reveal/.review/landing-v2/new-reality-mobile.png`
+- Desktop product entry: `C:/Users/awbostwick/Documents/Codex/lead-emergence-consulting-os/.worktrees/landing-scroll-reveal/.review/landing-v2/product-entry-desktop.png`
+- Full-view comparison: `C:/Users/awbostwick/Documents/Codex/lead-emergence-consulting-os/.worktrees/landing-scroll-reveal/.review/landing-v2/reference-vs-new-reality.png`
+- Desktop viewport and pixels: 1536 x 1024 CSS px at device scale factor 1; 1536 x 1024 image pixels.
+- Mobile viewport and pixels: 390 x 844 CSS px at device scale factor 1; 390 x 844 image pixels.
+- Side-by-side comparison: source and implementation were each preserved at 1536 x 1024 and placed in a 3072 x 1024 canvas without crop or density conversion.
+
+### Iteration 6 - blocked
+
+- [P1] The previous seven images did not share sufficiently exact geometry. Crossfading made the mark feel like a sequence of related illustrations rather than one object gaining layers.
+- [P1] The resolved artwork used rough mountain-like edges, a heavy central cutout, and an irregular ray field that visibly departed from the mockup's crisp translucent planes and restrained gold linework.
+- [P2] SEE AGAIN crossfaded two complete symbols with different proportions, briefly doubling the arc and rays.
+- [P2] The first replacement master retained an opaque dark square when placed on the platform panel.
+
+Fixes applied:
+
+- rebuilt the seven states from one shared master coordinate system: fixed apex, fixed triangular structure, fixed arc, fixed ray center, fixed pathway, and fixed completed symbol;
+- replaced the rough artwork with precise white, cobalt, cyan, and gold dimensional planes grounded directly in the supplied mockup;
+- converted every production frame to a transparent matte so the artwork sits on the existing platform surface without a rectangular backing;
+- separated SEE AGAIN's new cyan point into its own overlay, allowing the unchanged completed symbol to recede without duplicate geometry;
+- shortened the NEW REALITY resolve interval so the selected stage shows the complete mark rather than an unfinished blend;
+- preserved the same artwork and sequence on mobile instead of substituting cards or a simplified icon.
+
+### Latest fidelity review
+
+- Fonts and typography: the landing continues to use the platform's serif/sans/mono hierarchy, white editorial headlines, cyan metadata, restrained tracking, and readable mobile scale. No type wrapping or clipping regression is visible in the latest captures.
+- Spacing and layout rhythm: the cinematic sticky composition remains intentionally different from the seven-card visual-direction board, while artwork scale, stage hierarchy, rails, panel borders, and product-entry proportions stay within the approved platform family.
+- Colors and visual tokens: the corrected frames use the source's near-black navy, ice white, cobalt/cyan planes, and warm gold arc/rays without the former brown, painterly, or muddy edge treatment.
+- Image quality and asset fidelity: all visible roadmap artwork is supplied by seven dedicated high-resolution raster assets derived from a single visual system. The final mark has a visible ancestor at every earlier stage. The transparent production mattes remove the opaque backing without replacing the art with CSS or SVG approximations.
+- Copy and content: the seven canonical labels, titles, and supporting statements remain unchanged. Public naming remains `Lead Emergence Consulting`.
+- Accessibility and responsiveness: the 390 x 844 capture preserves the complete symbol, copy, stage rail, and persistent Sign in control without horizontal overflow. Reduced motion still removes crossfade timing while retaining discrete states.
+
+### Verification
+
+- The selected in-app browser exercised REFRAME, ALIGN, BUILD, PRODUCE, NEW REALITY, SEE AGAIN, brand reveal, product entry, desktop, and mobile states.
+- Browser console warnings/errors: none.
+- Typecheck passed.
+- Lint passed.
+- 21 unit tests passed.
+- Production build passed.
+- `git diff --check` passed aside from expected Windows line-ending notices.
+
+No actionable P0, P1, or P2 visual mismatch remains in the corrected symbol system. The production mark is intentionally a little sharper than the low-resolution board artwork; that is a P3 rendering refinement, not a geometry or brand-direction change.
+
+final result: passed

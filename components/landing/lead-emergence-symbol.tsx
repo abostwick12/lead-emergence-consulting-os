@@ -18,13 +18,13 @@ type LeadEmergenceSymbolProps = {
 };
 
 const frames = [
-  '/brand/roadmap/stage-01-see-alpha.png',
-  '/brand/roadmap/stage-02-reframe-alpha.png',
-  '/brand/roadmap/stage-03-align-alpha.png',
-  '/brand/roadmap/stage-04-build-alpha.png',
-  '/brand/roadmap/stage-05-produce-alpha.png',
-  '/brand/roadmap/stage-06-new-reality-alpha.png',
-  '/brand/roadmap/stage-07-see-again-alpha.png',
+  '/brand/roadmap/stage-01-see-v2-alpha.png',
+  '/brand/roadmap/stage-02-reframe-v2-alpha.png',
+  '/brand/roadmap/stage-03-align-v2-alpha.png',
+  '/brand/roadmap/stage-04-build-v2-alpha.png',
+  '/brand/roadmap/stage-05-produce-v2-alpha.png',
+  '/brand/roadmap/stage-06-new-reality-v2-alpha.png',
+  '/brand/roadmap/stage-07-next-point-v2-alpha.png',
 ] as const;
 
 function clamp(value: number) {
@@ -38,7 +38,7 @@ export function LeadEmergenceSymbol({ progress, className, title = 'Lead Emergen
     progress.arc * (1 - progress.rays),
     progress.rays * (1 - progress.pathway),
     progress.pathway * (1 - progress.resolved),
-    progress.resolved * (1 - progress.cycle),
+    progress.resolved * (1 - 0.62 * progress.cycle),
     progress.cycle,
   ].map(clamp);
 
@@ -55,6 +55,7 @@ export function LeadEmergenceSymbol({ progress, className, title = 'Lead Emergen
           sizes="(max-width: 720px) 90vw, 42vw"
           src={source}
           style={{ opacity: opacities[index] }}
+          unoptimized
         />
       ))}
     </span>

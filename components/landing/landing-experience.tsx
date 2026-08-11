@@ -120,7 +120,7 @@ export function LandingExperience() {
     arc: discrete(rangeProgress(progress, 0.25, 0.38)),
     rays: discrete(rangeProgress(progress, 0.38, 0.51)),
     pathway: discrete(rangeProgress(progress, 0.51, 0.64)),
-    resolved: discrete(rangeProgress(progress, 0.64, 0.75)),
+    resolved: discrete(rangeProgress(progress, 0.64, 0.72)),
     cycle: discrete(rangeProgress(progress, 0.82, 1)),
   }), [discrete, progress]);
 
@@ -129,7 +129,9 @@ export function LandingExperience() {
   const jumpToStage = (index: number) => {
     const section = narrativeRef.current;
     if (!section) return;
-    const targetProgress = thresholds[index] + (thresholds[index + 1] - thresholds[index]) * 0.46;
+    const targetProgress = index === 6
+      ? 0.95
+      : thresholds[index] + (thresholds[index + 1] - thresholds[index]) * 0.46;
     const top = section.offsetTop + targetProgress * Math.max(1, section.offsetHeight - window.innerHeight);
     window.scrollTo({ top, behavior: reducedMotion ? 'auto' : 'smooth' });
   };

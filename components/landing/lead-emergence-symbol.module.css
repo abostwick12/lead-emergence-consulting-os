@@ -1,8 +1,9 @@
 .root {
   position: relative;
   display: block;
-  aspect-ratio: 414 / 466;
+  aspect-ratio: 1;
   isolation: isolate;
+  overflow: visible;
 }
 
 .frame {
