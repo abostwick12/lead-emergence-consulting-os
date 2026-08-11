@@ -6,6 +6,8 @@ import { getAlignmentCapability } from '@/lib/alignment/repository';
 import { requirePortalRole } from '@/lib/portal/context';
 import { getPortalDashboard } from '@/lib/portal/repository';
 import { getMeetingCenter } from '@/lib/meetings/repository';
+import { OutcomesNewRealityCenter } from '@/components/outcomes/outcomes-new-reality-center';
+import { getOutcomesNewReality } from '@/lib/outcomes/repository';
 
 const sectionCopy: Record<string, { title: string; description: string }> = {
   'our-organization': { title: 'Our Organization', description: 'Validated organizational knowledge, current effective state, and shared decisions.' },
@@ -24,8 +26,8 @@ export default async function ClientSection({ params }: { params: Promise<{ sect
   if (section === 'our-organization') return <><PageIntro eyebrow={session.organization.name} {...copy} /><AlignmentCapabilityCenter initialData={await getAlignmentCapability(session)} mode="alignment" /><RecordList records={dashboard.records} role="client" title="Validated organizational records" /></>;
   if (section === 'my-development') return <><PageIntro eyebrow={session.organization.name} {...copy} /><AlignmentCapabilityCenter initialData={await getAlignmentCapability(session)} mode="development" /></>;
   if (section === 'meetings') return <><PageIntro eyebrow={session.organization.name} {...copy} /><MeetingCenter initialData={await getMeetingCenter(session)} /></>;
+  if (section === 'progress') return <><PageIntro eyebrow={session.organization.name} {...copy} /><OutcomesNewRealityCenter initialData={await getOutcomesNewReality(session)} /></>;
   const messages: Record<string, string> = {
-    progress: 'Value and outcome workflows arrive in Phase 8. Current records remain visible without implying causal proof.',
     settings: 'Your access is derived from current Consulting memberships and engagement scope.',
   };
   return <><PageIntro eyebrow="Client portal" {...copy} /><section className="empty-state large"><strong>Ready for the next authorized workflow</strong><p>{messages[section]}</p></section></>;
