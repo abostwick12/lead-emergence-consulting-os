@@ -14,7 +14,7 @@ The ecosystem has independently governed product contexts:
 |---|---|---|
 | Ministry app | public `emergence-ministry-platform` repository; target `ministry.leademergence.com` | Existing ministry operations product, routes, data model, migrations, tests, branding, and release process. |
 | Consulting OS | this private `lead-emergence-consulting-os` repository; target `consulting.leademergence.com` | Consultant and Client portals, Consulting domain model, prompts, tests, migrations, storage conventions, and release process. |
-| Lead Emergence entry | future source boundary to be decided; target `www.leademergence.com` | Public parent-brand product selection and product-context routing only. No product business logic. |
+| Lead Emergence entry | V1 entry currently implemented in this private repository; future neutral source boundary requires a separate ADR; target `www.leademergence.com` | Public parent-brand product selection and product-context routing only. No product business logic. Ministry has no source dependency on this implementation. |
 
 No third shared repository/package is approved. The products may duplicate small utilities, types, or UI primitives rather than create premature coupling. A genuinely neutral capability may be extracted only through a future ADR defining ownership, licensing, interfaces, versioning, and distribution. Product repositories may not import source from one another.
 
@@ -99,6 +99,6 @@ For each phase:
 
 ## Next executable step
 
-The canonical Phase 0–9 implementation and evidence sequence is complete. The remaining Goal checkpoint is explicit human visual approval and merge of the corrected unified Lead Emergence entry experience on private PR #10; no dependent visual completion claim is made before that review.
+The canonical Phase 0–9 implementation and evidence sequence is complete. The corrected unified Lead Emergence entry experience received human visual approval and merged through private PR #10.
 
-After that checkpoint, the next product step is an explicitly governed non-production environment and pilot-readiness decision covering dedicated Consulting infrastructure, secrets, migration/rollback rehearsal, pilot data and consent, operational ownership, final licensing terms, and any live AI provider policy. Production migrations, provider credentials, hosted AI calls, DNS, deployment, and real client data remain separately unauthorized. See `FINAL-V1-ACCEPTANCE-AUDIT.md` and `PHASE-9-COMPLETION-REVIEW.md`.
+The next product step is an explicitly governed non-production environment and pilot-readiness decision covering dedicated Consulting infrastructure, secrets, migration/rollback rehearsal, pilot data and consent, operational ownership, final licensing terms, and any live AI provider policy. Production migrations, provider credentials, hosted AI calls, DNS, deployment, and real client data remain separately unauthorized. See `FINAL-V1-ACCEPTANCE-AUDIT.md` and `PHASE-9-COMPLETION-REVIEW.md`.

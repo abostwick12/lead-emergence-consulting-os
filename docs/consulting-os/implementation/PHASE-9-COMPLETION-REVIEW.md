@@ -75,7 +75,7 @@ Fresh visual evidence is retained in the CI artifact and local test results as `
 - No hosted Supabase target, production migration, client data, storage bucket, Vercel project, environment variable, DNS record, provider credential, or deployment was changed.
 - No live AI provider or autonomous authority was introduced.
 - Mature Pulse, Drift Candidate, Emergence Candidate, prediction, and causal inference remain deferred.
-- The separate landing-artwork branch remains isolated and unmerged pending human visual acceptance.
+- The corrected unified-entry artwork received human visual acceptance and merged through private PR #10 as `24fcb2579e50f8166239d62357fa610babda4adf`.
 - Final Consulting license terms and historical Phase 0 materials remain owner/legal review items; no retroactive legal claim is made.
 
-Phase 9 therefore passes its evidence gate under the owner's standing phase authorization. Final completion of the broader Goal remains pending human visual validation and merge of the corrected unified-entry PR #10; production environment selection, live migration, deployment, and pilot data remain separate human decisions.
+Phase 9 passes its evidence gate under the owner's standing phase authorization. The corrected unified-entry experience subsequently received human visual approval and merged, completing the broader V1 Goal at the implementation/evidence boundary. Production environment selection, live migration, deployment, and pilot data remain separate human decisions.
