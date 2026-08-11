@@ -15,6 +15,7 @@
     "verify:phase7:static": "pwsh -NoProfile -File ./scripts/consulting-os/verify_phase7_outcomes_new_reality.ps1",
     "verify:phase8:static": "pwsh -NoProfile -File ./scripts/consulting-os/verify_phase8_grounded_ai.ps1",
     "verify:phase9:static": "pwsh -NoProfile -File ./scripts/consulting-os/verify_phase9_signals_see_again.ps1",
+    "verify:final:v1": "pwsh -NoProfile -File ./scripts/consulting-os/verify_final_v1.ps1",
     "verify:phase4:static": "pwsh -NoProfile -File ./scripts/consulting-os/verify_phase4_portals.ps1",
     "verify:phase0": "pwsh -NoProfile -File ./scripts/consulting-os/verify_phase0_docs.ps1",
     "verify:phase1:static": "pwsh -NoProfile -File ./scripts/consulting-os/verify_phase1_security.ps1",

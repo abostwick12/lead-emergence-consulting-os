@@ -25,7 +25,7 @@ Phase 9's functional source head `c47b7fe8eb67cc3bb6a16d2f4fd214e7bb75602b` pass
 
 The final Ministry-only audit used clean public Ministry commit `dd28c74ee484484f028465de25ede0b4655374cf`: its 1,478-entry archive, source, package graph, migrations, CI configuration, and compiled output contain no Consulting paths or identifiers; install, design check, typecheck, lint, and production build pass independently. The current Ministry browser harness is concurrency-sensitive, but the slow sidebar case and every failure observed under four-worker contention pass unchanged under realistic-timeout or serial execution. Exact evidence and hashes are in `MINISTRY-ONLY-DISTRIBUTION.md`.
 
-Phase 9 itself is complete. Final completion of the broader Goal remains pending explicit visual approval and merge of the corrected unified-entry PR #10; this is a human-validation issue, not a Phase 9 defect.
+Phase 9 and the broader V1 Goal are complete at the implementation/evidence boundary. The owner approved the corrected unified-entry experience and authorized merge; PR #10 merged as `24fcb2579e50f8166239d62357fa610babda4adf` on 2026-08-11. Production environment selection, live migration, deployment, DNS, pilot data, and operational ownership remain separate future decisions.
 
 
 ## Phase 0 acceptance ledger
@@ -57,6 +57,7 @@ The exact Phase 0 criteria, 77/77 entity-mapping check, roadmap identifiers, Sec
 - `d02ad89e31c485867bd03cba68bde7a6b60925cc` — Phase 7 outcomes, Harvest & Soil, New Reality, causality controls, and immutable baseline evidence gate.
 - `0e537b850669fd31ddf1abb68b095374dd0200bb` — Phase 8 permission-first grounded AI, provenance, refusal, review, and privacy evidence gate.
 - `c47b7fe8eb67cc3bb6a16d2f4fd214e7bb75602b` — Phase 9 descriptive Signals, compatible trends, assumption review, explicit re-entry, and complete-engagement evidence gate.
+- `24fcb2579e50f8166239d62357fa610babda4adf` — owner-approved unified entry, corrected roadmap artwork, and final visual acceptance merge.
 
 ## Work deliberately not claimed
 

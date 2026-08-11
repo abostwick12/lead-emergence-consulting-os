@@ -1,9 +1,10 @@
 # Lead Emergence Consulting OS — Final V1 acceptance audit
 
 **Audit date:** 2026-08-11
-**Consulting source:** `c47b7fe8eb67cc3bb6a16d2f4fd214e7bb75602b`
-**Private CI:** `31469825087` — PASS
-**Result:** CORE V1 IMPLEMENTATION EVIDENCE PASS — FINAL ENTRY VISUAL APPROVAL PENDING
+**Consulting source:** `24fcb2579e50f8166239d62357fa610babda4adf`
+**Phase 9 private CI:** `31469825087` — PASS
+**Unified-entry private CI:** `31514697894` — PASS
+**Result:** V1 ACCEPTANCE PASS
 
 ## 1. Roadmap completion
 
@@ -44,15 +45,17 @@ The serial complete-engagement browser acceptance exercises the operational path
 - The Consulting and landing branches do not alter Ministry runtime, migrations, or deployment configuration.
 - Historical Phase 0 licensing consequences remain owner/legal review; deletion or copying is not represented as changing prior rights.
 
-The clean Ministry artifact at `dd28c74ee484484f028465de25ede0b4655374cf` contains 1,478 tracked entries, zero Consulting-owned paths, and no Consulting identifiers in source or compiled output. Install, design check, typecheck, lint, and the 183-page production build pass independently. The current Ministry browser harness remains cold-compilation/concurrency-sensitive: 122 tests pass in the bounded run, and all six observed contention failures pass unchanged when rerun serially. This limitation is recorded rather than hidden; it is not caused by or coupled to Consulting OS.
+The clean Ministry artifact at `dd28c74ee484484f028465de25ede0b4655374cf` contains 1,478 archive entries (1,091 tracked files plus archive directory entries), zero Consulting-owned paths, and no Consulting identifiers in source or compiled output. Install, design check, typecheck, lint, and the 183-page production build pass independently. The current Ministry browser harness remains cold-compilation/concurrency-sensitive: 122 tests pass in the bounded run, and all six observed contention failures pass unchanged when rerun serially. This limitation is recorded rather than hidden; it is not caused by or coupled to Consulting OS.
 
 The refreshed Ministry-only build/test record is retained in `MINISTRY-ONLY-DISTRIBUTION.md` and the Phase 9 completion evidence. The only unit-suite exception is the unchanged Logos companion-script import error previously documented before Phase 9; it is not caused by or coupled to Consulting OS.
 
-## 4. Remaining final-goal checkpoint
+## 4. Unified-entry completion checkpoint
 
-The unified Lead Emergence entry experience is implemented on private PR #10 (`codex/landing-scroll-reveal`) with its product routes, role-safe entry selector, reduced-motion behavior, responsive states, and automated tests passing. The owner rejected the prior roadmap imagery as visually inconsistent with the platform. The corrected high-resolution symbol sequence is therefore intentionally unmerged pending explicit human visual validation.
+The owner approved the corrected unified Lead Emergence entry experience and explicitly authorized merge and continuation. Private PR #10 merged into `main` as `24fcb2579e50f8166239d62357fa610babda4adf` on 2026-08-11.
 
-This does not invalidate the independent Phase 9 evidence gate, but it prevents claiming that the full Goal is complete. The final Goal completion audit must be rerun after PR #10 is visually approved and merged into current Consulting `main`.
+The merged entry provides Consultant, Consulting Client, and Ministry paths without granting cross-product authorization. It preserves the approved scroll-reveal sequence, source-faithful imagery, reduced-motion behavior, responsive states, semantic controls, and the separate Ministry/Consulting repository boundary. `design-qa.md` records `final result: passed`; the final landing browser tests report no console errors.
+
+The corrected entry removes the last human-validation issue from the V1 Goal. Future movement of the parent-brand entry into an independently governed neutral repository/service remains an architectural option, not a V1 completion requirement. Ministry does not import or depend on the private entry implementation.
 
 ## 5. Deployment and pilot readiness boundary
 
@@ -78,8 +81,24 @@ No production infrastructure action is implied or authorized by this implementat
 - psychometric validation claims for Emergence 360;
 - live hosted AI generation.
 
-## 7. Final conclusion
+## 7. Final merged-main verification
 
-Lead Emergence Consulting OS V1 satisfies the canonical Phase 0–9 implementation and evidence gates while preserving product separation, tenant/privacy boundaries, epistemic discipline, historical traceability, and the distinction between intended Future State and actual New Reality. Final completion of the broader Goal remains pending the corrected unified-entry visual approval and merge described above.
+| Check | Result |
+|---|---|
+| Phase 0–9 static verifiers | PASS — all ten committed acceptance verifiers. |
+| Locked dependency install | PASS — 464 packages from the committed lockfile; zero reported vulnerabilities. |
+| Typecheck | PASS. |
+| Lint | PASS — current source only; historical `.worktrees/` and their generated output are explicitly excluded. |
+| Unit tests | PASS — 8 files, 33 tests; historical worktrees are excluded from discovery. |
+| Production build | PASS — 14 application routes generated/compiled. |
+| Browser acceptance | PASS — 29 tests, including landing desktop/mobile, complete engagement, privacy, grounded AI, Signals, and role-safe Client projection. |
+| Database/security gate | PASS — unified-entry PR run `31514697894` repeated static, application, browser, schema-lint, and cumulative pgTAP gates in isolated CI. |
+| Ministry-only source scan | PASS — current public `main` remains `dd28c74...`; 1,091 tracked files and no Consulting-owned path or identifier. |
+
+The repository-root audit identified and corrected two test-tool boundaries: ESLint and Vitest no longer traverse historical phase worktrees. This changes no product behavior; it makes root results represent current `main` only.
+
+## 8. Final conclusion
+
+Lead Emergence Consulting OS V1 satisfies the canonical Phase 0–9 implementation and evidence gates while preserving product separation, tenant/privacy boundaries, epistemic discipline, historical traceability, and the distinction between intended Future State and actual New Reality. The corrected unified-entry experience received human visual approval and is merged. The V1 Goal is complete at the implementation/evidence boundary.
 
 The next step is not another implementation phase. It is an explicitly governed environment/pilot decision. Production migration, deployment, DNS, and live data remain unauthorized until that decision is made.

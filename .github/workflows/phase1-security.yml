@@ -54,6 +54,7 @@ jobs:
           ./scripts/consulting-os/verify_phase7_outcomes_new_reality.ps1
           ./scripts/consulting-os/verify_phase8_grounded_ai.ps1
           ./scripts/consulting-os/verify_phase9_signals_see_again.ps1
+          ./scripts/consulting-os/verify_final_v1.ps1
 
       - name: Verify portal application
         run: |
