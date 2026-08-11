@@ -18,14 +18,15 @@ type LeadEmergenceSymbolProps = {
   title?: string;
 };
 
-const buildLayers = [
-  { source: '/brand/roadmap/symbol-seed-v6.png', progress: 'seed' },
-  { source: '/brand/roadmap/symbol-stem-v6.png', progress: 'stem' },
-  { source: '/brand/roadmap/symbol-structure-v6.png', progress: 'structure' },
-  { source: '/brand/roadmap/symbol-pathway-v6.png', progress: 'pathway' },
-  { source: '/brand/roadmap/symbol-arc-v6.png', progress: 'arc' },
-  { source: '/brand/roadmap/symbol-rays-v6.png', progress: 'rays' },
-] as const satisfies ReadonlyArray<{ source: string; progress: keyof SymbolProgress }>;
+const sourceFrames = [
+  '/brand/roadmap/mock-stage-01-see-v9.png',
+  '/brand/roadmap/mock-stage-02-reframe-v9.png',
+  '/brand/roadmap/mock-stage-03-align-v9.png',
+  '/brand/roadmap/mock-stage-04-build-v9.png',
+  '/brand/roadmap/mock-stage-05-produce-v9.png',
+  '/brand/roadmap/mock-stage-06-new-reality-v9.png',
+  '/brand/roadmap/mock-stage-07-see-again-v9.png',
+] as const;
 
 function clamp(value: number) {
   if (!Number.isFinite(value)) return 0;
@@ -33,50 +34,38 @@ function clamp(value: number) {
 }
 
 export function LeadEmergenceSymbol({ progress, className, title = 'Lead Emergence symbol' }: LeadEmergenceSymbolProps) {
-  const cycleOpacity = clamp(progress.cycle);
-  const resolvedOpacity = clamp(progress.resolved) * (1 - cycleOpacity * 0.45);
-  const buildOpacity = (1 - clamp(progress.resolved)) * (1 - cycleOpacity);
-  const resolvedScale = 1 - cycleOpacity * 0.32;
-  const resolvedOffset = cycleOpacity * 10;
+  const stem = clamp(progress.stem);
+  const structure = clamp(progress.structure);
+  const pathway = clamp(progress.pathway);
+  const arc = clamp(progress.arc);
+  const resolved = clamp(progress.resolved);
+  const cycle = clamp(progress.cycle);
+  const frameOpacity = [
+    1 - stem,
+    stem * (1 - structure),
+    structure * (1 - pathway),
+    pathway * (1 - arc),
+    arc * (1 - resolved),
+    resolved * (1 - cycle),
+    cycle,
+  ];
 
   return (
     <span className={`${symbolStyles.root} ${className ?? ''}`} role="img" aria-label={title}>
-      {buildLayers.map(({ source, progress: progressKey }) => (
+      {sourceFrames.map((source, index) => (
         <Image
           alt=""
           aria-hidden="true"
-          className={`${symbolStyles.frame} ${symbolStyles.buildFrame}`}
+          className={symbolStyles.frame}
           fill
-          key={progressKey}
+          key={source}
           priority
           sizes="(max-width: 720px) 90vw, 42vw"
           src={source}
-          style={{ opacity: clamp(progress[progressKey]) * buildOpacity }}
+          style={{ opacity: frameOpacity[index] }}
           unoptimized
         />
       ))}
-      <Image
-        alt=""
-        aria-hidden="true"
-        className={`${symbolStyles.frame} ${symbolStyles.resolvedFrame}`}
-        fill
-        priority
-        sizes="(max-width: 720px) 90vw, 42vw"
-        src="/brand/roadmap/symbol-resolved-v7.png"
-        style={{ opacity: resolvedOpacity, transform: `translateY(${resolvedOffset}%) scale(${resolvedScale})` }}
-        unoptimized
-      />
-      <Image
-        alt=""
-        aria-hidden="true"
-        className={`${symbolStyles.frame} ${symbolStyles.cycleSeed}`}
-        fill
-        priority
-        sizes="(max-width: 720px) 90vw, 42vw"
-        src="/brand/roadmap/symbol-seed-v6.png"
-        style={{ opacity: cycleOpacity }}
-        unoptimized
-      />
     </span>
   );
 }

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ArrowDown, ArrowRight, BriefcaseBusiness, Church, LockKeyhole, UserRound, UsersRound, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { LeadEmergenceSymbol, completeSymbolProgress } from './lead-emergence-symbol';
+import { ReturningUser } from './returning-user';
 import styles from './landing.module.css';
 
 const MINISTRY_LOGIN_URL = 'https://ministry.leademergence.com/login';
@@ -116,13 +117,13 @@ export function LandingExperience() {
   const discrete = useCallback((value: number) => reducedMotion ? (value >= 0.5 ? 1 : 0) : value, [reducedMotion]);
   const symbolProgress = useMemo(() => ({
     seed: discrete(rangeProgress(progress, 0, 0.045)),
-    stem: discrete(rangeProgress(progress, 0.12, 0.25)),
-    structure: discrete(rangeProgress(progress, 0.25, 0.38)),
-    pathway: discrete(rangeProgress(progress, 0.38, 0.51)),
-    arc: discrete(rangeProgress(progress, 0.51, 0.64)),
-    rays: discrete(rangeProgress(progress, 0.64, 0.71)),
-    resolved: discrete(rangeProgress(progress, 0.64, 0.70)),
-    cycle: discrete(rangeProgress(progress, 0.82, 1)),
+    stem: discrete(rangeProgress(progress, 0.12, 0.145)),
+    structure: discrete(rangeProgress(progress, 0.25, 0.275)),
+    pathway: discrete(rangeProgress(progress, 0.38, 0.405)),
+    arc: discrete(rangeProgress(progress, 0.51, 0.535)),
+    rays: discrete(rangeProgress(progress, 0.64, 0.665)),
+    resolved: discrete(rangeProgress(progress, 0.64, 0.665)),
+    cycle: discrete(rangeProgress(progress, 0.82, 0.845)),
   }), [discrete, progress]);
 
   const openEntry = () => dialogRef.current?.showModal();
@@ -258,6 +259,8 @@ export function LandingExperience() {
 
         </div>
       </section>
+
+      <ReturningUser onSignIn={openEntry} />
 
       <footer className={styles.footer}>
         <BrandLockup compact />

@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 
 test.describe('public Lead Emergence landing experience', () => {
   test('builds one continuous symbol and keeps returning-user entry available', async ({ page }) => {
+    await page.setViewportSize({ width: 1536, height: 1024 });
     await page.goto('/');
     await expect(page.getByRole('heading', { name: /Before you build what comes next/ })).toBeVisible();
     await expect(page.locator('header').getByRole('button', { name: 'Sign in', exact: true })).toBeVisible();
@@ -28,9 +29,16 @@ test.describe('public Lead Emergence landing experience', () => {
     await expect(page.getByRole('link', { name: /Team member login/ })).toHaveAttribute('href', 'https://ministry.leademergence.com/login');
     await expect(page.getByRole('link', { name: /Guest access/ })).toHaveAttribute('href', 'https://ministry.leademergence.com/api/auth/guest');
     await expect(page.getByRole('link', { name: /Client login/ })).toHaveAttribute('href', '/login?returnTo=%2Fclient');
-    await expect(page.getByRole('button', { name: 'Sign in', exact: true })).toHaveCount(1);
-    await expect(page.getByText('Returning user?')).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Sign in', exact: true })).toHaveCount(2);
+    await page.locator('.returning-user').scrollIntoViewIfNeeded();
+    await expect(page.getByText('Returning user?', { exact: true })).toBeVisible();
+    await page.locator('.returning-user').getByRole('button', { name: 'Sign in', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'Choose your environment.' })).toBeVisible();
+    await page.getByRole('button', { name: 'Close sign in selector' }).click();
     await page.screenshot({ path: 'test-results/landing-product-entry-desktop.png' });
+    await page.setViewportSize({ width: 1995, height: 900 });
+    await page.locator('.returning-user').scrollIntoViewIfNeeded();
+    await page.locator('.returning-user').screenshot({ path: 'test-results/landing-returning-user-desktop.png' });
   });
 
   test('preserves the same construction sequence on mobile', async ({ page }) => {
@@ -42,6 +50,10 @@ test.describe('public Lead Emergence landing experience', () => {
     await expect(page.getByText('Step into what has become possible.', { exact: true })).toBeVisible();
     await expect(page.locator('header').getByRole('button', { name: 'Sign in', exact: true })).toBeVisible();
     await page.screenshot({ path: 'test-results/landing-new-reality-mobile.png' });
+    await page.locator('.returning-user').scrollIntoViewIfNeeded();
+    await expect(page.getByText('Returning user?', { exact: true })).toBeVisible();
+    await expect(page.getByText('Sign in to quickly access your environment.', { exact: true })).toBeVisible();
+    await page.screenshot({ path: 'test-results/landing-returning-user-mobile.png' });
   });
 
   test('uses discrete progressive states when reduced motion is preferred', async ({ page }) => {
