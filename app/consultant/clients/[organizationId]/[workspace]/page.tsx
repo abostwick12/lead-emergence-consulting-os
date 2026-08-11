@@ -5,6 +5,8 @@ import { AlignmentCapabilityCenter } from '@/components/alignment/alignment-capa
 import { getAlignmentCapability } from '@/lib/alignment/repository';
 import { OutcomesNewRealityCenter } from '@/components/outcomes/outcomes-new-reality-center';
 import { getOutcomesNewReality } from '@/lib/outcomes/repository';
+import { GroundedAssistance } from '@/components/meridian-ai/grounded-assistance';
+import { getMeridianAi } from '@/lib/meridian-ai/repository';
 import { requirePortalRole } from '@/lib/portal/context';
 import { getPortalDashboard, recordsForWorkspace } from '@/lib/portal/repository';
 import { workspaceDefinitions, type WorkspaceKey } from '@/lib/portal/types';
@@ -19,9 +21,11 @@ export default async function WorkspacePage({ params }: { params: Promise<{ orga
   const records = recordsForWorkspace(dashboard, workspace as WorkspaceKey);
   const alignment = workspace === 'strategy' || workspace === 'development' ? await getAlignmentCapability(session) : null;
   const outcomes = workspace === 'outcomes' ? await getOutcomesNewReality(session) : null;
+  const meridian = workspace === 'discovery' || workspace === 'strategy' ? await getMeridianAi(session) : null;
   return <><PageIntro eyebrow={`${session.organization.name} · ${session.engagement.name}`} title={definition.label} description={definition.description} />
     <nav className="workspace-tabs" aria-label="Client workspace sections">{workspaceDefinitions.map((item) => <a className={item.key === workspace ? 'active' : ''} href={`/consultant/clients/${organizationId}/${item.key}`} key={item.key}>{item.label}</a>)}</nav>
     {alignment && <AlignmentCapabilityCenter initialData={alignment} mode={workspace === 'development' ? 'development' : 'alignment'} />}
+    {meridian && <GroundedAssistance initialData={meridian} />}
     {outcomes && <OutcomesNewRealityCenter initialData={outcomes} />}
     {!outcomes && <><StateLegend /><RecordList records={records} role="consultant" title={`${definition.label} records`} /></>}
   </>;
