@@ -142,7 +142,7 @@ select results_eq($$select count(*) from consulting_os.capability_pathways where
 
 reset role;
 select results_eq($$select count(*) from consulting_os.capability_pathways where requirement_id = '94000000-0000-4000-8000-000000000016' and practice_count = 1$$, array[1::bigint], 'Development Plan traces forward to recorded practice');
-select results_eq($$select count(*) from consulting_security.relationship_type_rules where relationship_type in ('CREATES','AUTHORIZES','REQUIRES','DEVELOPS','ENABLES','CONSTRAINS','OWNS')$$, array[33::bigint], 'Controlled relationship vocabulary contains the Phase 6 design and capability rules');
+select results_eq($$select count(*) from consulting_security.relationship_type_rules where relationship_type in ('CREATES','AUTHORIZES','REQUIRES','DEVELOPS','ENABLES','CONSTRAINS','OWNS')$$, array[32::bigint], 'Controlled relationship vocabulary contains the Phase 6 design and capability rules');
 
 select * from finish();
 rollback;
