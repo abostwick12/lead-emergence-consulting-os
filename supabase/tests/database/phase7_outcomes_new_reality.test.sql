@@ -93,9 +93,9 @@ select lives_ok($$select consulting_os.create_baseline_snapshot('a7400000-0000-4
 select results_eq($$select count(*) from consulting_os.current_baselines where source_profile_id='a7400000-0000-4000-8000-000000000017' and jsonb_array_length(manifest)=2$$,array[1::bigint],'Baseline manifest captures profile and selected versioned state');
 select results_eq($$select count(*) from consulting_os.entity_relationships where relationship_type='BECOMES_BASELINE_FOR' and source_id='a7400000-0000-4000-8000-000000000017'$$,array[1::bigint],'Profile explicitly becomes the next baseline');
 select throws_ok($$select consulting_os.create_baseline_snapshot('a7400000-0000-4000-8000-000000000017',now(),'Unsafe baseline','Attempt private promotion.',null,array['a7400000-0000-4000-8000-000000000019'::uuid],array['PRIVATE_NOTE'],array['Private note'])$$,'42501',null,'Shared baseline rejects consultant-private content');
+reset role;
 select throws_ok($$update consulting_os.baseline_snapshots set scope='Rewrite' where source_profile_id='a7400000-0000-4000-8000-000000000017'$$,'55000',null,'Baseline is immutable');
 
-reset role;
 set local role authenticated;
 select set_config('request.jwt.claim.sub','a7100000-0000-4000-8000-000000000002',true);
 select results_eq($$select count(*) from consulting_os.client_progress where organization_id='a7aaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'$$,array[0::bigint],'Other tenant cannot read client progress');
