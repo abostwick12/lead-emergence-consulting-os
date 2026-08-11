@@ -1,8 +1,11 @@
-import { redirect } from 'next/navigation';
-import { getPortalSession } from '@/lib/portal/context';
+import type { Metadata } from 'next';
+import { LandingExperience } from '@/components/landing/landing-experience';
 
-export default async function EntryPage() {
-  const session = await getPortalSession();
-  if (!session) redirect('/login');
-  redirect(session.role === 'consultant' ? '/consultant' : '/client');
+export const metadata: Metadata = {
+  title: 'Lead Emergence',
+  description: 'Technology for leaders building organizations and ministries where people, purpose, and systems can flourish together.',
+};
+
+export default function EntryPage() {
+  return <LandingExperience />;
 }

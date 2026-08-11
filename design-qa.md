@@ -1,70 +1,85 @@
-# Phase 4 Portal Visual Cohesion QA
+# Lead Emergence Landing Design QA
 
-## Comparison target
+## Comparison Target
 
-- Source visual truth: `C:/Users/awbostwick/.codex/visualizations/2026/08/10/019fe94d-e53d-7602-a9f6-f8a186eaa2af/platform-reference-audit/02-dashboard.png`
-- Implementation screenshot: `C:/Users/awbostwick/.codex/visualizations/2026/08/10/019fe94d-e53d-7602-a9f6-f8a186eaa2af/consulting-cohesive-audit/03-consultant-viewport.png`
-- Full-view comparison: `C:/Users/awbostwick/.codex/visualizations/2026/08/10/019fe94d-e53d-7602-a9f6-f8a186eaa2af/consulting-cohesive-audit/04-side-by-side.png`
-- Focused shell comparison: `C:/Users/awbostwick/.codex/visualizations/2026/08/10/019fe94d-e53d-7602-a9f6-f8a186eaa2af/consulting-cohesive-audit/05-shell-focus.png`
-- Responsive implementation screenshot: `C:/Users/awbostwick/.codex/visualizations/2026/08/10/019fe94d-e53d-7602-a9f6-f8a186eaa2af/phase4-ci-artifact/test-results/client-mobile.png`
-- Viewport: 1280 x 720 CSS px in the in-app browser.
-- Source pixels: 1280 x 720.
-- Implementation pixels: 1264 x 720 after the visible scrollbar gutter.
-- Density normalization: source was proportionally normalized to 1264 x 720 for the side-by-side composite; both halves otherwise preserve the same viewport scale and state density.
-- Responsive viewport: Playwright Pixel 7 profile, 412 x 839 CSS px at 2.625 device scale factor.
-- Responsive pixels: 1082 x 2202 full-page capture (rounding from the emulated device density).
-- Source state: authenticated Ministry dashboard.
-- Implementation state: authenticated Consultant home with synthetic Northstar engagement data.
+- Source visual truth: `C:\Users\AWBOST~1\AppData\Local\Temp\codex-clipboard-9d52e4df-4071-48ec-9a2b-a6935ea216f8.png`
+- Source dimensions: 1536 x 1024 px.
+- Desktop implementation evidence:
+  - `test-results/landing-new-reality-desktop.png`
+  - `test-results/landing-product-entry-desktop.png`
+  - `test-results/landing-returning-user-desktop.png`
+- Mobile implementation evidence:
+  - `test-results/landing-new-reality-mobile.png`
+  - `test-results/landing-product-entry-mobile.png`
+  - `test-results/landing-returning-user-mobile.png`
+- Normalized comparison board: `test-results/landing-design-comparison-v10.png`
+- Desktop CSS viewport and capture: 1536 x 1024 px at device scale factor 1.
+- Returning-user component capture: 1995 x 345 px at device scale factor 1.
+- Mobile CSS viewport and capture: 390 x 844 px at device scale factor 1.
+- Comparison normalization: source and implementation regions were cropped to the same content, fitted without distortion, and placed in one 1460 x 1760 px comparison board.
 
-The products intentionally show different content and controls. The comparison evaluates their shared brand shell, hierarchy, tokens, typography, navigation, surfaces, and density rather than requiring identical page content.
+## States Reviewed
 
-## Full-view comparison evidence
+1. New Reality roadmap state at stage 06.
+2. Product-entry composition with Ministry and Lead Emergence Consulting.
+3. Full-width Returning User row.
+4. Mobile New Reality, product cards, and Returning User layouts.
+5. Sign-in selector, all four role-entry links, roadmap navigation, and reduced-motion behavior.
 
-The Ministry source and Consulting implementation now share the same core visual system:
+## Full-View Evidence
 
-- fixed 252 px near-black sidebar;
-- midnight navy grid environment;
-- white-and-cyan italic Lead Emergence wordmark;
-- cyan active-navigation rail and low-glow selection surface;
-- cyan mono eyebrow labels;
-- white serif display headings;
-- muted blue-gray supporting copy;
-- restrained green and gold semantic accents;
-- translucent navy panels with thin blue borders and compact radii;
-- cyan section rails and matching header proportions.
+- The roadmap remains a single uninterrupted page composition and no longer introduces card boundaries during the seven-stage scroll.
+- The lower entry area is visually continuous. Only the Ministry and Consulting panels are separate cards; Returning User is a full-width row below them.
+- Desktop and mobile captures show no overlapping content, unintended horizontal overflow, or broken controls.
 
-The Consulting OS remains distinguishable through its product label, organization and engagement context bar, reasoning-state vocabulary, and consulting-specific workspace content.
+## Focused-Region Evidence
 
-## Focused region evidence
+- New Reality artwork: the approved summit, gold arc, ray count and placement, blue planes, center axis, and dark negative space are preserved. No five-dot geometry, winding road, extra peak, extra ring, or invented detail is present.
+- Lower-left composition: the approved source crop is used directly, preserving its illuminated summit, blue facets, layered dark foreground mountains, text placement, and palette.
+- Login panels: group and chart icons use one consistent line-icon family, card colors preserve the cyan/gold split, and the two-button structures align with the mock.
 
-The focused shell comparison verifies the wordmark treatment, navigation icon family, active state, sidebar density, profile placement, cyan section rail, heading hierarchy, panel borders, and status accents at readable scale. Icons use the same Lucide family as the Ministry platform. No target logo, artwork, or non-standard icon was approximated with custom SVG, CSS art, emoji, or text glyphs.
+## Required Fidelity Surfaces
 
-## Required fidelity surfaces
+- Fonts and typography: serif display headings, italic roadmap statements, tracked uppercase stage labels, compact supporting copy, and the supplied Returning User proportions are preserved. The longer approved product name wraps intentionally.
+- Spacing and layout rhythm: the desktop entry uses the mock's unequal three-part proportions; mobile stacks without losing hierarchy. The Returning User row retains its intentionally unequal headline, sentence, and button columns.
+- Colors and tokens: deep navy, cool white, muted blue-gray, electric cyan, restrained gold, and subtle panel borders match the source direction. The restored artwork is brighter without changing geometry.
+- Image quality and asset fidelity: all custom artwork comes from the approved source. Roadmap frames are source-preserving 2048 px restorations and are shown as one registered frame at a time, eliminating crossfade ghosting. No generated or code-drawn substitute is used.
+- Copy and content: all mock copy is retained except for approved product naming (`Lead Emergence Consulting`) and the approved separate Returning User row. Unsupported construction labels were removed.
+- Icons: Ministry uses a group icon and Consulting uses a chart icon from Lucide; login icons remain role-appropriate and consistent.
+- Responsiveness and accessibility: mobile captures are readable; controls remain semantic and keyboard reachable; reduced motion is supported; artwork has hidden semantic equivalents; browser tests found no console errors.
 
-- Fonts and typography: the implementation maps display text to Cormorant/Georgia-style serif fallbacks, body text to Inter/system sans, and labels to JetBrains Mono/monospace. Weight, casing, tracking, and hierarchy visually align with the source. The long Consulting context headline wraps by design without clipping at the desktop viewport.
-- Spacing and layout rhythm: sidebar width, shell proportions, section rails, header depth, card gaps, compact radii, and vertical rhythm match the source family. The Consulting page remains denser than the rejected editorial pass and keeps the primary attention work above the fold.
-- Colors and tokens: the implementation directly reuses the source palette (`#070d1b`, `#16d9f5`, `#d9b75f`, `#8ea0b7`) and equivalent translucent panel, border, glow, and shadow values.
-- Image quality and asset fidelity: neither compared dashboard uses required raster imagery. The CSS grid treatment is a source-code-authored platform background in both products; all icons come from the shared icon library.
-- Copy and content: Consulting copy remains domain-specific, truthful, and privacy-aware. It does not copy Ministry operational language into the Consulting product.
-- Accessibility and interactions: keyboard focus remains visible, landmark structure is preserved, reduced motion is respected, active navigation updates by route, and client access hides the private consultant record.
-- Responsive behavior: the exact committed Pixel 7 capture preserves readable hierarchy, two-column context labels with safe truncation, a single-column bounded-state panel, and a five-destination fixed navigation rail with consistent Lucide icons and cyan active state. No clipping, overlap, hidden navigation, or unusable tap target is visible.
+## Comparison History
 
-## Comparison history
+### Initial assessment - blocked
 
-### Iteration 1 — blocked
+- P1: source art was soft at landing-page scale.
+- P1: blended cumulative frames created visible ghosting and apparent misregistration.
+- P1: the lower-left illuminated mountain composition was missing.
+- P2: Ministry and Consulting used church/briefcase substitutes instead of group/chart symbols.
+- P2: unsupported construction labels added details not present in the mock.
+- P2: product panels were oversized and the lower composition did not preserve the source hierarchy.
 
-- [P1] The initial Consulting portal used a beige paper, forest-green sidebar, circular monogram, oversized editorial cards, and soft earth-tone state badges. It read as a separate brand rather than a related Lead Emergence product.
-- Fix: replaced the visual layer with the Ministry platform's midnight, cyan, gold, typography, navigation, grid, card, and density system; added route-aware Lucide navigation; rebuilt login as the same split secure-access family; preserved all Consulting data and privacy behavior.
+Fixes: restored the exact source frames at 2048 px, changed the scroll symbol to registered frame replacement, used the exact lower-left source composition, replaced icons with the closest matching library icons, removed unsupported labels, and rebuilt the entry grid around the mock's proportions.
 
-### Iteration 2 — desktop and mobile passed
+### First post-fix comparison - blocked
 
-- Post-fix evidence: `04-side-by-side.png` and `05-shell-focus.png` show no remaining actionable desktop P0, P1, or P2 mismatch.
-- Responsive evidence: the exact committed Pixel 7 capture at `phase4-ci-artifact/test-results/client-mobile.png` shows no remaining actionable mobile P0, P1, or P2 issue.
-- Primary interactions tested: fixture consultant entry, consultant Home to Clients navigation, active navigation state, fixture client entry, and client exclusion of the private consultant record.
-- Browser console: no errors; only expected React development and hot-reload informational messages.
+- P2: product-panel typography was smaller and denser than the mock.
 
-## Remaining findings
+Fix: increased panel heading, supporting copy, topline, positioning statement, and login-description scales; captured fresh desktop and mobile evidence.
 
-No actionable P0, P1, or P2 visual findings remain. The CI browser suite's first exact-head run exposed one stale copy assertion after the login wording changed from “Synthetic local test identities” to “Local review access”; the rendered secure-entry behavior remained correct and the assertion was updated to the intentional copy.
+### Final post-fix comparison - passed
+
+- No actionable P0, P1, or P2 mismatches remain.
+- Residual P3: the roadmap artwork originates from a raster mock rather than a native vector master. It is sharp at the tested sizes, but a future vector master would improve extreme-density scaling without changing the design.
+
+## Verification
+
+- Typecheck: passed.
+- Lint: passed.
+- Unit tests: 33 passed.
+- Production build: passed.
+- Full browser suite: 29 passed.
+- Final landing-only browser suite with console-error assertion: 3 passed.
+- Console errors in the tested landing flow: none.
 
 final result: passed

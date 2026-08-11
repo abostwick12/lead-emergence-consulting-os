@@ -1,0 +1,11 @@
+.root {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.frame {
+  object-fit: contain;
+}
