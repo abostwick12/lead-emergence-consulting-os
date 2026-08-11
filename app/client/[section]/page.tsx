@@ -8,6 +8,8 @@ import { getPortalDashboard } from '@/lib/portal/repository';
 import { getMeetingCenter } from '@/lib/meetings/repository';
 import { OutcomesNewRealityCenter } from '@/components/outcomes/outcomes-new-reality-center';
 import { getOutcomesNewReality } from '@/lib/outcomes/repository';
+import { DescriptiveSignalsCenter } from '@/components/signals/descriptive-signals-center';
+import { getSignalsWorkspace } from '@/lib/signals/repository';
 
 const sectionCopy: Record<string, { title: string; description: string }> = {
   'our-organization': { title: 'Our Organization', description: 'Validated organizational knowledge, current effective state, and shared decisions.' },
@@ -26,7 +28,7 @@ export default async function ClientSection({ params }: { params: Promise<{ sect
   if (section === 'our-organization') return <><PageIntro eyebrow={session.organization.name} {...copy} /><AlignmentCapabilityCenter initialData={await getAlignmentCapability(session)} mode="alignment" /><RecordList records={dashboard.records} role="client" title="Validated organizational records" /></>;
   if (section === 'my-development') return <><PageIntro eyebrow={session.organization.name} {...copy} /><AlignmentCapabilityCenter initialData={await getAlignmentCapability(session)} mode="development" /></>;
   if (section === 'meetings') return <><PageIntro eyebrow={session.organization.name} {...copy} /><MeetingCenter initialData={await getMeetingCenter(session)} /></>;
-  if (section === 'progress') return <><PageIntro eyebrow={session.organization.name} {...copy} /><OutcomesNewRealityCenter initialData={await getOutcomesNewReality(session)} /></>;
+  if (section === 'progress') return <><PageIntro eyebrow={session.organization.name} {...copy} /><OutcomesNewRealityCenter initialData={await getOutcomesNewReality(session)} /><DescriptiveSignalsCenter initialData={await getSignalsWorkspace(session)} /></>;
   const messages: Record<string, string> = {
     settings: 'Your access is derived from current Consulting memberships and engagement scope.',
   };
