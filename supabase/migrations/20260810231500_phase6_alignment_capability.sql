@@ -260,7 +260,7 @@ create table consulting_os.capability_assessment_evidence (
   created_by uuid not null references consulting_os.people(id) on delete restrict, created_at timestamptz not null default now(),
   primary key (assessment_id, evidence_id),
   foreign key (assessment_id, organization_id) references consulting_os.capability_assessments(id, organization_id) on delete restrict,
-  foreign key (evidence_id, organization_id) references consulting_os.evidence(id, organization_id) on delete restrict
+  foreign key (evidence_id, organization_id) references consulting_os.evidence_items(id, organization_id) on delete restrict
 );
 
 create table consulting_os.capability_gaps (
