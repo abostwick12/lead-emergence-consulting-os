@@ -12,7 +12,7 @@ select has_view('consulting_os','value_outcome_pathways','Value chain has a gove
 select has_view('consulting_os','client_progress','Client progress has a curated projection');
 select has_function('consulting_os','create_baseline_snapshot',array['uuid','timestamp with time zone','text','text','uuid','uuid[]','text[]','text[]'],'Baseline creation is atomic');
 select results_eq($$select count(*) from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='consulting_os' and c.relname in ('strategic_priorities','goals','value_hypotheses','indicators','measurements','outcomes','value_evaluations','learnings','outcome_decisions','emergent_organization_profiles','emergent_profile_members','emergent_reality_differences','organizational_stories','organizational_story_links','baseline_snapshots','baseline_snapshot_members') and c.relrowsecurity$$,array[16::bigint],'Every Phase 7 table enforces RLS');
-select results_eq($$select enumlabel::text from pg_enum e join pg_type t on t.oid=e.enumtypid join pg_namespace n on n.oid=t.typnamespace where n.nspname='consulting_os' and t.typname='outcome_disposition' order by enumsortorder$$,array['SUSTAIN','IMPROVE','SCALE','STOP','REINVENT'],'Human outcome decisions are controlled');
+select enum_has_labels('consulting_os','outcome_disposition',array['SUSTAIN','IMPROVE','SCALE','STOP','REINVENT'],'Human outcome decisions are controlled');
 
 insert into auth.users(id,email,role,aud,raw_app_meta_data,raw_user_meta_data,created_at,updated_at) values
  ('a7100000-0000-4000-8000-000000000001','phase7-consultant@example.test','authenticated','authenticated','{}','{}',now(),now()),
