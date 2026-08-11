@@ -19,13 +19,13 @@ type LeadEmergenceSymbolProps = {
 };
 
 const sourceFrames = [
-  '/brand/roadmap/mock-stage-01-see-v9.png',
-  '/brand/roadmap/mock-stage-02-reframe-v9.png',
-  '/brand/roadmap/mock-stage-03-align-v9.png',
-  '/brand/roadmap/mock-stage-04-build-v9.png',
-  '/brand/roadmap/mock-stage-05-produce-v9.png',
-  '/brand/roadmap/mock-stage-06-new-reality-v9.png',
-  '/brand/roadmap/mock-stage-07-see-again-v9.png',
+  '/brand/roadmap/mock-stage-01-see-v10.png',
+  '/brand/roadmap/mock-stage-02-reframe-v10.png',
+  '/brand/roadmap/mock-stage-03-align-v10.png',
+  '/brand/roadmap/mock-stage-04-build-v10.png',
+  '/brand/roadmap/mock-stage-05-produce-v10.png',
+  '/brand/roadmap/mock-stage-06-new-reality-v10.png',
+  '/brand/roadmap/mock-stage-07-see-again-v10.png',
 ] as const;
 
 function clamp(value: number) {
@@ -34,38 +34,26 @@ function clamp(value: number) {
 }
 
 export function LeadEmergenceSymbol({ progress, className, title = 'Lead Emergence symbol' }: LeadEmergenceSymbolProps) {
-  const stem = clamp(progress.stem);
-  const structure = clamp(progress.structure);
-  const pathway = clamp(progress.pathway);
-  const arc = clamp(progress.arc);
-  const resolved = clamp(progress.resolved);
-  const cycle = clamp(progress.cycle);
-  const frameOpacity = [
-    1 - stem,
-    stem * (1 - structure),
-    structure * (1 - pathway),
-    pathway * (1 - arc),
-    arc * (1 - resolved),
-    resolved * (1 - cycle),
-    cycle,
-  ];
+  const frameIndex = clamp(progress.cycle) >= 0.5 ? 6
+    : clamp(progress.resolved) >= 0.5 ? 5
+      : clamp(progress.arc) >= 0.5 ? 4
+        : clamp(progress.pathway) >= 0.5 ? 3
+          : clamp(progress.structure) >= 0.5 ? 2
+            : clamp(progress.stem) >= 0.5 ? 1
+              : 0;
 
   return (
     <span className={`${symbolStyles.root} ${className ?? ''}`} role="img" aria-label={title}>
-      {sourceFrames.map((source, index) => (
-        <Image
-          alt=""
-          aria-hidden="true"
-          className={symbolStyles.frame}
-          fill
-          key={source}
-          priority
-          sizes="(max-width: 720px) 90vw, 42vw"
-          src={source}
-          style={{ opacity: frameOpacity[index] }}
-          unoptimized
-        />
-      ))}
+      <Image
+        alt=""
+        aria-hidden="true"
+        className={symbolStyles.frame}
+        fill
+        priority
+        sizes="(max-width: 720px) 90vw, 42vw"
+        src={sourceFrames[frameIndex]}
+        unoptimized
+      />
     </span>
   );
 }

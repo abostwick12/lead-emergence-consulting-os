@@ -8,11 +8,4 @@
 
 .frame {
   object-fit: contain;
-  transition: opacity 220ms linear;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .frame {
-    transition: none;
-  }
 }

@@ -2,6 +2,10 @@ import { expect, test } from '@playwright/test';
 
 test.describe('public Lead Emergence landing experience', () => {
   test('builds one continuous symbol and keeps returning-user entry available', async ({ page }) => {
+    const consoleErrors: string[] = [];
+    page.on('console', (message) => {
+      if (message.type() === 'error') consoleErrors.push(message.text());
+    });
     await page.setViewportSize({ width: 1536, height: 1024 });
     await page.goto('/');
     await expect(page.getByRole('heading', { name: /Before you build what comes next/ })).toBeVisible();
@@ -39,6 +43,7 @@ test.describe('public Lead Emergence landing experience', () => {
     await page.setViewportSize({ width: 1995, height: 900 });
     await page.locator('.returning-user').scrollIntoViewIfNeeded();
     await page.locator('.returning-user').screenshot({ path: 'test-results/landing-returning-user-desktop.png' });
+    expect(consoleErrors).toEqual([]);
   });
 
   test('preserves the same construction sequence on mobile', async ({ page }) => {
@@ -50,6 +55,8 @@ test.describe('public Lead Emergence landing experience', () => {
     await expect(page.getByText('Step into what has become possible.', { exact: true })).toBeVisible();
     await expect(page.locator('header').getByRole('button', { name: 'Sign in', exact: true })).toBeVisible();
     await page.screenshot({ path: 'test-results/landing-new-reality-mobile.png' });
+    await page.locator('#products').scrollIntoViewIfNeeded();
+    await page.screenshot({ path: 'test-results/landing-product-entry-mobile.png' });
     await page.locator('.returning-user').scrollIntoViewIfNeeded();
     await expect(page.getByText('Returning user?', { exact: true })).toBeVisible();
     await expect(page.getByText('Sign in to quickly access your environment.', { exact: true })).toBeVisible();

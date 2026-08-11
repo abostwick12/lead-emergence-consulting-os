@@ -1,7 +1,8 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowDown, ArrowRight, BriefcaseBusiness, Church, LockKeyhole, UserRound, UsersRound, X } from 'lucide-react';
+import { ArrowDown, ArrowRight, ChartNoAxesColumnIncreasing, LockKeyhole, UserRound, UsersRound, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { LeadEmergenceSymbol, completeSymbolProgress } from './lead-emergence-symbol';
 import { ReturningUser } from './returning-user';
@@ -173,7 +174,6 @@ export function LandingExperience() {
             <div className={styles.symbolStage} aria-hidden="true">
               <div className={styles.symbolHalo} />
               <LeadEmergenceSymbol className={styles.symbol} progress={symbolProgress} />
-              <p className={styles.constructionLabel}>{activeStage === 6 ? 'THE CYCLE CONTINUES' : 'ONE SYSTEM · FORMING IN VIEW'}</p>
             </div>
           </div>
 
@@ -212,21 +212,31 @@ export function LandingExperience() {
       <section className={styles.productEntry} id="products" aria-labelledby="products-title">
         <div className={styles.entryFrame}>
           <header className={styles.entryIntro}>
-            <p className={styles.eyebrow}>TWO ENVIRONMENTS. ONE CONVICTION.</p>
-            <h2 id="products-title">Where are you leading?</h2>
-            <div className={styles.introRule} />
-            <p>Choose the environment that fits your role and calling.</p>
-            <LeadEmergenceSymbol className={styles.entryMark} progress={completeSymbolProgress} title="Lead Emergence" />
+            <Image
+              alt=""
+              aria-hidden="true"
+              className={styles.entryIntroArtwork}
+              fill
+              priority
+              sizes="(max-width: 720px) calc(100vw - 40px), 529px"
+              src="/brand/roadmap/mock-product-intro-v10.png"
+              unoptimized
+            />
+            <div className={styles.entryIntroSemantic}>
+              <p>TWO ENVIRONMENTS. ONE CONVICTION.</p>
+              <h2 id="products-title">Where are you leading?</h2>
+              <p>Choose the environment that fits your role and calling.</p>
+            </div>
           </header>
 
           <article className={`${styles.productCard} ${styles.ministryCard}`}>
-            <div className={styles.productTopline}><span>FORMATION</span><span className={styles.productIcon}><Church aria-hidden="true" /></span></div>
+            <div className={styles.productTopline}><span>FORMATION</span><span className={styles.productIcon}><UsersRound aria-hidden="true" /></span></div>
             <h3>Ministry</h3>
             <p className={styles.positioning}>Create more space for shepherding.</p>
             <p>Bring people, ministry operations, discipleship, and biblical purpose into one environment designed around how ministry actually works.</p>
             <div className={styles.entryStack}>
               <a className={styles.entryLink} href={MINISTRY_LOGIN_URL}>
-                <UserRound aria-hidden="true" />
+                <UsersRound aria-hidden="true" />
                 <span><strong>Team member login</strong><small>Staff, leaders, and volunteers</small></span>
                 <ArrowRight aria-hidden="true" />
               </a>
@@ -239,7 +249,7 @@ export function LandingExperience() {
           </article>
 
           <article className={`${styles.productCard} ${styles.consultingCard}`}>
-            <div className={styles.productTopline}><span>TRANSFORMATION</span><span className={styles.productIcon}><BriefcaseBusiness aria-hidden="true" /></span></div>
+            <div className={styles.productTopline}><span>TRANSFORMATION</span><span className={styles.productIcon}><ChartNoAxesColumnIncreasing aria-hidden="true" /></span></div>
             <h3>Lead Emergence Consulting</h3>
             <p className={styles.positioning}>Build the organization that should exist next.</p>
             <p>See reality clearly, challenge inherited assumptions, align around purpose, cultivate capability, and preserve why the organization was built that way.</p>
@@ -275,12 +285,12 @@ export function LandingExperience() {
           <p>Your identity may be shared, but access remains independent for each product.</p>
           <div className={styles.dialogOptions}>
             <section>
-              <div><BriefcaseBusiness aria-hidden="true" /><strong>Lead Emergence Consulting</strong></div>
+              <div><ChartNoAxesColumnIncreasing aria-hidden="true" /><strong>Lead Emergence Consulting</strong></div>
               <Link href="/login?returnTo=%2Fconsultant">Consultant <ArrowRight aria-hidden="true" /></Link>
               <Link href="/login?returnTo=%2Fclient">Client <ArrowRight aria-hidden="true" /></Link>
             </section>
             <section>
-              <div><Church aria-hidden="true" /><strong>Ministry</strong></div>
+              <div><UsersRound aria-hidden="true" /><strong>Ministry</strong></div>
               <a href={MINISTRY_LOGIN_URL}>Ministry user <ArrowRight aria-hidden="true" /></a>
             </section>
           </div>
