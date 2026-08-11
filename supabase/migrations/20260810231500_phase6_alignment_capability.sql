@@ -511,16 +511,18 @@ security definer
 set search_path = ''
 as $$
 declare
+  v_new jsonb;
   v_role_id uuid;
   v_org uuid;
   v_status consulting_os.design_record_status;
 begin
+  v_new := to_jsonb(new);
   v_role_id := case tg_table_name
-    when 'roles' then new.id
-    when 'interfaces' then new.source_role_id
-    else new.role_id
+    when 'roles' then (v_new ->> 'id')::uuid
+    when 'interfaces' then (v_new ->> 'source_role_id')::uuid
+    else (v_new ->> 'role_id')::uuid
   end;
-  v_org := new.organization_id;
+  v_org := (v_new ->> 'organization_id')::uuid;
   select status into v_status from consulting_os.roles where id = v_role_id and organization_id = v_org;
   if v_status in ('APPROVED','ACTIVE') and (
     not exists (select 1 from consulting_os.responsibilities where role_id = v_role_id and organization_id = v_org)
