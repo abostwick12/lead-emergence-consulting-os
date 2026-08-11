@@ -3,63 +3,70 @@
 ## Comparison target
 
 - Source visual truth: `C:\Users\AWBOST~1\AppData\Local\Temp\codex-clipboard-9d52e4df-4071-48ec-9a2b-a6935ea216f8.png`
+- Source visual dimensions: 1536 x 1024 pixels.
 - Rendered implementation: `http://localhost:3179/`
-- Desktop NEW REALITY: `docs/consulting-os/implementation/evidence/landing/landing-v4-new-reality-desktop.png`
-- Desktop SEE AGAIN: `docs/consulting-os/implementation/evidence/landing/landing-v4-see-again-desktop.png`
-- Mobile NEW REALITY: `docs/consulting-os/implementation/evidence/landing/landing-v4-new-reality-mobile.png`
-- Same-input comparison: `docs/consulting-os/implementation/evidence/landing/landing-reference-vs-v4.png`
-- Focused seven-state comparison: `docs/consulting-os/implementation/evidence/landing/landing-v4-assets-contact.png`
-- Source and desktop implementation: 1536 x 1024 pixels at density 1.
-- Mobile implementation: 390 x 844 CSS pixels at density 1.
-- States: opening, 06 NEW REALITY, 07 SEE AGAIN, and mobile 06 NEW REALITY.
+- Desktop viewport and density: 1536 x 1024 CSS pixels at density 1.
+- Mobile viewport and density: 390 x 844 CSS pixels at density 1.
+- Source-extracted seven-state artwork: `docs/consulting-os/implementation/evidence/landing/landing-v5-source-matched-contact.png`
+- Same-input focused comparison: `docs/consulting-os/implementation/evidence/landing/landing-v5-reference-vs-browser-symbols.png`
+- Browser progression: `docs/consulting-os/implementation/evidence/landing/landing-v5-browser-progression-desktop.png`
+- Desktop NEW REALITY: `docs/consulting-os/implementation/evidence/landing/landing-v5-new-reality-desktop.png`
+- Desktop SEE AGAIN: `docs/consulting-os/implementation/evidence/landing/landing-v5-see-again-desktop.png`
+- Mobile NEW REALITY: `docs/consulting-os/implementation/evidence/landing/landing-v5-new-reality-mobile.png`
+- Mobile SEE AGAIN: `docs/consulting-os/implementation/evidence/landing/landing-v5-see-again-mobile.png`
+- States checked: all seven desktop stages, desktop NEW REALITY and SEE AGAIN, and mobile NEW REALITY and SEE AGAIN.
 
 ## Findings
 
-No actionable P0, P1, or P2 differences remain after the v4 correction.
+No actionable P0, P1, or P2 differences remain after the v5 source-matched correction.
 
-- Fonts and typography: the existing Lead Emergence serif, italic, mono, tracking, and wrapping remain consistent with the reference. No typography was replaced as part of the asset correction.
-- Spacing and layout rhythm: the symbol remains centered in the sticky desktop visual track and reflows above the stage copy on mobile without clipping or overlap.
-- Colors and visual tokens: the corrected master uses the platform's near-black navy field, cyan structural light, translucent cobalt planes, and restrained warm gold. The rendered asset no longer feels stylistically separate from the surrounding platform.
-- Image quality and asset fidelity: the rejected low-resolution enlarged crops were replaced with a 1254 x 1254 source-grounded master. The exact approved cyan origin and skeletal triangle remain the ancestors of the later states. The arc, rays, pathway, resolved mark, and new cycle point are derived from one locked registration, so the logo is completed rather than swapped in.
-- Copy and content: stage names, stage statements, supporting copy, and product-entry content remain unchanged.
-- Responsiveness and accessibility: 1536 x 1024 and 390 x 844 states render cleanly; all stage labels and copy remain available; reduced-motion behavior remains discrete; the persistent Sign in control remains visible.
-- Interaction and console health: stage-rail navigation reached NEW REALITY and SEE AGAIN, the mobile stage rail reached NEW REALITY, and the browser reported no warnings or errors.
+- Fonts and typography: the existing Lead Emergence serif, italic, mono, tracking, hierarchy, and wrapping remain consistent with the approved visual direction. No typography changed in this correction.
+- Spacing and layout rhythm: the symbol stays centered in the desktop sticky track and reflows above the copy on mobile without clipping, overlap, or viewport overflow.
+- Colors and visual tokens: the artwork now uses pixels sampled directly from the approved mockup for the cyan origin, blue structural planes, warm-gold arc/rays, and navy-edge treatment. The surrounding page continues to use the same platform tokens.
+- Image quality and asset fidelity: v5 removes the generated interpretation entirely. The point, triangle, arc, rays, pathway, and completed mark are reconstructed from the actual supplied artwork regions, registered to one apex, and exported as 1024 x 1024 alpha PNGs. The browser render preserves the source geometry, ray spacing, arc weight, glow, and facet proportions without the invented caption or generated-master drift.
+- Copy and content: stage names, stage statements, supporting copy, entry copy, and product naming remain unchanged.
+- Responsiveness and accessibility: desktop and mobile preserve the same seven-state construction sequence; text and controls remain readable; reduced-motion behavior remains discrete; and the persistent Sign in control stays visible.
+- Interaction and console health: each of the seven stage-rail controls reached its matching `data-active-stage`; desktop and mobile NEW REALITY/SEE AGAIN rendered correctly; and the in-app browser reported no warnings or errors.
 
 ## Full-view comparison evidence
 
-`landing-reference-vs-v4.png` combines the approved 1536 x 1024 visual reference and the rendered 1536 x 1024 NEW REALITY state in one comparison. The implementation intentionally uses a cinematic one-stage sticky composition rather than the reference board's seven simultaneous cards. Within that required structural difference, the navy field, cyan/blue construction, gold horizon/rays, serif/mono hierarchy, border treatment, and quiet premium character are cohesive.
+The approved image is a visual-direction board rather than the requested sticky-page layout, so full-view comparison is used for palette, typography, spacing character, border treatment, and overall restraint rather than identical section placement. The 1536 x 1024 NEW REALITY and SEE AGAIN captures preserve the same deep navy field, cyan/blue structure, warm-gold illumination, and quiet premium hierarchy.
 
 ## Focused region comparison evidence
 
-`landing-v4-assets-contact.png` places all seven implementation frames in one locked row. It directly verifies the required visual ancestry:
+`landing-v5-reference-vs-browser-symbols.png` puts the source-extracted states and the browser-rendered states into one normalized comparison board. This is the primary asset-fidelity evidence because it compares the artwork itself rather than two intentionally different layouts.
 
-1. cyan point;
-2. point plus triangular structure;
-3. the same structure plus arc;
-4. the same structure plus rays;
-5. the lower illuminated pathway;
-6. the fully resolved mark;
-7. the completed mark receding behind a new cyan point.
+The comparison verifies the required visual ancestry:
+
+1. the exact cyan origin point;
+2. the point retained as the apex of the exact skeletal triangle;
+3. the source-matched gold arc added around that triangle;
+4. the source-matched rays added without replacing the prior geometry;
+5. the lower blue pathway introduced from the same mark;
+6. the completed source-matched symbol resolved from those elements;
+7. the completed mark receded while a new cyan point becomes primary.
 
 ## Comparison history
 
-1. Earlier P1: generated stage artwork did not match the platform or the approved mockup.
-   - Fix: rejected those assets and grounded the replacement in the supplied reference.
-2. Earlier P1: the v3 set was only enlarged from small card crops, remained visibly soft at hero scale, and followed the reference board's card order instead of the authoritative continuous-construction sequence.
-   - Fix: created a high-resolution locked master, retained the approved origin/triangle ancestors, and separated the arc, rays, pathway, resolution, and re-entry point into the required sequence.
-3. Earlier P2: the first v4 master introduced an unwanted cross and an overly heavy ring.
-   - Fix: removed the cross, narrowed the apex, thinned the gold arc and rays, and regenerated the master against the Stage 07 reference.
-4. Earlier P2: the first composite leaked path geometry into SEE and rays into ALIGN.
-   - Fix: isolated the real source point, triangle, arc, rays, and path masks before integration.
-5. Post-fix evidence: desktop NEW REALITY and SEE AGAIN, mobile NEW REALITY, the seven-state contact sheet, and browser console inspection all pass.
+1. Earlier P1: the first generated stage artwork did not match the existing platform or the approved mockup.
+   - Fix: rejected those assets and grounded the replacement in the supplied source image.
+2. Earlier P1: the v3 enlarged-card set was visibly soft at hero scale and did not follow the authoritative continuous-construction order.
+   - Fix: rebuilt the required seven-state sequence on one registration.
+3. Earlier P1: the v4 generated master still changed the ray spacing, arc thickness, mountain planes, and apex character and introduced a tiny caption not present in the approved artwork.
+   - Fix: removed the generated master and reconstructed every visible layer from the approved mockup pixels.
+4. Earlier P2: the first SEE AGAIN crossfade retained a bright full-size mark behind the receded mark, creating two visible symbols.
+   - Fix: accelerated the completed-frame fade so the source-matched receded mark and new point become the only primary visual at Stage 07.
+5. Post-fix evidence: all seven stage controls map correctly, the focused comparison matches the source geometry, desktop/mobile captures remain clean, and console inspection is empty.
 
 ## Primary interactions tested
 
-- Opening state and persistent Sign in control.
-- Desktop stage-rail jump to 06 NEW REALITY.
-- Desktop stage-rail jump to 07 SEE AGAIN.
-- Mobile stage-rail jump to 06 NEW REALITY.
-- Browser console inspection after desktop and mobile interactions.
+- All seven desktop roadmap stage controls.
+- Desktop 06 NEW REALITY.
+- Desktop 07 SEE AGAIN.
+- Mobile 06 NEW REALITY.
+- Mobile 07 SEE AGAIN.
+- Persistent Sign in visibility.
+- Browser warning/error inspection.
 
 ## Open questions
 
@@ -67,14 +74,17 @@ None for this correction.
 
 ## Implementation checklist
 
-- [x] Replace the rejected enlarged crops with high-resolution, source-grounded assets.
-- [x] Lock all stages to one registration and construction ancestry.
-- [x] Prevent early arc, ray, path, or logo leakage.
-- [x] Verify desktop and mobile rendering.
-- [x] Compare the approved reference and rendered implementation in one image.
+- [x] Remove generated reinterpretation from the active artwork path.
+- [x] Rebuild the seven states from the approved mockup artwork.
+- [x] Lock all stages to one apex and registration.
+- [x] Preserve the required point → triangle → arc → rays → pathway → completed mark → new point sequence.
+- [x] Remove the overlapping-symbol artifact from SEE AGAIN.
+- [x] Verify every desktop stage control.
+- [x] Verify desktop and mobile NEW REALITY and SEE AGAIN.
+- [x] Compare source and browser artwork in one normalized image.
 
 ## Follow-up polish
 
-The implementation's longer lower pathway is intentional: it supports the user's traversable/lived-direction requirement and resolves into the same emblem language as the approved reference.
+None required for the visual checkpoint.
 
 final result: passed
