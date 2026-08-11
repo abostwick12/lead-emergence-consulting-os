@@ -99,4 +99,4 @@ For each phase:
 
 ## Next executable step
 
-After the Phase 5 completion record merges, begin Phase 6 Alignment + Capability on a dedicated branch/worktree. Phase 6 must trace validated Insight through Decision into concrete organizational design and capability requirements, preserve the complete Role contract, compare Capability Gaps against evidence, and support dated, owned, measurable development plans. Production migrations and topology changes remain separately unauthorized.
+Phase 6 runs on `codex/consulting-os-phase6`. It traces validated Insight through Decision into concrete organizational design and capability requirements, preserves the complete Role contract, compares Capability Gaps against evidence-based current state, and supports dated, owned, measurable development plans through practice and maturity evidence. Production migrations and topology changes remain separately unauthorized.
