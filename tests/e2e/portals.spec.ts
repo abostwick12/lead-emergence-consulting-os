@@ -17,7 +17,7 @@ test('consultant can move through the workspace and inspect provenance and histo
   await enter(page, 'consultant', '/consultant/clients/10000000-0000-4000-8000-000000000001/discovery');
   await expect(page.getByRole('heading', { name: 'Discovery', exact: true })).toBeVisible();
   await expect(page.getByRole('navigation', { name: 'Client workspace sections' })).toBeVisible();
-  await page.getByText('Authority repeatedly escalates upward').click();
+  await page.getByRole('link').filter({ hasText: 'Authority repeatedly escalates upward' }).click();
   await expect(page.getByRole('heading', { name: 'Inspectable sources' })).toBeVisible();
   await expect(page.getByText('Interview 04 · excerpt 12')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'How this record changed' })).toBeVisible();
