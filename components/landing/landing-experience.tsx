@@ -1,12 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowDown, ArrowRight, BriefcaseBusiness, Church, LockKeyhole, X } from 'lucide-react';
+import { ArrowDown, ArrowRight, BriefcaseBusiness, Church, LockKeyhole, UserRound, UsersRound, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { LeadEmergenceSymbol, completeSymbolProgress } from './lead-emergence-symbol';
 import styles from './landing.module.css';
 
 const MINISTRY_LOGIN_URL = 'https://ministry.leademergence.com/login';
+const MINISTRY_GUEST_URL = 'https://ministry.leademergence.com/api/auth/guest';
 
 const stages = [
   {
@@ -156,14 +157,13 @@ export function LandingExperience() {
         <div className={styles.stickyFrame}>
           <div className={styles.storyGrid} id="main-content">
             <div className={styles.copyStage} aria-hidden="true">
-              {stages.map((stage, index) => (
-                <article className={`${styles.stageCopy} ${index === activeStage ? styles.stageCopyActive : ''}`} key={stage.number}>
-                  <div className={styles.stageMeta}><span>{stage.number}</span><span>OF 07</span></div>
-                  <p className={styles.stageName}>{stage.short}</p>
-                  <h3>{stage.title}</h3>
-                  <p className={styles.stageBody}>{stage.copy}</p>
-                </article>
-              ))}
+              <article className={styles.stageCopy} key={stages[activeStage].number}>
+                <div className={styles.stageMeta}><span>{stages[activeStage].number}</span><span>OF 07</span></div>
+                <p className={styles.stageName}>{stages[activeStage].short}</p>
+                <div className={styles.stageRule} />
+                <h3>{stages[activeStage].title}</h3>
+                <p className={styles.stageBody}>{stages[activeStage].copy}</p>
+              </article>
             </div>
 
             <div className={styles.symbolStage} aria-hidden="true">
@@ -193,50 +193,72 @@ export function LandingExperience() {
       </section>
 
       <section className={styles.brandReveal} aria-labelledby="brand-title">
-        <div className={styles.brandSymbolWrap}>
-          <LeadEmergenceSymbol className={styles.brandSymbol} progress={completeSymbolProgress} />
-        </div>
-        <div>
-          <p className={styles.eyebrow}>ONE CONTINUOUS PRACTICE</p>
-          <h2 id="brand-title"><i>Lead</i> Emergence</h2>
-          <p>Technology for leaders building organizations and ministries where people, purpose, and systems can flourish together.</p>
+        <div className={styles.brandPanel}>
+          <div className={styles.brandSymbolWrap}>
+            <LeadEmergenceSymbol className={styles.brandSymbol} progress={completeSymbolProgress} />
+          </div>
+          <div className={styles.brandStatement}>
+            <p className={styles.eyebrow}>ONE CONTINUOUS PRACTICE</p>
+            <h2 id="brand-title"><i>Lead</i> Emergence</h2>
+            <p>Technology for leaders building organizations and ministries where people, purpose, and systems can flourish together.</p>
+          </div>
         </div>
       </section>
 
       <section className={styles.productEntry} id="products" aria-labelledby="products-title">
-        <header className={styles.productHeading}>
-          <p className={styles.eyebrow}>TWO ENVIRONMENTS. ONE CONVICTION.</p>
-          <h2 id="products-title">Where are you leading?</h2>
-          <p>Choose the environment that fits your work. Each product keeps its own permissions and responsibilities.</p>
-        </header>
-        <div className={styles.productGrid}>
+        <div className={styles.entryFrame}>
+          <header className={styles.entryIntro}>
+            <p className={styles.eyebrow}>TWO ENVIRONMENTS. ONE CONVICTION.</p>
+            <h2 id="products-title">Where are you leading?</h2>
+            <div className={styles.introRule} />
+            <p>Choose the environment that fits your role and calling.</p>
+            <LeadEmergenceSymbol className={styles.entryMark} progress={completeSymbolProgress} title="Lead Emergence" />
+          </header>
+
           <article className={`${styles.productCard} ${styles.ministryCard}`}>
-            <div className={styles.productTopline}><span>FORMATION</span><Church aria-hidden="true" /></div>
+            <div className={styles.productTopline}><span>FORMATION</span><span className={styles.productIcon}><Church aria-hidden="true" /></span></div>
             <h3>Ministry</h3>
             <p className={styles.positioning}>Create more space for shepherding.</p>
             <p>Bring people, ministry operations, discipleship, and biblical purpose into one environment designed around how ministry actually works.</p>
-            <a className={styles.entryLink} href={MINISTRY_LOGIN_URL}>
-              <span><strong>Ministry user</strong><small>Staff, leaders, and authorized ministry participants</small></span>
-              <ArrowRight aria-hidden="true" />
-            </a>
+            <div className={styles.entryStack}>
+              <a className={styles.entryLink} href={MINISTRY_LOGIN_URL}>
+                <UserRound aria-hidden="true" />
+                <span><strong>Team member login</strong><small>Staff, leaders, and volunteers</small></span>
+                <ArrowRight aria-hidden="true" />
+              </a>
+              <a className={styles.entryLink} href={MINISTRY_GUEST_URL}>
+                <UserRound aria-hidden="true" />
+                <span><strong>Guest access</strong><small>Students and parents with an invite link</small></span>
+                <ArrowRight aria-hidden="true" />
+              </a>
+            </div>
           </article>
 
           <article className={`${styles.productCard} ${styles.consultingCard}`}>
-            <div className={styles.productTopline}><span>TRANSFORMATION</span><BriefcaseBusiness aria-hidden="true" /></div>
+            <div className={styles.productTopline}><span>TRANSFORMATION</span><span className={styles.productIcon}><BriefcaseBusiness aria-hidden="true" /></span></div>
             <h3>Lead Emergence Consulting</h3>
             <p className={styles.positioning}>Build the organization that should exist next.</p>
             <p>See reality clearly, challenge inherited assumptions, align around purpose, cultivate capability, and preserve why the organization was built that way.</p>
             <div className={styles.entryStack}>
               <Link className={styles.entryLink} href="/login?returnTo=%2Fconsultant">
+                <UserRound aria-hidden="true" />
                 <span><strong>Consultant login</strong><small>Run engagements, frameworks, and deliverables</small></span>
                 <ArrowRight aria-hidden="true" />
               </Link>
               <Link className={styles.entryLink} href="/login?returnTo=%2Fclient">
-                <span><strong>Consulting client login</strong><small>Track your engagement, decisions, and progress</small></span>
+                <UsersRound aria-hidden="true" />
+                <span><strong>Client login</strong><small>Track your engagement, decisions, and progress</small></span>
                 <ArrowRight aria-hidden="true" />
               </Link>
             </div>
           </article>
+
+          <aside className={styles.returningPanel}>
+            <div className={styles.returningIcon}><UserRound aria-hidden="true" /></div>
+            <h3>Returning user?</h3>
+            <p>Sign in to quickly access your environment.</p>
+            <button type="button" onClick={openEntry}>Sign in <ArrowRight aria-hidden="true" /></button>
+          </aside>
         </div>
       </section>
 

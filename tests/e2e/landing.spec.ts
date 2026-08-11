@@ -11,6 +11,7 @@ test.describe('public Lead Emergence landing experience', () => {
     await page.getByRole('link', { name: '02 REFRAME', exact: true }).click();
     await expect(page.locator('[data-active-stage]')).toHaveAttribute('data-active-stage', '2');
     await expect(page.getByText('Meaning gives direction.', { exact: true })).toBeVisible();
+    await expect(page.locator('[data-active-stage] article')).toHaveCount(1);
 
     await page.getByRole('link', { name: '06 NEW REALITY', exact: true }).click();
     await expect(page.locator('[data-active-stage]')).toHaveAttribute('data-active-stage', '6');
@@ -24,6 +25,10 @@ test.describe('public Lead Emergence landing experience', () => {
     await expect(page.getByRole('link', { name: 'Ministry user', exact: true })).toHaveAttribute('href', 'https://ministry.leademergence.com/login');
     await page.getByRole('button', { name: 'Close sign in selector' }).click();
     await page.locator('#products').scrollIntoViewIfNeeded();
+    await expect(page.getByRole('link', { name: /Team member login/ })).toHaveAttribute('href', 'https://ministry.leademergence.com/login');
+    await expect(page.getByRole('link', { name: /Guest access/ })).toHaveAttribute('href', 'https://ministry.leademergence.com/api/auth/guest');
+    await expect(page.getByRole('link', { name: /Client login/ })).toHaveAttribute('href', '/login?returnTo=%2Fclient');
+    await expect(page.getByRole('button', { name: 'Sign in', exact: true })).toHaveCount(2);
     await page.screenshot({ path: 'test-results/landing-product-entry-desktop.png' });
   });
 

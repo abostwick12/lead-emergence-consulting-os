@@ -648,3 +648,581 @@
   .stageRail a::before { transition: none; }
   .scrollCue svg { animation: none; }
 }
+
+/* Cohesive platform composition ------------------------------------------------ */
+
+.opening {
+  min-height: calc(100svh - 106px);
+  margin: 92px 14px 14px;
+  border: 1px solid var(--platform-line);
+  border-radius: 10px;
+  padding-top: 72px;
+  background:
+    linear-gradient(to right, rgba(22, 217, 245, 0.022) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(22, 217, 245, 0.018) 1px, transparent 1px),
+    radial-gradient(760px 420px at 50% 52%, rgba(19, 101, 164, 0.1), transparent 72%),
+    rgba(4, 10, 22, 0.68);
+  background-size: 64px 64px, 64px 64px, auto, auto;
+}
+
+.narrative {
+  border: 0;
+}
+
+.stickyFrame {
+  padding: 92px 14px 14px;
+}
+
+.storyGrid {
+  width: 100%;
+  grid-template-columns: minmax(300px, 0.78fr) minmax(420px, 1.22fr);
+  gap: clamp(24px, 5vw, 76px);
+  border: 1px solid var(--platform-line);
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  padding: clamp(24px, 3.2vw, 48px);
+  background: linear-gradient(145deg, rgba(8, 19, 35, 0.7), rgba(3, 9, 19, 0.35));
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.018), 0 24px 70px rgba(0, 0, 0, 0.24);
+}
+
+.copyStage {
+  min-height: 330px;
+}
+
+.stageCopy {
+  position: relative;
+  inset: auto;
+  min-height: 330px;
+  opacity: 1;
+  transform: none;
+  animation: stage-copy-enter 340ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.stageMeta {
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.stageMeta span:first-child {
+  display: inline;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font-size: 0.64rem;
+}
+
+.stageName {
+  margin-bottom: 14px;
+  font-size: clamp(1.45rem, 2vw, 2.05rem);
+  letter-spacing: 0.25em;
+}
+
+.stageRule {
+  width: 48px;
+  height: 1px;
+  margin-bottom: 25px;
+  background: var(--platform-cyan);
+  box-shadow: var(--platform-cyan-glow);
+}
+
+.stageCopy h3 {
+  max-width: 500px;
+  margin-bottom: 18px;
+  font-size: clamp(1.7rem, 2.4vw, 2.75rem);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.08;
+}
+
+.stageBody {
+  max-width: 500px;
+  font-size: clamp(0.82rem, 1vw, 0.94rem);
+  line-height: 1.68;
+}
+
+.symbol {
+  width: min(58vh, 100%);
+  max-height: 58vh;
+}
+
+.symbolHalo {
+  width: min(74%, 460px);
+  opacity: 0.78;
+}
+
+.constructionLabel {
+  bottom: 1.5%;
+}
+
+.stageRail {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--platform-line);
+  border-radius: 0 0 10px 10px;
+  background: rgba(3, 9, 19, 0.82);
+}
+
+.stageRail a {
+  min-height: 58px;
+  align-content: center;
+  border-right: 1px solid rgba(129, 164, 214, 0.12);
+  padding: 10px 16px;
+}
+
+.stageRail a:last-child {
+  border-right: 0;
+}
+
+.stageRail a::before {
+  inset: 0 auto auto 0;
+}
+
+.stageRailActive {
+  background: linear-gradient(90deg, rgba(22, 217, 245, 0.09), rgba(22, 217, 245, 0.025));
+  box-shadow: inset 0 0 0 1px rgba(22, 217, 245, 0.26);
+}
+
+.stageRailActive::before {
+  width: 38% !important;
+}
+
+.brandReveal {
+  display: block;
+  width: calc(100% - 28px);
+  min-height: auto;
+  margin: 0 auto;
+  padding: 96px 0;
+}
+
+.brandPanel {
+  display: grid;
+  min-height: min(720px, 78svh);
+  grid-template-columns: minmax(320px, 0.9fr) minmax(420px, 1.1fr);
+  align-items: center;
+  gap: clamp(36px, 7vw, 100px);
+  overflow: hidden;
+  border: 1px solid var(--platform-line);
+  border-radius: 10px;
+  padding: clamp(36px, 6vw, 88px);
+  background:
+    radial-gradient(620px 460px at 24% 54%, rgba(22, 217, 245, 0.08), transparent 72%),
+    linear-gradient(145deg, rgba(9, 20, 37, 0.76), rgba(3, 9, 19, 0.68));
+  box-shadow: var(--platform-shadow);
+}
+
+.brandSymbol {
+  width: min(480px, 100%);
+}
+
+.brandStatement h2 {
+  margin: 0 0 24px;
+  font-size: clamp(3.4rem, 6.2vw, 6.4rem);
+  line-height: 0.9;
+}
+
+.brandStatement h2 i {
+  color: var(--platform-cyan);
+  font-weight: 400;
+  text-shadow: var(--platform-cyan-glow);
+}
+
+.brandStatement > p:last-child {
+  max-width: 720px;
+  margin: 0;
+  color: #a5b5c8;
+  font-family: var(--font-serif);
+  font-size: clamp(1.35rem, 2.15vw, 2.15rem);
+  line-height: 1.42;
+}
+
+.productEntry {
+  width: calc(100% - 28px);
+  margin: 0 auto;
+  border: 0;
+  padding: 0 0 96px;
+}
+
+.entryFrame {
+  display: grid;
+  min-height: 430px;
+  grid-template-columns: 1.26fr 0.78fr 1.08fr 0.74fr;
+  overflow: hidden;
+  border: 1px solid var(--platform-line);
+  border-radius: 10px;
+  background:
+    linear-gradient(to right, rgba(22, 217, 245, 0.014) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(22, 217, 245, 0.012) 1px, transparent 1px),
+    #06101e;
+  background-size: 64px 64px, 64px 64px, auto;
+  box-shadow: var(--platform-shadow);
+}
+
+.entryIntro {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  overflow: hidden;
+  border-right: 1px solid var(--platform-line);
+  padding: 34px clamp(26px, 3vw, 42px);
+}
+
+.entryIntro h2 {
+  max-width: 280px;
+  margin: 0;
+  font-size: clamp(2.6rem, 3vw, 3.3rem);
+  line-height: 1.04;
+}
+
+.entryIntro > p:last-of-type {
+  max-width: 260px;
+  margin: 0;
+  color: var(--platform-muted);
+  font-family: var(--font-serif);
+  font-size: 1.08rem;
+  line-height: 1.55;
+}
+
+.introRule {
+  width: 50px;
+  height: 1px;
+  margin: 20px 0;
+  background: var(--platform-cyan);
+  box-shadow: var(--platform-cyan-glow);
+}
+
+.entryMark {
+  position: absolute;
+  right: -2%;
+  bottom: -26%;
+  width: min(78%, 330px);
+  overflow: visible;
+  opacity: 0.82;
+}
+
+.productCard {
+  min-height: 430px;
+  border: 0;
+  border-right: 1px solid var(--platform-line);
+  border-radius: 0;
+  padding: 28px clamp(22px, 2vw, 30px);
+  background: linear-gradient(180deg, rgba(9, 24, 43, 0.72), rgba(3, 10, 20, 0.54));
+  box-shadow: none;
+}
+
+.productCard::after {
+  display: none;
+}
+
+.consultingCard {
+  border-color: rgba(217, 183, 95, 0.2);
+}
+
+.productTopline {
+  margin-bottom: 22px;
+  font-size: 0.52rem;
+}
+
+.productIcon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid rgba(22, 217, 245, 0.34);
+  border-radius: 50%;
+}
+
+.consultingCard .productIcon {
+  border-color: rgba(229, 165, 28, 0.42);
+}
+
+.productIcon svg {
+  width: 23px;
+  height: 23px;
+  stroke-width: 1.35;
+}
+
+.productCard h3 {
+  margin-bottom: 9px;
+  font-size: clamp(2rem, 2.4vw, 3rem);
+  line-height: 1;
+}
+
+.productCard > p {
+  font-size: 0.78rem;
+  line-height: 1.62;
+}
+
+.productCard .positioning {
+  margin-bottom: 14px;
+  font-size: 0.94rem;
+}
+
+.entryStack {
+  gap: 8px;
+}
+
+.entryLink {
+  min-height: 62px;
+  gap: 10px;
+  margin-top: 0;
+  padding: 9px 11px;
+}
+
+.entryLink > svg:first-child {
+  width: 25px;
+  height: 25px;
+  color: var(--platform-cyan);
+  stroke-width: 1.35;
+}
+
+.consultingCard .entryLink > svg:first-child {
+  color: #e5a51c;
+}
+
+.entryLink > span {
+  flex: 1 1 auto;
+}
+
+.entryLink strong {
+  font-size: 0.92rem;
+}
+
+.entryLink small {
+  font-size: 0.58rem;
+  line-height: 1.35;
+}
+
+.entryLink > svg:last-child {
+  width: 15px;
+  height: 15px;
+}
+
+.returningPanel {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 24px;
+  text-align: center;
+}
+
+.returningIcon {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  margin-bottom: 24px;
+  border: 1px solid rgba(22, 217, 245, 0.36);
+  border-radius: 50%;
+  color: var(--platform-cyan);
+}
+
+.returningIcon svg {
+  width: 27px;
+  height: 27px;
+  stroke-width: 1.4;
+}
+
+.returningPanel h3 {
+  margin: 0 0 14px;
+  font-size: 1.55rem;
+}
+
+.returningPanel p {
+  margin: 0 0 26px;
+  color: var(--platform-muted);
+  font-size: 0.77rem;
+  line-height: 1.6;
+}
+
+.returningPanel button {
+  display: inline-flex;
+  min-width: 150px;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  border: 1px solid rgba(22, 217, 245, 0.54);
+  border-radius: 999px;
+  background: rgba(3, 12, 23, 0.5);
+  color: var(--platform-cyan);
+  cursor: pointer;
+  font-size: 0.78rem;
+}
+
+.returningPanel button:hover {
+  background: rgba(22, 217, 245, 0.08);
+}
+
+.returningPanel button svg {
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes stage-copy-enter {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1120px) {
+  .entryFrame {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .entryIntro {
+    grid-column: 1 / -1;
+    min-height: 330px;
+    border-right: 0;
+    border-bottom: 1px solid var(--platform-line);
+  }
+
+  .productCard {
+    min-height: 420px;
+    border-bottom: 1px solid var(--platform-line);
+  }
+
+  .consultingCard {
+    border-right: 0;
+  }
+
+  .returningPanel {
+    grid-column: 1 / -1;
+    min-height: 260px;
+  }
+
+  .entryMark {
+    right: -3%;
+    bottom: -52%;
+    width: 430px;
+  }
+}
+
+@media (max-width: 720px) {
+  .opening {
+    min-height: calc(100svh - 86px);
+    margin: 76px 8px 8px;
+    padding: 74px 20px 52px;
+  }
+
+  .stickyFrame {
+    padding: 78px 8px 8px;
+  }
+
+  .storyGrid {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(240px, 42svh) minmax(250px, 1fr);
+    border-radius: 8px 8px 0 0;
+    padding: 12px 18px;
+  }
+
+  .copyStage,
+  .stageCopy {
+    min-height: 240px;
+  }
+
+  .stageCopy {
+    align-content: start;
+    padding-top: 16px;
+  }
+
+  .stageRule {
+    margin: 0 auto 16px;
+  }
+
+  .stageRail {
+    border-radius: 0 0 8px 8px;
+  }
+
+  .stageRail a {
+    min-height: 46px;
+    padding: 8px 3px;
+  }
+
+  .brandReveal,
+  .productEntry {
+    width: calc(100% - 16px);
+  }
+
+  .brandReveal {
+    padding: 72px 0;
+  }
+
+  .brandPanel {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    gap: 0;
+    border-radius: 8px;
+    padding: 26px 20px 46px;
+    text-align: center;
+  }
+
+  .brandSymbol {
+    width: min(340px, 90vw);
+    margin-bottom: -26px;
+  }
+
+  .brandStatement h2 {
+    font-size: clamp(3.35rem, 15vw, 5.2rem);
+  }
+
+  .brandStatement > p:last-child {
+    font-size: 1.24rem;
+  }
+
+  .productEntry {
+    padding-bottom: 72px;
+  }
+
+  .entryFrame {
+    grid-template-columns: 1fr;
+    border-radius: 8px;
+  }
+
+  .entryIntro,
+  .productCard,
+  .returningPanel {
+    grid-column: auto;
+    min-height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--platform-line);
+  }
+
+  .entryIntro {
+    min-height: 390px;
+    padding: 28px 22px;
+  }
+
+  .entryIntro h2 {
+    max-width: 300px;
+    font-size: 3rem;
+  }
+
+  .entryMark {
+    right: -28%;
+    bottom: -27%;
+    width: 430px;
+  }
+
+  .productCard {
+    padding: 28px 22px;
+  }
+
+  .productCard > p:last-of-type {
+    margin-bottom: 28px;
+  }
+
+  .returningPanel {
+    min-height: 300px;
+    border-bottom: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stageCopy {
+    animation: none;
+  }
+}

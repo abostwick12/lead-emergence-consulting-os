@@ -1,0 +1,17 @@
+.root {
+  position: relative;
+  display: block;
+  aspect-ratio: 414 / 466;
+  isolation: isolate;
+}
+
+.frame {
+  object-fit: contain;
+  transition: opacity 240ms linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame {
+    transition: none;
+  }
+}

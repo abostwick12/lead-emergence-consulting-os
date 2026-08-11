@@ -104,7 +104,7 @@ The product-entry comparison verifies that the two environments read as part of 
 - Fonts and typography: display copy uses the platform's Cormorant/Georgia-style serif stack, body copy uses Inter/system sans, and stage labels use the JetBrains Mono/monospace stack. The scale becomes more spacious for the public narrative while preserving the portal's exact hierarchy and color relationships. No clipping or accidental truncation remains at the tested viewports.
 - Spacing and layout rhythm: the opening is intentionally restrained, the seven-stage narrative uses one full-height sticky frame, stage copy and symbol remain balanced at desktop, and mobile reflows to a centered symbol over centered copy without replacing the sequence with cards. Product cards reuse the portal's 14 px radius and bounded navy surface family.
 - Colors and visual tokens: the implementation directly reuses the established platform tokens (`#070d1b`, `#050914`, `#16d9f5`, `#d9b75f`, `#8ea0b7`) and equivalent panel, line, glow, and shadow values.
-- Image quality and asset fidelity: the supplied source contains a brand mark but no separable production asset. The mark is implemented as a crisp purpose-built vector because the user explicitly required its geometry to be drawn and transformed by scroll. The vector is not a temporary metaphor: it is the persistent source of every stage and stays sharp at desktop and mobile sizes. Standard UI icons use the platform's existing Lucide dependency.
+- Image quality and asset fidelity: the supplied source contains a brand mark but no separable production asset. The final implementation uses seven dedicated transparent PNG frames generated from the supplied mockup and sized to the artwork slot. No handcrafted SVG, CSS art, placeholder geometry, or opaque image rectangle remains. Standard UI icons use the platform's existing Lucide dependency.
 - Copy and content: all seven canonical stage labels, titles, and supporting statements are present verbatim from the interaction specification. Ministry and Consulting positioning is accurate; product authorization is described as independent; `Consulting OS` is kept out of public product naming.
 - Accessibility and interaction: the page includes a skip link, semantic ordered roadmap content, visible focus, a native keyboard-dismissible dialog, persistent Sign in, working role destinations, and no color-only meaning. Reduced motion uses discrete progressive states and retains the full narrative.
 - Responsive behavior: 390 x 844 verification preserves the same point → structure → arc → rays → path → complete mark sequence. The mark, stage copy, stage rail, and persistent entry control remain usable without horizontal overflow.
@@ -132,6 +132,33 @@ The product-entry comparison verifies that the two environments read as part of 
 
 ## Remaining findings
 
-No actionable P0, P1, or P2 findings remain. A future P3 brand-production pass may replace the current vector paths with a formally supplied master logo asset while preserving the same layered animation contract.
+No actionable P0, P1, or P2 findings remain in the corrected artwork, desktop composition, or tested mobile states.
 
 final result: passed
+
+## User-review correction - artwork fidelity
+
+The earlier passed state was reopened after the user determined that the programmatically approximated symbol did not match the supplied mockup closely enough.
+
+### Corrected evidence
+
+- Exact source: `C:/Users/AWBOST~1/AppData/Local/Temp/codex-clipboard-9d52e4df-4071-48ec-9a2b-a6935ea216f8.png`
+- Desktop NEW REALITY at 1536 x 1024: `C:/Users/awbostwick/Documents/Codex/lead-emergence-consulting-os/.worktrees/landing-scroll-reveal/.review/landing-cohesive/08-faithful-new-reality-alpha.png`
+- Desktop product entry at 1536 x 1024: `C:/Users/awbostwick/Documents/Codex/lead-emergence-consulting-os/.worktrees/landing-scroll-reveal/.review/landing-cohesive/09-product-entry-alpha.png`
+- Mobile NEW REALITY at 390 x 844 and 1.75 device scale: `C:/Users/awbostwick/Documents/Codex/lead-emergence-consulting-os/.worktrees/landing-scroll-reveal/.review/landing-cohesive/10-mobile-stage-alpha.png`
+- Mobile product entry at 390 x 844 and 1.75 device scale: `C:/Users/awbostwick/Documents/Codex/lead-emergence-consulting-os/.worktrees/landing-scroll-reveal/.review/landing-cohesive/11-mobile-product-alpha.png`
+
+### Iteration 4 - blocked during visual QA
+
+- The replacement artwork initially retained an opaque navy rectangle that visibly differed from the platform panel.
+- The artwork was extracted to transparent 414 x 466 PNGs. The blue and gold subject was preserved and the unused opaque intermediates were removed.
+
+### Iteration 5 - passed
+
+- The source, desktop NEW REALITY, and desktop product-entry captures were reviewed together at the same 1536 x 1024 size.
+- SEE, ALIGN, PRODUCE, NEW REALITY, and SEE AGAIN were exercised in the selected in-app browser; the remaining source frames were inspected at original resolution.
+- The mobile NEW REALITY and stacked product-entry states were inspected at 390 x 844. The art, stage copy, stage rail, persistent entry control, and product actions remained readable without horizontal overflow.
+- Reduced-motion CSS removes the 240 ms artwork transition while keeping each progressive stage available.
+- Typecheck passed, lint passed, 21 unit tests passed, the production build passed, and `git diff --check` passed. Dependencies were unchanged, so `npm ci` was not rerun. The external Playwright CLI was not used; interaction and visual verification were completed in the selected in-app browser.
+
+corrected final result: passed
