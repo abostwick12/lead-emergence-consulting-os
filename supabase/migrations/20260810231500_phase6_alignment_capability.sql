@@ -668,6 +668,7 @@ security definer
 set search_path = ''
 as $$
 declare
+  v_new jsonb;
   v_container_id uuid;
   v_refs uuid[];
   v_ref uuid;
@@ -675,37 +676,38 @@ declare
   v_ref_visibility consulting_os.visibility_scope;
   v_ref_type text;
 begin
+  v_new := to_jsonb(new);
   if tg_table_name = 'workflow_steps' then
-    v_container_id := new.workflow_version_id;
-    v_refs := array_remove(array[new.owner_role_id, new.handoff_to_role_id], null);
+    v_container_id := (v_new ->> 'workflow_version_id')::uuid;
+    v_refs := array_remove(array[(v_new ->> 'owner_role_id')::uuid, (v_new ->> 'handoff_to_role_id')::uuid], null);
   elsif tg_table_name = 'capability_assessment_evidence' then
-    v_container_id := new.assessment_id;
-    v_refs := array[new.evidence_id];
+    v_container_id := (v_new ->> 'assessment_id')::uuid;
+    v_refs := array[(v_new ->> 'evidence_id')::uuid];
   elsif tg_table_name = 'capability_maturity_evidence' then
-    v_container_id := new.maturity_assessment_id;
-    v_refs := array[new.evidence_domain_object_id];
+    v_container_id := (v_new ->> 'maturity_assessment_id')::uuid;
+    v_refs := array[(v_new ->> 'evidence_domain_object_id')::uuid];
   else
-    v_container_id := new.id;
+    v_container_id := (v_new ->> 'id')::uuid;
     v_refs := case tg_table_name
-      when 'role_assignments' then array[new.role_id]
-      when 'design_principles' then array_remove(array[new.source_future_state_principle_id], null)
-      when 'responsibilities' then array[new.role_id]
-      when 'authorities' then array[new.role_id]
-      when 'boundaries' then array[new.role_id]
-      when 'interfaces' then array[new.source_role_id, new.target_role_id]
-      when 'workflow_versions' then array[new.owner_role_id]
-      when 'reinvention_initiatives' then array[new.authorizing_decision_id]
-      when 'capability_requirements' then array[new.capability_id, new.source_domain_object_id, new.target_subject_id]
-      when 'capability_assessments' then array[new.capability_id, new.subject_domain_object_id]
-      when 'capability_gaps' then array[new.requirement_id, new.assessment_id]
-      when 'organizational_systems' then array[new.operating_owner_role_id]
-      when 'metric_definitions' then array[new.accountable_role_id]
-      when 'alignment_conflicts' then array_remove(array[new.first_domain_object_id, new.second_domain_object_id, new.resolution_decision_id], null)
-      when 'development_plans' then array[new.capability_gap_id, new.subject_domain_object_id]
-      when 'development_activities' then array[new.development_plan_id]
-      when 'practices' then array[new.development_plan_id, new.capability_id]
-      when 'resources' then array[new.development_plan_id]
-      when 'capability_maturity_assessments' then array_remove(array[new.capability_id, new.subject_domain_object_id, new.prior_assessment_id], null)
+      when 'role_assignments' then array[(v_new ->> 'role_id')::uuid]
+      when 'design_principles' then array_remove(array[(v_new ->> 'source_future_state_principle_id')::uuid], null)
+      when 'responsibilities' then array[(v_new ->> 'role_id')::uuid]
+      when 'authorities' then array[(v_new ->> 'role_id')::uuid]
+      when 'boundaries' then array[(v_new ->> 'role_id')::uuid]
+      when 'interfaces' then array[(v_new ->> 'source_role_id')::uuid, (v_new ->> 'target_role_id')::uuid]
+      when 'workflow_versions' then array[(v_new ->> 'owner_role_id')::uuid]
+      when 'reinvention_initiatives' then array[(v_new ->> 'authorizing_decision_id')::uuid]
+      when 'capability_requirements' then array[(v_new ->> 'capability_id')::uuid, (v_new ->> 'source_domain_object_id')::uuid, (v_new ->> 'target_subject_id')::uuid]
+      when 'capability_assessments' then array[(v_new ->> 'capability_id')::uuid, (v_new ->> 'subject_domain_object_id')::uuid]
+      when 'capability_gaps' then array[(v_new ->> 'requirement_id')::uuid, (v_new ->> 'assessment_id')::uuid]
+      when 'organizational_systems' then array[(v_new ->> 'operating_owner_role_id')::uuid]
+      when 'metric_definitions' then array[(v_new ->> 'accountable_role_id')::uuid]
+      when 'alignment_conflicts' then array_remove(array[(v_new ->> 'first_domain_object_id')::uuid, (v_new ->> 'second_domain_object_id')::uuid, (v_new ->> 'resolution_decision_id')::uuid], null)
+      when 'development_plans' then array[(v_new ->> 'capability_gap_id')::uuid, (v_new ->> 'subject_domain_object_id')::uuid]
+      when 'development_activities' then array[(v_new ->> 'development_plan_id')::uuid]
+      when 'practices' then array[(v_new ->> 'development_plan_id')::uuid, (v_new ->> 'capability_id')::uuid]
+      when 'resources' then array[(v_new ->> 'development_plan_id')::uuid]
+      when 'capability_maturity_assessments' then array_remove(array[(v_new ->> 'capability_id')::uuid, (v_new ->> 'subject_domain_object_id')::uuid, (v_new ->> 'prior_assessment_id')::uuid], null)
       else array[]::uuid[]
     end;
   end if;
