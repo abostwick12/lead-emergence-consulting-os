@@ -19,7 +19,8 @@ foreach ($check in $checks) {
 }
 
 $activePaths = @('app', 'components', 'lib', 'supabase') | ForEach-Object { Join-Path $root $_ }
-$ministryImport = & rg -n 'emergence-ministry-platform|\.\./.*ministry' @activePaths 2>$null
-if ($LASTEXITCODE -eq 0 -and $ministryImport) { throw "Product-separation violation detected: $ministryImport" }
+$activeFiles = $activePaths | ForEach-Object { Get-ChildItem -LiteralPath $_ -Recurse -File }
+$ministryImport = $activeFiles | Select-String -Pattern 'emergence-ministry-platform|\.\./.*ministry'
+if ($ministryImport) { throw "Product-separation violation detected: $ministryImport" }
 
 Write-Output 'Phase 5 Meetings + Coaching static contracts passed.'
