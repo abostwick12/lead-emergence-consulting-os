@@ -24,7 +24,7 @@ test('consultant completes the outcome-to-baseline loop without overwriting Futu
   await page.getByLabel('Difference from intent').fill('Adoption became reliable in operations before it spread to every function.');
   await page.getByRole('button', { name: 'Approve profile & establish baseline' }).click();
   await expect(page.getByText('Preserved · not overwritten')).toBeVisible();
-  await expect(page.getByText(/Immutable manifest/)).toBeVisible();
+  await expect(page.locator('.outcomes-center').getByText(/Immutable manifest/)).toBeVisible();
   await expect(page.getByText('Ready to SEE AGAIN')).toBeVisible();
   await page.reload();
   await expect(page.getByText(/New Reality is preserved/)).toBeVisible();
@@ -34,7 +34,7 @@ test('consultant completes the outcome-to-baseline loop without overwriting Futu
   await enter(page, 'client', '/client/progress');
   await expect(page.getByRole('heading', { name: 'Expectation before evidence' })).toBeVisible();
   await expect(page.getByText('No causal claim')).toBeVisible();
-  await expect(page.getByText(/Immutable manifest/)).toBeVisible();
+  await expect(page.locator('.outcomes-center').getByText(/Immutable manifest/)).toBeVisible();
   await expect(page.getByRole('button', { name: /Record outcome|Evaluate value|Validate learning|Approve profile/ })).toHaveCount(0);
 });
 

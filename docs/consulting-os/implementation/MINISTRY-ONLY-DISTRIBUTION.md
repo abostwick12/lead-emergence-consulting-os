@@ -54,6 +54,43 @@ The test uses synthetic data only and must never package `.env` files, secrets, 
 - The target topology assigns the Ministry product to `ministry.leademergence.com`, but independent distribution cannot depend on the Entry or Consulting Vercel projects or domains.
 - The public Ministry repository has no package, runtime, migration, build, CI, or deployment dependency on this private repository. A later release-boundary checker may automate this proof without becoming a cross-repository runtime dependency.
 
+## Final V1 distribution audit — 2026-08-11
+
+The final audit used a detached clean worktree of public Ministry `main` at `dd28c74ee484484f028465de25ede0b4655374cf`. The owner's original Ministry working tree contained unrelated modified and untracked files and was not changed.
+
+### Archive and dependency boundary
+
+| Evidence | Result |
+|---|---|
+| Ministry archive | PASS — 1,478 tracked entries. |
+| Consulting-owned path scan | PASS — zero matches. |
+| Archive SHA-256 | `CBDB23A3C65FD9B65CF0609C4FC72C30BDB070D1D34CC63CE772F2174EA4B6F5` |
+| Git tree manifest SHA-256 | `EC5F2100E2F2D911E8CF49FAF9FF7BF32F8F3D4351B9060002131C7FD0D76DC5` |
+| Source/package/migration/CI scan | PASS — no private repository name, `consulting_os`, `consulting_private`, Signals route/module, `REENTERS_AS`, or canonical Signals copy. |
+| Compiled `.next` scan | PASS — the same Consulting identifiers and canonical copy are absent. |
+| Cross-repository dependency | PASS — Ministry installs, builds, and runs without this private repository. |
+
+### Independent Ministry verification
+
+| Check | Result |
+|---|---|
+| `npm ci` | PASS — 752 packages installed from the Ministry lockfile; 13 existing audit findings were reported and no dependency change was made. |
+| `npm run design-check` | PASS. |
+| `npm run typecheck` | PASS. |
+| `npm run lint` | PASS with no warnings. |
+| `npm run build` | PASS — 183 pages generated. |
+| Optional unit suite | 1,411 tests pass; the unchanged Logos companion-script suite fails during import with `SyntaxError: Invalid or unexpected token`, as documented before Phase 9. |
+| Default-timeout browser evidence | 99 passed, 1 skipped, then the unchanged desktop sidebar route traversal exhausted the 60-second per-test budget; 31 were not scheduled after the failure. |
+| Exact sidebar rerun | PASS — unchanged test completes in 1.3 minutes with a 180-second budget. |
+| Bounded four-worker browser run | 122 passed, 1 skipped, 6 failed under concurrent cold compilation/provider-fixture contention, and 3 were not run. |
+| Exact six-failure serial rerun | PASS — all 6 unchanged cases pass with one worker and the same 180-second budget. |
+
+No Ministry source, test, dependency, migration, configuration, or repository history was changed to obtain these results. The current Ministry browser harness is concurrency- and cold-compilation-sensitive, but every observed failure passes unchanged under serial or realistic-timeout execution. This is a Ministry test-harness maintenance limitation, not a Consulting dependency or product-boundary failure.
+
+### Acceptance conclusion
+
+The release-blocking product-separation criterion passes: a clean Ministry-only artifact can be produced, understood, installed, built, and exercised without shipping or accessing Consulting source, canonical documents, migrations, AI workflows, tests, or business logic. The archive and compiled output contain no Consulting identifiers, and no Ministry dependency reaches the private repository.
+
 ## Failure interpretation
 
 Any Ministry-only handoff that requires Consulting files to build has failed the product-separation requirement. The remedy is to move truly neutral code behind an explicit interface or duplicate a small neutral primitive; it is not to include Consulting source in the Ministry handoff.

@@ -53,6 +53,7 @@ jobs:
           ./scripts/consulting-os/verify_phase6_alignment_capability.ps1
           ./scripts/consulting-os/verify_phase7_outcomes_new_reality.ps1
           ./scripts/consulting-os/verify_phase8_grounded_ai.ps1
+          ./scripts/consulting-os/verify_phase9_signals_see_again.ps1
 
       - name: Verify portal application
         run: |
@@ -71,7 +72,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v6
         with:
-          name: phase8-browser-evidence
+          name: phase9-browser-evidence
           path: |
             playwright-report/
             test-results/

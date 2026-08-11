@@ -2,7 +2,7 @@
 
 ## Current outcome
 
-Phase 0 established and received human approval for the repository, licensing, domain, tenancy, and security architecture. Phases 1–8 implemented and proved the isolated security foundation, Meridian Core, Consulting Core, cohesive role-safe portals, one privacy-specialized meeting/coaching engine, the validated Insight-to-organizational-design-to-capability pathway, the complete prospective-value-to-observed-outcome-to-New-Reality-to-immutable-Baseline loop, and contextual permission-first grounded AI with exact provenance and human review.
+Phase 0 established and received human approval for the repository, licensing, domain, tenancy, and security architecture. Phases 1–9 implemented and proved the isolated security foundation, Meridian Core, Consulting Core, cohesive role-safe portals, one privacy-specialized meeting/coaching engine, the validated Insight-to-organizational-design-to-capability pathway, the complete prospective-value-to-observed-outcome-to-New-Reality-to-immutable-Baseline loop, contextual permission-first grounded AI with exact provenance and human review, and descriptive SEE AGAIN re-entry.
 
 Canonical Document 07 controls the phase sequence below. The older Full Build Plan remains explanatory reference only.
 
@@ -92,11 +92,13 @@ For each phase:
 ## Governing decisions
 
 - Phase 0 is complete and approved.
-- Phases 1–8 are complete at their evidence gates; all implementation remains confined to the private Consulting repository.
+- Phases 1–9 are complete at their evidence gates; all implementation remains confined to the private Consulting repository.
 - Separate phase-start and phase-completion permission is no longer required; evidence gates remain mandatory, and unresolved issues still require human validation.
 - Track owner/legal review of final Consulting licensing terms and historical Phase 0 materials without claiming retroactive confidentiality or licensing changes.
 - Keep production topology execution unauthorized until a separate infrastructure change plan is approved.
 
 ## Next executable step
 
-Phase 9 Descriptive Signals is the next executable phase after the verified Phase 8 gate. It must show recent Observations, compatible version-aware trends, Assumptions due for review, emerging questions, and the current Baseline without autonomous diagnosis or fake drift intelligence. A Signal must remain weaker than a Pattern and be able to re-enter SEE REALITY as a new Observation/re-entry item. Private coaching content remains excluded unless a separate human-authored derivative was explicitly promoted. The final phase must also run the Complete Engagement Acceptance Test, cross-cutting security/privacy gates, and Ministry-only distribution verification before the final human checkpoint. Production migrations, provider credentials, hosted AI calls, and topology changes remain separately unauthorized.
+The canonical Phase 0–9 implementation and evidence sequence is complete. The remaining Goal checkpoint is explicit human visual approval and merge of the corrected unified Lead Emergence entry experience on private PR #10; no dependent visual completion claim is made before that review.
+
+After that checkpoint, the next product step is an explicitly governed non-production environment and pilot-readiness decision covering dedicated Consulting infrastructure, secrets, migration/rollback rehearsal, pilot data and consent, operational ownership, final licensing terms, and any live AI provider policy. Production migrations, provider credentials, hosted AI calls, DNS, deployment, and real client data remain separately unauthorized. See `FINAL-V1-ACCEPTANCE-AUDIT.md` and `PHASE-9-COMPLETION-REVIEW.md`.
