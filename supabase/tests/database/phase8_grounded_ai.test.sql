@@ -48,8 +48,8 @@ insert into consulting_os.evidence_items(id,organization_id,primary_fragment_id,
 ('b8400000-0000-4000-8000-000000000008','b8aaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','b8600000-0000-4000-8000-000000000004','PRIVATE_NOTE','Private source.','b8200000-0000-4000-8000-000000000001'),
 ('b8400000-0000-4000-8000-000000000102','b8bbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb','b8600000-0000-4000-8000-000000000101','WORKFLOW_RECORD','Other tenant source.','b8200000-0000-4000-8000-000000000002');
 
-select ok(has_table('consulting_os','ai_generation_runs'),'AI run audit table exists');
-select ok(has_table('consulting_os','ai_run_sources'),'Exact AI source-set table exists');
+select has_table('consulting_os','ai_generation_runs','AI run audit table exists');
+select has_table('consulting_os','ai_run_sources','Exact AI source-set table exists');
 select ok(not has_table_privilege('authenticated','consulting_os.ai_generation_runs','INSERT'),'Authenticated users cannot insert AI audit envelopes directly');
 
 set local role authenticated;
