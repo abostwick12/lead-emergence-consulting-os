@@ -45,6 +45,8 @@ function store() {
   return globalThis.__leMeetingFixtures;
 }
 
+export function resetMeetingFixtures() { globalThis.__leMeetingFixtures = structuredClone(initialMeetings); }
+
 export function fixtureMeetingCenter(session: PortalSession): MeetingCenterData {
   const meetings = store()
     .filter((meeting) => session.role === 'consultant' || meeting.participants.some((person) => person.id === session.personId))
