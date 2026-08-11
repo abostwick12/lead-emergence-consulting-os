@@ -15,12 +15,17 @@ Status values are evidence-based: `NOT STARTED`, `IN PROGRESS`, `BLOCKED`, or `P
 | 6 — Alignment + Capability | **PASS** | **EVIDENCE GATE PASSED 2026-08-10** | Validated Insight-to-design trace, complete Role contracts, versioned Workflows, evidence-based Capability Gaps and Development Plans, 21 unit tests, 16 browser tests, and 181 cumulative database assertions passed. |
 | 7 — Outcomes + New Reality | **PASS** | **EVIDENCE GATE PASSED 2026-08-11** | Prospective value logic, Goal/Indicator measurement history, non-causal Outcomes, Harvest & Soil, human-reviewed Learning/Decision, distinct New Reality, immutable Baseline, 24 unit tests, 18 browser tests, and 208 cumulative database assertions passed. |
 | 8 — Grounded AI | **PASS** | **EVIDENCE GATE PASSED 2026-08-11** | Contextual Meridian review, permission-before-ranking source capture, exact citations, supporting/contrary evidence, explicit insufficiency, human rejection, privacy-safe meeting preparation, 29 unit tests, 22 browser tests, and 230 cumulative database assertions passed. |
-| 9 — Descriptive Signals | NOT STARTED | Required after completion | Depends on Phase 7 and 8 capabilities. |
+| 9 — Descriptive Signals | **PASS** | **EVIDENCE GATE PASSED 2026-08-11** | Descriptive Signals, compatible trends, due Assumptions, Emerging Questions, immutable Baseline context, explicit `REENTERS_AS`, 33 unit tests, 26 browser tests, and 252 cumulative database assertions passed. |
 Phase 4's exact portal source head `4825137f06579cd4f4bea3bf54116712d7d3eaf0` passed private CI run `31429268095`: all static contracts, 14 unit tests, production build, 10 browser tests including Pixel 7, schema lint, and 104 cumulative pgTAP assertions.
 Phase 5's functional source head `a53ca88faa1ac99a988bbaf1a11655a4c89a47e5` passed private CI run `31440688268`: static contracts, 18 unit tests, production build, 12 browser tests, responsive visual evidence, clean migrations, schema lint, and 152 cumulative pgTAP assertions.
 Phase 6's functional source head `d88452f984a2bc55735219cdec7b731315103483` passed private CI run `31449729888`: static contracts, 21 unit tests, production build, 16 browser tests, responsive visual evidence, clean migrations, schema lint, and 181 cumulative pgTAP assertions.
 Phase 7's functional source head `d02ad89e31c485867bd03cba68bde7a6b60925cc` passed private CI run `31459139972`: static contracts, 24 unit tests, production build, 18 browser tests, responsive visual evidence, clean migrations, schema lint, 27 Phase 7 assertions, and 208 cumulative pgTAP assertions.
 Phase 8's functional source head `0e537b850669fd31ddf1abb68b095374dd0200bb` passed private CI run `31464998310`: static contracts, 29 unit tests, production build, 22 browser tests, responsive visual evidence, clean migrations, schema lint, 22 Phase 8 assertions, and 230 cumulative pgTAP assertions.
+Phase 9's functional source head `c47b7fe8eb67cc3bb6a16d2f4fd214e7bb75602b` passed private CI run `31469825087`: static contracts, 33 unit tests, production build, 26 browser tests including complete engagement acceptance, responsive visual evidence, clean migrations, schema lint, 22 Phase 9 assertions, and 252 cumulative pgTAP assertions.
+
+The final Ministry-only audit used clean public Ministry commit `dd28c74ee484484f028465de25ede0b4655374cf`: its 1,478-entry archive, source, package graph, migrations, CI configuration, and compiled output contain no Consulting paths or identifiers; install, design check, typecheck, lint, and production build pass independently. The current Ministry browser harness is concurrency-sensitive, but the slow sidebar case and every failure observed under four-worker contention pass unchanged under realistic-timeout or serial execution. Exact evidence and hashes are in `MINISTRY-ONLY-DISTRIBUTION.md`.
+
+Phase 9 itself is complete. Final completion of the broader Goal remains pending explicit visual approval and merge of the corrected unified-entry PR #10; this is a human-validation issue, not a Phase 9 defect.
 
 
 ## Phase 0 acceptance ledger
@@ -51,6 +56,7 @@ The exact Phase 0 criteria, 77/77 entity-mapping check, roadmap identifiers, Sec
 - `4825137f06579cd4f4bea3bf54116712d7d3eaf0` — secure-entry assertion alignment and completed desktop/mobile design QA.
 - `d02ad89e31c485867bd03cba68bde7a6b60925cc` — Phase 7 outcomes, Harvest & Soil, New Reality, causality controls, and immutable baseline evidence gate.
 - `0e537b850669fd31ddf1abb68b095374dd0200bb` — Phase 8 permission-first grounded AI, provenance, refusal, review, and privacy evidence gate.
+- `c47b7fe8eb67cc3bb6a16d2f4fd214e7bb75602b` — Phase 9 descriptive Signals, compatible trends, assumption review, explicit re-entry, and complete-engagement evidence gate.
 
 ## Work deliberately not claimed
 
@@ -64,6 +70,7 @@ The exact Phase 0 criteria, 77/77 entity-mapping check, roadmap identifiers, Sec
 - Phase 5 provides meeting/coaching persistence and privacy. It does not claim Phase 6–9 alignment, outcomes, AI, or descriptive-signal capability.
 - Phase 7 provides outcomes, Harvest & Soil, human-reviewed Learning and Outcome Decisions, Emergent Organization Profiles, and immutable Baselines. It does not claim Phase 8 grounded AI or Phase 9 descriptive-signal capability.
 - Phase 8 uses a deterministic provider-neutral adapter and does not claim a live hosted model, autonomous diagnosis, autonomous validation, or Phase 9 descriptive-signal capability.
+- Phase 9 is descriptive only and does not claim mature Pulse/Drift/Emergence intelligence, prediction, autonomous diagnosis, causal inference, live AI, or production readiness.
 
 ## Validation evidence
 

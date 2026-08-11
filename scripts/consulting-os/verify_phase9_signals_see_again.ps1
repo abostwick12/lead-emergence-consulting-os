@@ -16,7 +16,7 @@ foreach ($proof in @('Private coaching evidence cannot become organizational tel
 foreach ($criterion in @('descriptive','compatible','Private coaching','Assumptions due','REENTERS_AS','autonomous drift detection')) {
   if ($plan -notmatch [regex]::Escape($criterion)) { throw "Missing Document 07 Phase 9 criterion: $criterion" }
 }
-foreach ($path in @('components/signals/descriptive-signals-center.tsx','lib/signals/workflow.ts','app/api/signals/route.ts','tests/e2e/phase9.spec.ts')) {
+foreach ($path in @('components/signals/descriptive-signals-center.tsx','lib/signals/workflow.ts','app/api/signals/route.ts','tests/e2e/phase9.spec.ts','tests/e2e/z-complete-engagement.spec.ts','docs/consulting-os/implementation/PHASE-9-COMPLETION-REVIEW.md','docs/consulting-os/implementation/FINAL-V1-ACCEPTANCE-AUDIT.md','docs/consulting-os/implementation/MINISTRY-ONLY-DISTRIBUTION.md')) {
   if (-not (Test-Path $path)) { throw "Missing Phase 9 implementation evidence: $path" }
 }
 Write-Output 'Phase 9 static verification passed: descriptive Signals, compatible trends, privacy, assumption review, baseline, and explicit re-entry contracts.'
