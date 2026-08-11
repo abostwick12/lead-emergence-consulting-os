@@ -12,12 +12,13 @@ Status values are evidence-based: `NOT STARTED`, `IN PROGRESS`, `BLOCKED`, or `P
 | 3 — Consulting Core | **PASS** | **APPROVED 2026-08-10** | All seven Document 07 requirements passed; clean migrations, schema lint, and 104 cumulative assertions passed in runs `31406301630` and `31407084177`. |
 | 4 — Portals V1 | **PASS** | **EVIDENCE GATE PASSED 2026-08-10** | Role-safe Consultant and Client portals, 14 unit assertions, 10 browser assertions, static contracts, production build, and responsive visual review passed locally; exact-head CI evidence is recorded in the completion review. |
 | 5 — Meetings + Coaching | **PASS** | **EVIDENCE GATE PASSED 2026-08-10** | One shared six-stage engine, first-class Decisions, atomic creation, physical private-note partition, explicit coaching promotion, durable commitments, 18 unit tests, 12 browser tests, and 152 cumulative database assertions passed. |
-| 6 — Alignment + Capability | NOT STARTED | — | Depends on Meridian and Consulting Core. |
-| 7 — Outcomes + New Reality | NOT STARTED | Required after completion | Depends on Phase 6. |
+| 6 — Alignment + Capability | **PASS** | **EVIDENCE GATE PASSED 2026-08-10** | Validated Insight-to-design trace, complete Role contracts, versioned Workflows, evidence-based Capability Gaps and Development Plans, 21 unit tests, 16 browser tests, and 181 cumulative database assertions passed. |
+| 7 — Outcomes + New Reality | NOT STARTED | Required after completion | Phase 6 dependency is satisfied; implementation may begin under standing authorization. |
 | 8 — Grounded AI | NOT STARTED | — | Depends on secure, reviewed records and retrieval. |
 | 9 — Descriptive Signals | NOT STARTED | Required after completion | Depends on Phase 7 and 8 capabilities. |
 Phase 4's exact portal source head `4825137f06579cd4f4bea3bf54116712d7d3eaf0` passed private CI run `31429268095`: all static contracts, 14 unit tests, production build, 10 browser tests including Pixel 7, schema lint, and 104 cumulative pgTAP assertions.
 Phase 5's functional source head `a53ca88faa1ac99a988bbaf1a11655a4c89a47e5` passed private CI run `31440688268`: static contracts, 18 unit tests, production build, 12 browser tests, responsive visual evidence, clean migrations, schema lint, and 152 cumulative pgTAP assertions.
+Phase 6's functional source head `d88452f984a2bc55735219cdec7b731315103483` passed private CI run `31449729888`: static contracts, 21 unit tests, production build, 16 browser tests, responsive visual evidence, clean migrations, schema lint, and 181 cumulative pgTAP assertions.
 
 
 ## Phase 0 acceptance ledger
@@ -57,6 +58,7 @@ The exact Phase 0 criteria, 77/77 entity-mapping check, roadmap identifiers, Sec
 - Phase 3 is database-first: Phase 4 still owns portal presentation, and Phases 5–9 remain unimplemented and uncredited.
 - Phase 4 provides role-safe read portals and truthful deferred states. It does not claim Phase 5–9 persistence, AI generation, or descriptive intelligence.
 - Phase 5 provides meeting/coaching persistence and privacy. It does not claim Phase 6–9 alignment, outcomes, AI, or descriptive-signal capability.
+- Phase 6 provides organizational alignment and capability development. It does not claim Phase 7–9 outcomes, New Reality, AI, or descriptive-signal capability.
 
 ## Validation evidence
 
@@ -79,4 +81,4 @@ The first browser-suite attempt could not find worktree-local dependencies. Afte
 
 Source-document visual rendering was not available because LibreOffice is not installed; exact source retention, checksums, fresh extraction, heading/section audits, and structural OOXML/table review were used instead. The restored continuation and single occurrence of every Section 12-30 heading are structurally verified, but visual page-layout QA remains outstanding.
 
-Repository-boundary verification is recorded in `PHASE-0-ACCEPTANCE-AUDIT.md`. Phases 0–5 are complete and all required checkpoints through Phase 3 are approved. Phase 5 evidence is recorded in `PHASE-5-COMPLETION-REVIEW.md`; no hosted or production execution is authorized.
+Repository-boundary verification is recorded in `PHASE-0-ACCEPTANCE-AUDIT.md`. Phases 0–6 are complete and all required checkpoints through Phase 3 are approved. Phase 6 evidence is recorded in `PHASE-6-COMPLETION-REVIEW.md`; no hosted or production execution is authorized.

@@ -2,7 +2,7 @@
 
 ## Current outcome
 
-Phase 0 established and received human approval for the repository, licensing, domain, tenancy, and security architecture. Phases 1–5 implemented and proved the isolated security foundation, Meridian Core, Consulting Core, cohesive role-safe portals, and one privacy-specialized meeting/coaching engine.
+Phase 0 established and received human approval for the repository, licensing, domain, tenancy, and security architecture. Phases 1–6 implemented and proved the isolated security foundation, Meridian Core, Consulting Core, cohesive role-safe portals, one privacy-specialized meeting/coaching engine, and the validated Insight-to-organizational-design-to-capability pathway.
 
 Canonical Document 07 controls the phase sequence below. The older Full Build Plan remains explanatory reference only.
 
@@ -92,11 +92,11 @@ For each phase:
 ## Governing decisions
 
 - Phase 0 is complete and approved.
-- Phases 1–5 are complete at their evidence gates; all implementation remains confined to the private Consulting repository.
+- Phases 1–6 are complete at their evidence gates; all implementation remains confined to the private Consulting repository.
 - Separate phase-start and phase-completion permission is no longer required; evidence gates remain mandatory, and unresolved issues still require human validation.
 - Track owner/legal review of final Consulting licensing terms and historical Phase 0 materials without claiming retroactive confidentiality or licensing changes.
 - Keep production topology execution unauthorized until a separate infrastructure change plan is approved.
 
 ## Next executable step
 
-After the Phase 5 completion record merges, begin Phase 6 Alignment + Capability on a dedicated branch/worktree. Phase 6 must trace validated Insight through Decision into concrete organizational design and capability requirements, preserve the complete Role contract, compare Capability Gaps against evidence, and support dated, owned, measurable development plans. Production migrations and topology changes remain separately unauthorized.
+Phase 7 is the next executable phase. It must preserve Intended Future State and observed Emergent Reality as distinct, traceable records while implementing Goals, Indicators, Measurements, Outcomes, Value Evaluation, Harvest & Soil, Learning, Emergent Organization Profile, Emergent Reality Difference, and Baseline. Phase 7 completion requires the next human checkpoint. Production migrations and topology changes remain separately unauthorized.
