@@ -8,7 +8,15 @@
 
 .frame {
   object-fit: contain;
-  transition: opacity 240ms linear;
+  transition: opacity 180ms linear, transform 180ms linear;
+}
+
+.resolvedFrame {
+  transform-origin: 50% 50%;
+}
+
+.cycleSeed {
+  transform: translateY(-31.25%);
 }
 
 @media (prefers-reduced-motion: reduce) {

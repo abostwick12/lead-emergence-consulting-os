@@ -116,11 +116,12 @@ export function LandingExperience() {
   const discrete = useCallback((value: number) => reducedMotion ? (value >= 0.5 ? 1 : 0) : value, [reducedMotion]);
   const symbolProgress = useMemo(() => ({
     seed: discrete(rangeProgress(progress, 0, 0.045)),
-    structure: discrete(rangeProgress(progress, 0.12, 0.25)),
-    arc: discrete(rangeProgress(progress, 0.25, 0.38)),
-    rays: discrete(rangeProgress(progress, 0.38, 0.51)),
-    pathway: discrete(rangeProgress(progress, 0.51, 0.64)),
-    resolved: discrete(rangeProgress(progress, 0.64, 0.72)),
+    stem: discrete(rangeProgress(progress, 0.12, 0.25)),
+    structure: discrete(rangeProgress(progress, 0.25, 0.38)),
+    pathway: discrete(rangeProgress(progress, 0.38, 0.51)),
+    arc: discrete(rangeProgress(progress, 0.51, 0.64)),
+    rays: discrete(rangeProgress(progress, 0.64, 0.71)),
+    resolved: discrete(rangeProgress(progress, 0.71, 0.76)),
     cycle: discrete(rangeProgress(progress, 0.82, 1)),
   }), [discrete, progress]);
 
