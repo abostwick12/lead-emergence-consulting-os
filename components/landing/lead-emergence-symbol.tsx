@@ -18,13 +18,13 @@ type LeadEmergenceSymbolProps = {
 };
 
 const frames = [
-  '/brand/roadmap/stage-01-see-v2-alpha.png',
-  '/brand/roadmap/stage-02-reframe-v2-alpha.png',
-  '/brand/roadmap/stage-03-align-v2-alpha.png',
-  '/brand/roadmap/stage-04-build-v2-alpha.png',
-  '/brand/roadmap/stage-05-produce-v2-alpha.png',
-  '/brand/roadmap/stage-06-new-reality-v2-alpha.png',
-  '/brand/roadmap/stage-07-next-point-v2-alpha.png',
+  '/brand/roadmap/stage-01-see-v3-alpha.png',
+  '/brand/roadmap/stage-02-reframe-v3-alpha.png',
+  '/brand/roadmap/stage-03-align-v3-alpha.png',
+  '/brand/roadmap/stage-04-build-v3-alpha.png',
+  '/brand/roadmap/stage-05-produce-v3-alpha.png',
+  '/brand/roadmap/stage-06-new-reality-v3-alpha.png',
+  '/brand/roadmap/stage-07-see-again-v3-alpha.png',
 ] as const;
 
 function clamp(value: number) {

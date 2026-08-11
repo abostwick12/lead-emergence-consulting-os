@@ -4,7 +4,7 @@ test.describe('public Lead Emergence landing experience', () => {
   test('builds one continuous symbol and keeps returning-user entry available', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByRole('heading', { name: /Before you build what comes next/ })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Sign in', exact: true })).toBeVisible();
+    await expect(page.locator('header').getByRole('button', { name: 'Sign in', exact: true })).toBeVisible();
     await page.screenshot({ path: 'test-results/landing-hero-desktop.png' });
 
     await page.getByRole('link', { name: 'SCROLL TO BEGIN' }).click();
@@ -18,7 +18,7 @@ test.describe('public Lead Emergence landing experience', () => {
     await expect(page.getByText('Step into what has become possible.', { exact: true })).toBeVisible();
     await page.screenshot({ path: 'test-results/landing-new-reality-desktop.png' });
 
-    await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+    await page.locator('header').getByRole('button', { name: 'Sign in', exact: true }).click();
     await expect(page.getByRole('heading', { name: 'Choose your environment.' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Consultant', exact: true })).toHaveAttribute('href', '/login?returnTo=%2Fconsultant');
     await expect(page.getByRole('link', { name: 'Client', exact: true })).toHaveAttribute('href', '/login?returnTo=%2Fclient');
@@ -39,7 +39,7 @@ test.describe('public Lead Emergence landing experience', () => {
     await page.getByRole('link', { name: '06 NEW REALITY', exact: true }).click();
     await expect(page.locator('[data-active-stage]')).toHaveAttribute('data-active-stage', '6');
     await expect(page.getByText('Step into what has become possible.', { exact: true })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Sign in', exact: true })).toBeVisible();
+    await expect(page.locator('header').getByRole('button', { name: 'Sign in', exact: true })).toBeVisible();
     await page.screenshot({ path: 'test-results/landing-new-reality-mobile.png' });
   });
 
