@@ -7,11 +7,13 @@ import { resetMeetingFixtures } from '@/lib/meetings/fixtures';
 import { resetMeridianAiFixtures } from '@/lib/meridian-ai/fixtures';
 import { resetOutcomeFixtures } from '@/lib/outcomes/fixtures';
 import { resetSignalsFixtures } from '@/lib/signals/fixtures';
+import { resetOnboardingFixtures } from '@/lib/onboarding/fixtures';
+import { resetDiscoveryFixtures } from '@/lib/discovery/fixtures';
 
 export function GET(request: NextRequest) {
   if (!isFixtureMode()) return new NextResponse('Not found', { status: 404 });
   if (request.nextUrl.searchParams.get('reset') === 'true') {
-    resetAlignmentFixtures(); resetMeetingFixtures(); resetMeridianAiFixtures(); resetOutcomeFixtures(); resetSignalsFixtures();
+    resetAlignmentFixtures(); resetMeetingFixtures(); resetMeridianAiFixtures(); resetOutcomeFixtures(); resetSignalsFixtures(); resetOnboardingFixtures(); resetDiscoveryFixtures();
   }
   const role = request.nextUrl.searchParams.get('role');
   if (role !== 'consultant' && role !== 'client') return new NextResponse('Invalid synthetic role', { status: 400 });

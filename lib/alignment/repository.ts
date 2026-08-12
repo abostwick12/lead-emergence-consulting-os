@@ -49,6 +49,7 @@ export async function getAlignmentCapability(session: PortalSession): Promise<Al
       requiredBy: `${row.source_type.replaceAll('_', ' ')} · ${row.source_domain_object_id}`,
       requiredLevel: row.required_level as CapabilityLevel, currentLevel: (row.current_level ?? 'NOT_DEMONSTRATED') as CapabilityLevel,
       evidence: row.evidence_summary ? [row.evidence_summary] : [], gap: row.gap_statement ?? 'Assessment required before a gap is stated.',
+      developmentPlanId: row.development_plan_id ?? '', capabilityId: row.capability_id,
       developmentPlan: row.development_plan_title ?? 'No development plan yet.',
       activities: (activitiesResult.data ?? []).filter((item) => item.development_plan_id === row.development_plan_id).map((item) => ({ id: item.id, title: item.title, status: item.status })),
       practices: (practicesResult.data ?? []).filter((item) => item.development_plan_id === row.development_plan_id).map((item) => item.name),
@@ -69,7 +70,15 @@ export async function mutateAlignmentCapability(session: PortalSession, mutation
     const { error } = await supabase.from('development_activities').update({ status: mutation.status, completed_at: mutation.status === 'COMPLETED' ? new Date().toISOString() : null }).eq('id', mutation.activityId).eq('organization_id', session.organization.id);
     if (error) throw new Error(error.message);
   } else {
-    throw new Error('New practice records require an authorized development-plan workflow.');
+    if (!pathway.developmentPlanId) throw new Error('Create an authorized development plan before recording practice.');
+    const { error } = await supabase.rpc('record_development_practice', {
+      p_requirement_id: pathway.id,
+      p_name: mutation.practice,
+      p_conditions: mutation.conditions,
+      p_repetition_target: mutation.repetitionTarget,
+      p_feedback_method: mutation.feedbackMethod,
+    });
+    if (error) throw new Error(error.message);
   }
   return getAlignmentCapability(session);
 }

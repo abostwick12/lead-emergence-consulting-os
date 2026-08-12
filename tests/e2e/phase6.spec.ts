@@ -33,6 +33,9 @@ test('development pathway persists practice and activity without claiming maturi
   await expect(page.getByText(/Saved\. The development record/)).toBeVisible();
   await expect(page.getByRole('button', { name: /Boundary judgment lab/ }).getByText('COMPLETED')).toBeVisible();
   await page.getByLabel('Record completed practice').fill('Used the threshold guide during a live client exception');
+  await page.getByLabel('Conditions').fill('Live client exception under normal time pressure');
+  await page.getByLabel('Repetition target').fill('Six exceptions across two contexts');
+  await page.getByLabel('Feedback method').fill('Weekly coaching review');
   await page.getByRole('button', { name: 'Save practice' }).click();
   await expect(page.getByText(/Used the threshold guide during a live client exception/)).toBeVisible();
   await page.reload();

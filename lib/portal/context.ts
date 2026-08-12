@@ -15,7 +15,7 @@ export const getPortalSession = cache(async (): Promise<PortalSession | null> =>
     const cookieStore = await cookies();
     const value = cookieStore.get(FIXTURE_COOKIE)?.value;
     const role: PortalRole = value === 'consultant' || value === 'client' ? value : 'outsider';
-    return fixtureSession(role);
+    return fixtureSession(role, cookieStore.get('le_organization_id')?.value, cookieStore.get('le_engagement_id')?.value);
   }
 
   const supabase = await createSupabaseServerClient();

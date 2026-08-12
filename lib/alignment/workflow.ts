@@ -14,7 +14,14 @@ export function validateAlignmentMutation(value: unknown): AlignmentMutation {
     if (typeof field !== 'string' || !field.trim()) throw new Error(`${key} is required.`);
     return field.trim();
   };
-  if (input.action === 'ADD_PRACTICE') return { action: input.action, pathwayId: required('pathwayId'), practice: required('practice') };
+  if (input.action === 'ADD_PRACTICE') return {
+    action: input.action,
+    pathwayId: required('pathwayId'),
+    practice: required('practice'),
+    conditions: required('conditions'),
+    repetitionTarget: required('repetitionTarget'),
+    feedbackMethod: required('feedbackMethod'),
+  };
   if (input.action === 'UPDATE_ACTIVITY') {
     const status = required('status');
     if (status !== 'ACTIVE' && status !== 'COMPLETED') throw new Error('Activity status is invalid.');
