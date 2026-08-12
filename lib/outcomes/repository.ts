@@ -11,20 +11,26 @@ export async function getOutcomesNewReality(session: PortalSession): Promise<Out
   const { data, error } = await supabase.from('value_outcome_pathways').select('*').eq('organization_id', session.organization.id).eq('engagement_id', session.engagement.id).limit(1).maybeSingle();
   if (error) throw new Error(error.message);
   if (!data) throw new Error('No visible value pathway is available for this engagement.');
-  const [{ data: profiles, error: profileError }, { data: baselines, error: baselineError }] = await Promise.all([
+  const { data: evidenceDomains, error: evidenceDomainError } = await supabase.from('domain_objects').select('id').eq('organization_id', session.organization.id).eq('engagement_id', session.engagement.id).eq('object_type', 'EVIDENCE');
+  if (evidenceDomainError) throw new Error(evidenceDomainError.message);
+  const evidenceIds = (evidenceDomains ?? []).map((item) => item.id);
+  const [{ data: profiles, error: profileError }, { data: baselines, error: baselineError }, { data: evidence, error: evidenceError }] = await Promise.all([
     supabase.from('current_emergent_organization_profiles').select('*').eq('organization_id', session.organization.id).eq('engagement_id', session.engagement.id).limit(1),
     supabase.from('current_baselines').select('*').eq('organization_id', session.organization.id).eq('engagement_id', session.engagement.id).limit(1),
+    evidenceIds.length ? supabase.from('evidence_items').select('id, relevance_note').eq('organization_id', session.organization.id).in('id', evidenceIds).limit(50) : Promise.resolve({ data: [], error: null }),
   ]);
   if (profileError) throw new Error(profileError.message);
   if (baselineError) throw new Error(baselineError.message);
+  if (evidenceError) throw new Error(evidenceError.message);
   const profile = profiles?.[0]; const baseline = baselines?.[0];
   return {
     organizationId: session.organization.id, engagementId: session.engagement.id, role: session.role as 'consultant' | 'client', fixture: false,
     goal: { id: data.goal_id, statement: data.goal_statement, baseline: String(data.baseline_value ?? 'Not set'), target: String(data.target_value ?? 'Not set'), owner: 'Authorized owner', status: 'ACTIVE' },
     valueHypothesis: { id: data.value_hypothesis_id, statement: `${data.change_condition} ${data.capability_condition} Expected value: ${data.expected_value}`, createdLabel: 'Established before outcome period', status: 'ACTIVE' },
     indicator: { id: data.indicator_id, name: data.indicator_name, baseline: String(data.baseline_value ?? 'Not set'), target: String(data.target_value ?? 'Not set'), history: data.measurement_id ? [{ value: String(data.measurement_value), period: data.measurement_period_start ? `From ${new Date(data.measurement_period_start).toLocaleDateString()}` : 'Recorded period' }] : [] },
+    evidenceOptions: (evidence ?? []).map((item) => ({ id: item.id, label: item.relevance_note })),
     outcome: data.outcome_id ? { id: data.outcome_id, statement: data.outcome_statement, measuredValue: String(data.measurement_value ?? 'Recorded'), association: 'Evaluates the goal and prospective hypothesis', causalStatus: 'No automatic causal claim' } : undefined,
-    evaluation: data.value_evaluation_id ? { harvest: data.harvest_finding, soil: data.soil_finding, dimensions: [
+    evaluation: data.value_evaluation_id ? { id: data.value_evaluation_id, harvest: data.harvest_finding, soil: data.soil_finding, dimensions: [
       { name: 'Mission', rating: data.mission_rating, rationale: data.significance },
       { name: 'Human', rating: data.human_rating, rationale: data.significance },
       { name: 'Operational', rating: data.operational_rating, rationale: data.significance },
@@ -40,5 +46,20 @@ export async function getOutcomesNewReality(session: PortalSession): Promise<Out
 
 export async function mutateOutcomesNewReality(session: PortalSession, mutation: OutcomesMutation) {
   if (session.fixture) return mutateFixtureOutcomes(session, mutation);
-  throw new Error('Live outcome mutations require the authorized Phase 7 command workflow.');
+  if (session.role !== 'consultant') throw new Error('Only the assigned consultant may advance this workflow.');
+  const current = await getOutcomesNewReality(session);
+  const supabase = await createSupabaseServerClient();
+  let error: { message: string } | null = null;
+  if (mutation.action === 'RECORD_OUTCOME') ({ error } = await supabase.rpc('record_value_outcome', { p_indicator_id: current.indicator.id, p_evidence_id: mutation.evidenceId, p_measured_value: mutation.measuredValue, p_statement: mutation.statement, p_collection_context: mutation.collectionContext, p_limitations: mutation.limitations, p_period_start: mutation.periodStart, p_period_end: mutation.periodEnd }));
+  if (mutation.action === 'EVALUATE_VALUE') {
+    if (!current.outcome) throw new Error('Record the observed outcome before evaluating value.');
+    ({ error } = await supabase.rpc('record_value_evaluation', { p_outcome_id: current.outcome.id, p_harvest: mutation.harvest, p_soil: mutation.soil, p_significance: mutation.significance, p_alternative_explanations: mutation.alternativeExplanations, p_limitations: mutation.limitations }));
+  }
+  if (mutation.action === 'VALIDATE_LEARNING') {
+    if (!current.evaluation) throw new Error('Complete the value evaluation before validating learning.');
+    ({ error } = await supabase.rpc('validate_outcome_learning', { p_evaluation_id: current.evaluation.id, p_statement: mutation.statement, p_disposition: mutation.disposition, p_implications: mutation.implications, p_contrary_evidence: mutation.contraryEvidence, p_limitations: mutation.limitations }));
+  }
+  if (mutation.action === 'ESTABLISH_BASELINE') ({ error } = await supabase.rpc('establish_new_reality', { p_organization_id: session.organization.id, p_engagement_id: session.engagement.id, p_profile_name: mutation.profileName, p_actual_state: mutation.actualState, p_difference: mutation.difference }));
+  if (error) throw new Error(error.message);
+  return getOutcomesNewReality(session);
 }

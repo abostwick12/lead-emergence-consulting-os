@@ -64,12 +64,25 @@ function DevelopmentView({ data, pending, onMutate }: { data: AlignmentCapabilit
   return <section className="capability-section" aria-labelledby="capability-heading">
     <div className="section-heading"><div><p className="eyebrow">Build capability</p><h2 id="capability-heading">From requirement to reliable practice</h2></div><p className="section-note">Activity is not maturity. Evidence of reliable and transferable performance closes the pathway.</p></div>
     <p className="privacy-invariant"><ShieldCheck aria-hidden="true" />Private coaching content is never organizational telemetry. Only explicitly shared, permission-eligible evidence may appear here.</p>
-    {data.capabilityPathways.map((pathway) => <CapabilityPathway pathway={pathway} fixture={data.fixture} pending={pending} onMutate={onMutate} key={pathway.id} />)}
+    {data.capabilityPathways.map((pathway) => <CapabilityPathway pathway={pathway} canRecord={data.fixture || data.role === 'consultant'} pending={pending} onMutate={onMutate} key={pathway.id} />)}
   </section>;
 }
 
-function CapabilityPathway({ pathway, fixture, pending, onMutate }: { pathway: CapabilityPathwayView; fixture: boolean; pending: boolean; onMutate: (mutation: AlignmentMutation) => void }) {
-  function addPractice(event: FormEvent<HTMLFormElement>) { event.preventDefault(); const form = event.currentTarget; const practice = String(new FormData(form).get('practice')); onMutate({ action: 'ADD_PRACTICE', pathwayId: pathway.id, practice }); form.reset(); }
+function CapabilityPathway({ pathway, canRecord, pending, onMutate }: { pathway: CapabilityPathwayView; canRecord: boolean; pending: boolean; onMutate: (mutation: AlignmentMutation) => void }) {
+  function addPractice(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const values = new FormData(form);
+    onMutate({
+      action: 'ADD_PRACTICE',
+      pathwayId: pathway.id,
+      practice: String(values.get('practice')),
+      conditions: String(values.get('conditions')),
+      repetitionTarget: String(values.get('repetitionTarget')),
+      feedbackMethod: String(values.get('feedbackMethod')),
+    });
+    form.reset();
+  }
   return <article className="capability-pathway">
     <header><div><span className="status-chip"><Sparkles aria-hidden="true" />REQUIRED CAPABILITY</span><h3>{pathway.capabilityName}</h3><p>{pathway.definition}</p></div><div className="level-comparison"><span><small>Current evidence</small>{levelLabel(pathway.currentLevel)}</span><ArrowRight aria-hidden="true" /><span><small>Required</small>{levelLabel(pathway.requiredLevel)}</span></div></header>
     <p className="required-by"><Target aria-hidden="true" /><span>Required by</span><strong>{pathway.requiredBy}</strong></p>
@@ -84,7 +97,13 @@ function CapabilityPathway({ pathway, fixture, pending, onMutate }: { pathway: C
       <section><p className="eyebrow">Activities</p>{pathway.activities.map((activity) => <button className="activity-row" disabled={pending} type="button" key={activity.id} onClick={() => onMutate({ action: 'UPDATE_ACTIVITY', pathwayId: pathway.id, activityId: activity.id, status: activity.status === 'COMPLETED' ? 'ACTIVE' : 'COMPLETED' })}><span className={activity.status === 'COMPLETED' ? 'activity-check complete' : 'activity-check'}>{activity.status === 'COMPLETED' && <Check aria-hidden="true" />}</span><strong>{activity.title}</strong><small>{activity.status}</small></button>)}</section>
       <section><p className="eyebrow">Resources</p><ul>{pathway.resources.map((resource) => <li key={resource}>{resource}</li>)}</ul></section>
     </div>
-    {fixture && <form className="practice-form" onSubmit={addPractice}><label>Record completed practice<input name="practice" required placeholder="Describe the live practice and context" /></label><button className="secondary-button" disabled={pending} type="submit">Save practice</button></form>}
+    {canRecord && <form className="practice-form" onSubmit={addPractice}>
+      <label>Record completed practice<input name="practice" required placeholder="Boundary review during a live decision" /></label>
+      <label>Conditions<input name="conditions" required placeholder="Real decision, normal time pressure" /></label>
+      <label>Repetition target<input name="repetitionTarget" required placeholder="Six decisions across two contexts" /></label>
+      <label>Feedback method<input name="feedbackMethod" required placeholder="Weekly exception review with coach" /></label>
+      <button className="secondary-button" disabled={pending} type="submit">Save practice</button>
+    </form>}
   </article>;
 }
 

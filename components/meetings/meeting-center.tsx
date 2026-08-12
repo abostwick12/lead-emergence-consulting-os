@@ -43,7 +43,7 @@ export function MeetingCenter({ initialData, initialMeetingId }: { initialData: 
             <span>{meeting.phase.replace('_', ' ')} <ChevronRight aria-hidden="true" /></span>
           </button>)}
         </aside>
-        {selected ? <MeetingWorkspace meeting={selected} data={data} pending={pending} onMutate={mutate} /> : <section className="empty-state"><strong>No meetings yet</strong><p>Create the first permission-bounded interaction record.</p></section>}
+        {selected ? <MeetingWorkspace key={selected.id} meeting={selected} data={data} pending={pending} onMutate={mutate} /> : <section className="empty-state"><strong>No meetings yet</strong><p>Create the first permission-bounded interaction record.</p></section>}
       </div>
     </div>
   );

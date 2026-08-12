@@ -46,6 +46,7 @@ export function fixtureAlignmentCapability(session: PortalSession): AlignmentCap
       requiredBy: 'Team Lead role · Bounded operational decision workflow', requiredLevel: 'RELIABLE', currentLevel: 'DEVELOPING',
       evidence: ['Four observed decisions · two independent', 'Coaching session 3 shared summary', 'Exception log · Aug 1–9'],
       gap: 'Judgment is sound in familiar cases but escalation thresholds are not yet applied reliably under time pressure.',
+      developmentPlanId: 'development-plan-decision-judgment', capabilityId: 'capability-decision-judgment',
       developmentPlan: 'Practice six live decisions using the boundary prompt; review exceptions weekly; reassess after four weeks.',
       activities, practices: ['Use the boundary prompt before commitment', ...fixtureStore.recordedPractices.map((item) => `${item} · practice ${fixtureStore.revision}`)],
       resources: ['Decision boundary field guide', 'Exception review template'],

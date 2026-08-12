@@ -9,6 +9,7 @@ import {
   type PortalRole,
   type PortalSession,
 } from './types';
+import { fixtureOnboardingOptions } from '../onboarding/fixtures';
 
 export const FIXTURE_ORGANIZATION_ID = '10000000-0000-4000-8000-000000000001';
 export const FIXTURE_ENGAGEMENT_ID = '20000000-0000-4000-8000-000000000001';
@@ -164,16 +165,23 @@ const clientAttention: AttentionItem[] = [
   },
 ];
 
-export function fixtureSession(role: PortalRole): PortalSession | null {
+export function fixtureSession(role: PortalRole, requestedOrganizationId?: string, requestedEngagementId?: string): PortalSession | null {
   if (role === 'outsider') return null;
+  const onboarding = fixtureOnboardingOptions();
+  const organizations = [organization, ...onboarding.organizations];
+  const engagements = [engagement, ...onboarding.engagements];
+  const selectedOrganization = organizations.find((item) => item.id === requestedOrganizationId) ?? organization;
+  const selectedEngagement = engagements.find((item) => item.id === requestedEngagementId && item.organizationId === selectedOrganization.id)
+    ?? engagements.find((item) => item.organizationId === selectedOrganization.id)
+    ?? engagement;
   return {
     personId: role === 'consultant' ? '40000000-0000-4000-8000-000000000001' : '40000000-0000-4000-8000-000000000002',
     displayName: role === 'consultant' ? 'Alex Morgan' : 'Jordan Lee',
     role,
-    organizations: [organization],
-    organization,
-    engagements: [engagement],
-    engagement,
+    organizations,
+    organization: selectedOrganization,
+    engagements,
+    engagement: selectedEngagement,
     fixture: true,
   };
 }

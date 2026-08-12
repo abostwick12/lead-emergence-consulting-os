@@ -18,10 +18,11 @@ export function fixtureOutcomesNewReality(session: PortalSession): OutcomesNewRe
     goal: { id: 'goal-decision-latency', statement: 'Reduce routine decision latency without degrading decision quality.', baseline: '6.2 days', target: '3.0 days', owner: 'Executive sponsor', status: 'ACTIVE' },
     valueHypothesis: { id: 'hypothesis-bounded-authority', statement: 'If authority moves closer to the work while capability and boundaries strengthen, latency should fall without degrading quality.', createdLabel: 'Established before implementation', status: 'ACTIVE' },
     indicator: { id: 'indicator-latency', name: 'Routine decision latency', baseline: '6.2 days', target: '3.0 days', history: [{ value: '6.2 days', period: 'Baseline · Jul 2026' }, ...(state.measuredValue ? [{ value: state.measuredValue, period: 'Current · Aug 2026' }] : [])] },
+    evidenceOptions: [{ id: 'evidence-decision-sample', label: 'Decision-latency sample · ten routine decisions' }],
     futureState: { statement: 'Routine decisions are made at the closest capable level within explicit boundaries.', version: 1 },
   };
   if (state.outcomeStatement && state.measuredValue) data.outcome = { id: 'outcome-latency', statement: state.outcomeStatement, measuredValue: state.measuredValue, association: 'Evaluates the initiative and goal', causalStatus: 'No causal claim' };
-  if (state.harvest && state.soil) data.evaluation = { harvest: state.harvest, soil: state.soil, dimensions: [
+  if (state.harvest && state.soil) data.evaluation = { id: 'evaluation-harvest-soil', harvest: state.harvest, soil: state.soil, dimensions: [
     { name: 'Organizational', rating: 'STRONG', rationale: 'Decision flow is measurably faster.' },
     { name: 'People', rating: 'DEVELOPING', rationale: 'Confidence is growing unevenly.' },
     { name: 'Capability', rating: 'STRONG', rationale: 'Boundary judgment is becoming reliable.' },

@@ -13,7 +13,7 @@ describe('outcomes and New Reality workflow', () => {
   });
   it('keeps the five human outcome decisions controlled', () => {
     expect(outcomeDispositions).toEqual(['SUSTAIN', 'IMPROVE', 'SCALE', 'STOP', 'REINVENT']);
-    expect(validateOutcomesMutation({ action: 'VALIDATE_LEARNING', statement: 'Keep boundaries explicit.', disposition: 'SCALE' })).toMatchObject({ disposition: 'SCALE' });
+    expect(validateOutcomesMutation({ action: 'VALIDATE_LEARNING', statement: 'Keep boundaries explicit.', disposition: 'SCALE', implications: 'Extend the pilot.', contraryEvidence: 'One team still escalates.', limitations: 'One function only.' })).toMatchObject({ disposition: 'SCALE' });
     expect(() => validateOutcomesMutation({ action: 'VALIDATE_LEARNING', statement: 'x', disposition: 'AUTOMATE' })).toThrow('invalid');
   });
   it('requires explicit actual-state and difference records before baseline', () => {

@@ -1,7 +1,7 @@
 import 'server-only';
 
 import { cache } from 'react';
-import { fixtureDashboard, fixtureRecord } from './fixtures';
+import { FIXTURE_ORGANIZATION_ID, fixtureDashboard, fixtureRecord } from './fixtures';
 import {
   roadmapStages,
   workspaceDefinitions,
@@ -14,7 +14,20 @@ import {
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 export const getPortalDashboard = cache(async (session: PortalSession): Promise<PortalDashboard> => {
-  if (session.fixture) return fixtureDashboard(session.role === 'consultant' ? 'consultant' : 'client');
+  if (session.fixture) {
+    const dashboard = fixtureDashboard(session.role === 'consultant' ? 'consultant' : 'client');
+    if (session.organization.id === FIXTURE_ORGANIZATION_ID) return dashboard;
+    return {
+      ...dashboard,
+      organization: session.organization,
+      engagement: session.engagement,
+      attention: [],
+      records: [],
+      workspaces: workspaceDefinitions.map((workspace) => ({ ...workspace, metric: '0', metricLabel: 'available records', href: `/consultant/clients/${session.organization.id}/${workspace.key}` })),
+      currentNarrative: 'Discovery has not yet established a validated current organizational narrative.',
+      historicalNarratives: [],
+    };
+  }
   const supabase = await createSupabaseServerClient();
   const records: PortalRecord[] = [];
 
