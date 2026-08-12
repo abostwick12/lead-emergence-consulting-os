@@ -1,0 +1,15 @@
+begin;
+create extension if not exists pgtap with schema extensions;
+set local search_path = extensions, public, pg_catalog;
+select plan(9);
+select has_table('consulting_os', 'client_invitations', 'Named client invitations are first-class and tenant scoped');
+select has_table('consulting_private', 'assessment_participant_links', 'Assessment capability links are physically private');
+select has_table('consulting_os', 'ministry_setup_handoffs', 'Structured Ministry setup handoff exists');
+select has_table('consulting_os', 'ministry_setup_checklist_items', 'Ministry handoff checklist is first-class');
+select has_function('consulting_os', 'accept_client_invitation', array['uuid'], 'Verified users can activate only a matching pending invitation');
+select has_function('consulting_os', 'issue_assessment_participant_link', array['uuid','uuid','uuid','text','uuid','text','text','timestamp with time zone','uuid'], 'Private assessment link issue command exists');
+select has_function('consulting_os', 'resolve_assessment_participant_link', array['text'], 'Token resolution command exists');
+select has_function('consulting_os', 'submit_assessment_participant_response', array['text','uuid','jsonb'], 'Single-use response command exists');
+select results_eq($$select count(*) from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname in ('consulting_os','consulting_private') and c.relname in ('client_invitations','assessment_participant_links','ministry_setup_handoffs','ministry_setup_checklist_items') and c.relrowsecurity$$, array[4::bigint], 'Every new table has RLS enabled');
+select * from finish();
+rollback;

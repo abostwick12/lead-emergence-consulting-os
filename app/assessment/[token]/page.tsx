@@ -1,0 +1,2 @@
+import { notFound } from 'next/navigation'; import { ParticipantAssessment } from '@/components/access/participant-assessment'; import { getParticipantAssessment } from '@/lib/access/assessment';
+export default async function AssessmentPage({ params }: { params: Promise<{ token: string }> }) { const { token } = await params; const assessment = await getParticipantAssessment(token); if (!assessment) notFound(); return <ParticipantAssessment token={token} assessment={assessment} />; }

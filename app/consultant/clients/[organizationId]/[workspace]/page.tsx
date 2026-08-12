@@ -11,6 +11,10 @@ import { DescriptiveSignalsCenter } from '@/components/signals/descriptive-signa
 import { getSignalsWorkspace } from '@/lib/signals/repository';
 import { DiscoveryIntake } from '@/components/discovery/discovery-intake';
 import { getDiscoveryIntake } from '@/lib/discovery/repository';
+import { AccessCenter } from '@/components/access/access-center';
+import { getAccessCenter } from '@/lib/access/repository';
+import { MinistryHandoffCenter } from '@/components/handoff/ministry-handoff-center';
+import { getMinistryHandoff } from '@/lib/handoff/repository';
 import { requirePortalRole } from '@/lib/portal/context';
 import { getPortalDashboard, recordsForWorkspace } from '@/lib/portal/repository';
 import { workspaceDefinitions, type WorkspaceKey } from '@/lib/portal/types';
@@ -31,6 +35,8 @@ export default async function WorkspacePage({ params }: { params: Promise<{ orga
   const meridian = workspace === 'discovery' || workspace === 'strategy' ? await getMeridianAi(session) : null;
   const signals = workspace === 'signals' ? await getSignalsWorkspace(session) : null;
   const discovery = workspace === 'discovery' ? await getDiscoveryIntake(session) : null;
+  const access = workspace === 'handoff' ? await getAccessCenter(session) : null;
+  const handoff = workspace === 'handoff' ? await getMinistryHandoff(session) : null;
   return <><PageIntro eyebrow={`${session.organization.name} · ${session.engagement.name}`} title={definition.label} description={definition.description} />
     <nav className="workspace-tabs" aria-label="Client workspace sections">{workspaceDefinitions.map((item) => <a className={item.key === workspace ? 'active' : ''} href={`/consultant/clients/${organizationId}/${item.key}`} key={item.key}>{item.label}</a>)}</nav>
     {alignment && <AlignmentCapabilityCenter initialData={alignment} mode={workspace === 'development' ? 'development' : 'alignment'} />}
@@ -38,6 +44,8 @@ export default async function WorkspacePage({ params }: { params: Promise<{ orga
     {meridian && <GroundedAssistance initialData={meridian} />}
     {outcomes && <OutcomesNewRealityCenter initialData={outcomes} />}
     {signals && <DescriptiveSignalsCenter initialData={signals} />}
-    {!outcomes && !signals && <><StateLegend /><RecordList records={records} role="consultant" title={`${definition.label} records`} /></>}
+    {access && <AccessCenter initialData={access} />}
+    {handoff && <MinistryHandoffCenter initialData={handoff} />}
+    {!outcomes && !signals && !handoff && <><StateLegend /><RecordList records={records} role="consultant" title={`${definition.label} records`} /></>}
   </>;
 }

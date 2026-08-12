@@ -1,0 +1,13 @@
+import { expect, test } from '@playwright/test';
+const organizationId = '10000000-0000-4000-8000-000000000001';
+test.beforeEach(async ({ page }) => { await page.goto('/api/test-session?role=consultant&returnTo=%2Fconsultant%2Fclients&reset=true'); });
+test('consultant sends bounded access, creates an assessment link, and saves the Ministry handoff', async ({ page }) => {
+  await page.goto(`/consultant/clients/${organizationId}/handoff`);
+  await expect(page.getByRole('heading', { name: 'Invite the right people, in the right context.' })).toBeVisible();
+  await page.getByLabel('Name', { exact: true }).fill('Jordan Lee'); await page.getByLabel('Email', { exact: true }).fill('jordan@example.com'); await page.getByLabel('Access role').selectOption('CLIENT_LEADER'); await page.getByRole('button', { name: 'Send secure invitation' }).click();
+  await expect(page.getByText('jordan@example.com')).toBeVisible(); await expect(page.getByText('Secure client invitation sent.')).toBeVisible();
+  await page.getByRole('button', { name: 'Create expiring link' }).click(); const participantUrl = await page.getByLabel('One-time participant link').inputValue(); expect(participantUrl).toContain('/assessment/fixture-participant-');
+  await page.getByLabel('Authorized administrator').fill('Jordan Lee'); await page.getByLabel('Administrator email').fill('jordan@example.com'); await page.getByLabel('Ministry areas and leaders').fill('Worship — Morgan; Students — Taylor'); await page.getByLabel('First operating priorities').fill('Create a sustainable weekly planning rhythm.'); await page.getByLabel('Meeting and planning rhythm').fill('Weekly ministry review and monthly leadership review.'); await page.getByLabel('First events and workflows').fill('Sunday service and volunteer onboarding.'); await page.getByLabel('Readiness').selectOption('PREPARING'); await page.getByRole('button', { name: 'Authorized Ministry OS administrator confirmed' }).click(); await page.getByRole('button', { name: 'Save handoff' }).click();
+  await expect(page.getByText('Ministry OS setup handoff saved.')).toBeVisible(); await expect(page.getByText('1 of 6 complete')).toBeVisible(); await page.screenshot({ path: 'test-results/v1-access-ministry-handoff.png', fullPage: true });
+  await page.goto(participantUrl); await expect(page.getByRole('heading', { name: 'Ministry Rhythm Discovery' })).toBeVisible(); await page.getByLabel('4').check({ force: true }); await page.getByRole('button', { name: 'Submit response' }).click(); await expect(page.getByRole('heading', { name: 'Thank you.' })).toBeVisible();
+});
