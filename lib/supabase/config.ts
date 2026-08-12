@@ -17,3 +17,9 @@ export function requireSupabasePublicConfig() {
   }
   return config;
 }
+
+export function requireSupabaseSecretKey() {
+  const key = process.env.SUPABASE_SECRET_KEY;
+  if (!key) throw new Error('Supabase trusted server access is not configured.');
+  return key;
+}

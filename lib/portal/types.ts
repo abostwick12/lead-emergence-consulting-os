@@ -5,7 +5,8 @@ export type WorkspaceKey =
   | 'strategy'
   | 'development'
   | 'outcomes'
-  | 'signals';
+  | 'signals'
+  | 'handoff';
 
 export type ReviewState =
   | 'AI SUGGESTION'
@@ -160,4 +161,5 @@ export const workspaceDefinitions: Array<Pick<WorkspaceSummary, 'key' | 'label' 
   { key: 'development', label: 'Development', description: 'Capabilities, growth plans, and commitments.' },
   { key: 'outcomes', label: 'Outcomes', description: 'Goals, indicators, outcomes, evaluation, and learning.' },
   { key: 'signals', label: 'Signals', description: 'Current observations and later-stage longitudinal signals.' },
+  { key: 'handoff', label: 'Ministry Handoff', description: 'Client access, assessment participation, and consultant-guided Ministry OS setup.' },
 ];
