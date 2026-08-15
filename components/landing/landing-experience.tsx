@@ -3,9 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowDown, ArrowRight, ChartNoAxesColumnIncreasing, LockKeyhole, UserRound, UsersRound, X } from 'lucide-react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { LeadEmergenceSymbol, completeSymbolProgress } from './lead-emergence-symbol';
-import { ReturningUser } from './returning-user';
+import { useEffect, useRef, useState } from 'react';
 import styles from './landing.module.css';
 
 const MINISTRY_LOGIN_URL = 'https://ministry.leademergence.com/login';
@@ -57,6 +55,8 @@ const stages = [
 ] as const;
 
 const thresholds = [0, 0.12, 0.25, 0.38, 0.51, 0.64, 0.82, 1];
+
+const stageImages = stages.map((stage) => `/brand/roadmap/mock-stage-${stage.number}-${stage.short.toLowerCase().replaceAll(' ', '-')}-v10.png`);
 
 function rangeProgress(value: number, start: number, end: number) {
   return Math.max(0, Math.min(1, (value - start) / (end - start)));
@@ -115,18 +115,6 @@ export function LandingExperience() {
   }, []);
 
   const activeStage = activeStageFor(progress);
-  const discrete = useCallback((value: number) => reducedMotion ? (value >= 0.5 ? 1 : 0) : value, [reducedMotion]);
-  const symbolProgress = useMemo(() => ({
-    seed: discrete(rangeProgress(progress, 0, 0.045)),
-    stem: discrete(rangeProgress(progress, 0.12, 0.145)),
-    structure: discrete(rangeProgress(progress, 0.25, 0.275)),
-    pathway: discrete(rangeProgress(progress, 0.38, 0.405)),
-    arc: discrete(rangeProgress(progress, 0.51, 0.535)),
-    rays: discrete(rangeProgress(progress, 0.64, 0.665)),
-    resolved: discrete(rangeProgress(progress, 0.64, 0.665)),
-    cycle: discrete(rangeProgress(progress, 0.82, 0.845)),
-  }), [discrete, progress]);
-
   const openEntry = () => dialogRef.current?.showModal();
   const closeEntry = () => dialogRef.current?.close();
   const jumpToStage = (index: number) => {
@@ -172,8 +160,13 @@ export function LandingExperience() {
             </div>
 
             <div className={styles.symbolStage} aria-hidden="true">
-              <div className={styles.symbolHalo} />
-              <LeadEmergenceSymbol className={styles.symbol} progress={symbolProgress} />
+              <div className={styles.symbolSequence}>
+                {stageImages.map((src, index) => {
+                  const transition = activeStage === 0 || reducedMotion ? 1 : rangeProgress(progress, thresholds[activeStage], thresholds[activeStage] + 0.035);
+                  const visible = index === activeStage ? transition : index === activeStage - 1 ? 1 - transition : 0;
+                  return <Image className={styles.symbolImage} fill key={src} priority={index < 2} sizes="(max-width: 720px) 76vw, 560px" src={src} alt="" unoptimized style={{ opacity: visible }} />;
+                })}
+              </div>
             </div>
           </div>
 
@@ -199,7 +192,7 @@ export function LandingExperience() {
       <section className={styles.brandReveal} aria-labelledby="brand-title">
         <div className={styles.brandPanel}>
           <div className={styles.brandSymbolWrap}>
-            <LeadEmergenceSymbol className={styles.brandSymbol} progress={completeSymbolProgress} />
+            <Image className={styles.brandSymbol} width={1024} height={1024} src="/brand/roadmap/mock-stage-06-new-reality-v10.png" alt="Lead Emergence symbol" unoptimized />
           </div>
           <div className={styles.brandStatement}>
             <p className={styles.eyebrow}>ONE CONTINUOUS PRACTICE</p>
@@ -269,8 +262,6 @@ export function LandingExperience() {
 
         </div>
       </section>
-
-      <ReturningUser onSignIn={openEntry} />
 
       <footer className={styles.footer}>
         <BrandLockup compact />
