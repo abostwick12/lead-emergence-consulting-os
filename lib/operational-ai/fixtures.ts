@@ -11,18 +11,18 @@ const initialData: OperationalEngagementData = {
   ownerLabel: 'Lead Emergence Consulting', handlingLabel: 'Internal — Sanitized Only', currentStage: 'SEE REALITY', targetCompletion: '2026-10-30',
   handlingNotice: 'Enter only information authorized for this environment. Do not enter classified, CUI, SECRET, NOFORN, mission, target, coordinate, frequency, callsign, intelligence, or operational timeline data.',
   products: [
-    { id: 'product-1', name: 'Mission Planning and Analysis Toolkit', description: 'Sanitized planning-support product used to structure analysis and human review.', ownerLabel: 'Product owner to confirm', status: 'ACTIVE', handlingLabel: 'Internal — Sanitized Only' },
-    { id: 'product-2', name: 'Operational Briefing Package', description: 'Sanitized briefing-product workflow, from source collection through quality review.', ownerLabel: 'Product owner to confirm', status: 'ACTIVE', handlingLabel: 'Internal — Sanitized Only' },
-    { id: 'product-3', name: 'Mission Rehearsal Support Package', description: 'Sanitized support-product workflow assessed only at the process and capability level.', ownerLabel: 'Product owner to confirm', status: 'ACTIVE', handlingLabel: 'Internal — Sanitized Only' },
+    { id: 'product-1', name: 'Mission Planning and Analysis Toolkit', description: 'Sanitized planning-support product used to structure analysis and human review.', ownerLabel: 'Product owner to confirm', status: 'ACTIVE', handlingLabel: 'Internal — Sanitized Only', responses: [] },
+    { id: 'product-2', name: 'Operational Briefing Package', description: 'Sanitized briefing-product workflow, from source collection through quality review.', ownerLabel: 'Product owner to confirm', status: 'ACTIVE', handlingLabel: 'Internal — Sanitized Only', responses: [] },
+    { id: 'product-3', name: 'Mission Rehearsal Support Package', description: 'Sanitized support-product workflow assessed only at the process and capability level.', ownerLabel: 'Product owner to confirm', status: 'ACTIVE', handlingLabel: 'Internal — Sanitized Only', responses: [] },
   ],
   audits: [
-    { id: 'audit-1', productId: 'product-1', title: 'Product owner written audit', respondentLabel: 'Product owner', dueOn: '2026-08-28', status: 'NOT_STARTED', completedResponses: 0, totalPrompts: 12 },
-    { id: 'audit-2', productId: 'product-2', title: 'Analyst written audit', respondentLabel: 'Primary analyst', dueOn: '2026-08-28', status: 'NOT_STARTED', completedResponses: 0, totalPrompts: 12 },
-    { id: 'audit-3', productId: 'product-3', title: 'Reviewer written audit', respondentLabel: 'Quality reviewer', dueOn: '2026-09-02', status: 'NOT_STARTED', completedResponses: 0, totalPrompts: 10 },
+    { id: 'audit-1', productId: 'product-1', title: 'Product owner written audit', respondentLabel: 'Product owner', dueOn: '2026-08-28', status: 'NOT_STARTED', completedResponses: 0, totalPrompts: 12, responses: [] },
+    { id: 'audit-2', productId: 'product-2', title: 'Analyst written audit', respondentLabel: 'Primary analyst', dueOn: '2026-08-28', status: 'NOT_STARTED', completedResponses: 0, totalPrompts: 12, responses: [] },
+    { id: 'audit-3', productId: 'product-3', title: 'Reviewer written audit', respondentLabel: 'Quality reviewer', dueOn: '2026-09-02', status: 'NOT_STARTED', completedResponses: 0, totalPrompts: 10, responses: [] },
   ],
   interviews: [
-    { id: 'interview-1', productId: 'product-1', participantLabel: 'Product owner', interviewType: 'PRODUCT_OWNER', objective: 'Understand purpose, users, quality criteria, bottlenecks, and required human judgment.', scheduledFor: '2026-09-03T14:00:00-05:00', status: 'PLANNED', notesCount: 0 },
-    { id: 'interview-2', productId: 'product-2', participantLabel: 'Primary analyst', interviewType: 'ANALYST', objective: 'Map actual work, sources, handoffs, rework, tool use, and verification practice.', scheduledFor: '2026-09-04T14:00:00-05:00', status: 'PLANNED', notesCount: 0 },
+    { id: 'interview-1', productId: 'product-1', participantLabel: 'Product owner', interviewType: 'PRODUCT_OWNER', objective: 'Understand purpose, users, quality criteria, bottlenecks, and required human judgment.', scheduledFor: '2026-09-03T14:00:00-05:00', status: 'PLANNED', notesCount: 0, responses: [] },
+    { id: 'interview-2', productId: 'product-2', participantLabel: 'Primary analyst', interviewType: 'ANALYST', objective: 'Map actual work, sources, handoffs, rework, tool use, and verification practice.', scheduledFor: '2026-09-04T14:00:00-05:00', status: 'PLANNED', notesCount: 0, responses: [] },
   ],
   workflows: [{ id: 'workflow-1', productId: 'product-2', name: 'Current-state product preparation', purpose: 'Map the sanitized flow of work from task receipt through authorized release.', status: 'DRAFT', steps: [
     { id: 'step-1', sequence: 1, name: 'Receive task and constraints', ownerLabel: 'Analyst', systemTool: 'Approved work environment', inputs: 'Authorized tasking and sanitized source references', outputs: 'Clarified product intent', durationMinutes: 30, waitMinutes: 0, reworkRisk: 'MEDIUM', judgmentRequired: 'Confirm scope, audience, and missing information.', verificationRequired: 'Human scope check', aiSuitability: 'NOT_ASSESSED' },
@@ -43,3 +43,4 @@ const initialData: OperationalEngagementData = {
 declare global { var __leOperationalAiFixture: OperationalEngagementData | undefined }
 export function fixtureOperationalEngagement(): OperationalEngagementData { globalThis.__leOperationalAiFixture ??= structuredClone(initialData); return structuredClone(globalThis.__leOperationalAiFixture) }
 export function updateFixtureOperationalEngagement(updater: (current: OperationalEngagementData) => OperationalEngagementData) { globalThis.__leOperationalAiFixture = updater(fixtureOperationalEngagement()); return fixtureOperationalEngagement() }
+export function resetOperationalFixtures() { globalThis.__leOperationalAiFixture = structuredClone(initialData) }
