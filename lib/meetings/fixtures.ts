@@ -1,4 +1,5 @@
 import 'server-only';
+import { authorizationError, notFoundError, validationError } from '@/lib/errors';
 
 import type { PortalSession } from '@/lib/portal/types';
 import type { MeetingCenterData, MeetingMutation, MeetingPerson, MeetingView } from './types';
@@ -61,9 +62,9 @@ export function mutateFixtureMeeting(session: PortalSession, mutation: MeetingMu
   const meetings = store();
   const person = [consultant, client].find((item) => item.id === session.personId)!;
   if (mutation.action === 'CREATE_MEETING') {
-    if (session.role !== 'consultant') throw new Error('Only a consultant can create a meeting.');
+    if (session.role !== 'consultant') throw authorizationError('Only a consultant can create a meeting.');
     const participant = [consultant, client].find((item) => item.id === mutation.participantPersonId);
-    if (!participant) throw new Error('The selected participant is not available.');
+    if (!participant) throw notFoundError('The selected participant is not available.');
     const id = crypto.randomUUID();
     const meeting: MeetingView = {
       id, organizationId: session.organization.id, engagementId: session.engagement.id, type: mutation.meetingType, title: mutation.title, purpose: mutation.purpose,
@@ -74,25 +75,25 @@ export function mutateFixtureMeeting(session: PortalSession, mutation: MeetingMu
     meetings.unshift(meeting);
   } else {
     const meeting = meetings.find((item) => item.id === mutation.meetingId);
-    if (!meeting || (session.role === 'client' && !meeting.participants.some((item) => item.id === session.personId))) throw new Error('Meeting is not available.');
+    if (!meeting || (session.role === 'client' && !meeting.participants.some((item) => item.id === session.personId))) throw notFoundError('Meeting is not available.');
     if (mutation.action === 'UPDATE_MEETING') {
-      if (session.role !== 'consultant') throw new Error('Only a consultant can edit the meeting plan.');
-      if (!canMoveToPhase(meeting.phase, mutation.phase)) throw new Error('Move through the meeting workflow one phase at a time.');
+      if (session.role !== 'consultant') throw authorizationError('Only a consultant can edit the meeting plan.');
+      if (!canMoveToPhase(meeting.phase, mutation.phase)) throw validationError('Move through the meeting workflow one phase at a time.');
       Object.assign(meeting, { title: mutation.title, purpose: mutation.purpose, agenda: mutation.agenda, sharedSummary: mutation.sharedSummary, followUp: mutation.followUp, phase: mutation.phase, status: mutation.phase === 'PREPARE' ? 'PREPARED' : mutation.phase === 'FOLLOW_UP' ? 'COMPLETED' : 'IN_PROGRESS' });
     } else if (mutation.action === 'ADD_SHARED_NOTE') {
       meeting.notes.push({ id: crypto.randomUUID(), kind: 'SHARED_NOTE', content: mutation.content, authorName: person.name, createdLabel: 'Just now', privacy: 'SHARED' });
     } else if (mutation.action === 'ADD_PRIVATE_NOTE') {
-      if (mutation.kind === 'CONSULTANT_NOTE' && session.role !== 'consultant') throw new Error('Consultant-private notes are limited to the assigned consultant.');
+      if (mutation.kind === 'CONSULTANT_NOTE' && session.role !== 'consultant') throw authorizationError('Consultant-private notes are limited to the assigned consultant.');
       meeting.notes.push({ id: crypto.randomUUID(), kind: mutation.kind, content: mutation.content, authorName: person.name, createdLabel: 'Just now', privacy: 'PRIVATE' });
     } else if (mutation.action === 'ADD_DECISION') {
       meeting.decisions.push({ id: crypto.randomUUID(), statement: mutation.statement, rationale: mutation.rationale, intendedEffect: mutation.intendedEffect, reviewTrigger: mutation.reviewTrigger, status: 'APPROVED', authorityName: person.name, decidedLabel: 'Just now' });
     } else if (mutation.action === 'ADD_COMMITMENT') {
       const owner = meeting.participants.find((item) => item.id === mutation.ownerPersonId);
-      if (!owner) throw new Error('Commitment owner must be a meeting participant.');
+      if (!owner) throw validationError('Commitment owner must be a meeting participant.');
       meeting.commitments.push({ id: crypto.randomUUID(), ownerPersonId: owner.id, ownerName: owner.name, action: mutation.actionText, dueOn: mutation.dueOn, status: 'OPEN', sourceMeetingId: meeting.id });
     } else if (mutation.action === 'UPDATE_COMMITMENT') {
       const commitment = meeting.commitments.find((item) => item.id === mutation.commitmentId);
-      if (!commitment || (session.role === 'client' && commitment.ownerPersonId !== session.personId)) throw new Error('Commitment is not available.');
+      if (!commitment || (session.role === 'client' && commitment.ownerPersonId !== session.personId)) throw notFoundError('Commitment is not available.');
       commitment.status = mutation.status;
     }
   }

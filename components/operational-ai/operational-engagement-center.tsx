@@ -2,6 +2,7 @@
 
 import { useState, useTransition, type FormEvent, type ReactNode } from 'react';
 import { AlertTriangle, ArrowRight, CheckCircle2, ClipboardCheck, FileSearch, LockKeyhole, Plus, Route, ShieldCheck, Sparkles, Users } from 'lucide-react';
+import { logError } from '@/lib/errors';
 import type { GuidedRecordKind, OperationalEngagementData, OperationalSection } from '@/lib/operational-ai/types';
 import { GuidedRecordWorkspace } from './guided-record-workspace';
 
@@ -18,7 +19,8 @@ export function OperationalEngagementCenter({ initialData, section }: { initialD
         const body = await response.json();
         if (!response.ok) { setMessage(body.error ?? 'The workspace could not be updated.'); return; }
         setData(body); form?.reset(); setMessage('Workspace updated.');
-      } catch {
+      } catch (error) {
+        logError('operationalAi.mutate', error);
         setMessage('The workspace could not be reached. Try again.');
       }
     });

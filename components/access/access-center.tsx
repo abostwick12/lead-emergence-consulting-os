@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from 'react';
 import { ClipboardCheck, Copy, MailCheck, ShieldCheck, UserRoundPlus } from 'lucide-react';
+import { logError } from '@/lib/errors';
 import type { AccessCenterData, AccessMutation, ClientPlatformRole } from '@/lib/access/types';
 
 export function AccessCenter({ initialData }: { initialData: AccessCenterData }) {
@@ -9,6 +10,16 @@ export function AccessCenter({ initialData }: { initialData: AccessCenterData })
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState('');
   const [participantUrl, setParticipantUrl] = useState('');
+
+  async function copyParticipantUrl() {
+    try {
+      await navigator.clipboard.writeText(participantUrl);
+      setMessage('Participant link copied.');
+    } catch (error) {
+      logError('access.copyParticipantLink', error);
+      setMessage('The link could not be copied automatically. Select it in the field and copy it manually.');
+    }
+  }
 
   async function mutate(mutation: AccessMutation, form?: HTMLFormElement) {
     setPending(true); setMessage('');
@@ -33,7 +44,7 @@ export function AccessCenter({ initialData }: { initialData: AccessCenterData })
       </article>
       <article className="access-panel"><div className="panel-heading"><ClipboardCheck aria-hidden="true" /><div><h3>Assessment participant links</h3><p>Accountless links for the bounded inquiry—not client portal access.</p></div></div>
         {data.assessments.length === 0 ? <p className="access-empty">Create an assessment administration in Discovery first.</p> : data.assessments.map((assessment) => <form className="assessment-link-form" key={assessment.id} onSubmit={(event: FormEvent<HTMLFormElement>) => { event.preventDefault(); const values = new FormData(event.currentTarget); void mutate({ action: 'CREATE_ASSESSMENT_LINK', administrationId: assessment.id, recipientName: String(values.get('recipientName') ?? ''), recipientEmail: String(values.get('recipientEmail') ?? '') }); }}><div><strong>{assessment.name}</strong><small>{assessment.audience} · {assessment.confidentiality}</small></div>{assessment.confidentiality !== 'ANONYMOUS' && <><label>Participant name <small>Optional</small><input name="recipientName" /></label><label>Participant email <small>Optional</small><input name="recipientEmail" type="email" /></label></>}<button className="secondary-button" disabled={pending}>Create expiring link</button></form>)}
-        {participantUrl && <div className="participant-link"><label>One-time participant link<input readOnly value={participantUrl} /></label><button type="button" className="secondary-button" onClick={() => void navigator.clipboard.writeText(participantUrl)}><Copy aria-hidden="true" />Copy link</button></div>}
+        {participantUrl && <div className="participant-link"><label>One-time participant link<input readOnly value={participantUrl} /></label><button type="button" className="secondary-button" onClick={() => void copyParticipantUrl()}><Copy aria-hidden="true" />Copy link</button></div>}
       </article>
     </div>
     {message && <p className="access-message" role="status">{message}</p>}

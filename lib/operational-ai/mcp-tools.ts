@@ -1,4 +1,5 @@
 import 'server-only';
+import { authorizationError, validationError } from '@/lib/errors';
 import type { PortalSession } from '@/lib/portal/types';
 import { getGuidedRecord } from './guided-workflows';
 import { getOperationalEngagement, mutateOperationalEngagement } from './repository';
@@ -28,7 +29,7 @@ export const operationalMcpTools = [
 ] as const;
 
 export async function executeOperationalMcpTool(session: PortalSession, name: string, input: Record<string, unknown>) {
-  if (session.role !== 'consultant') throw new Error('Consultant access is required.');
+  if (session.role !== 'consultant') throw authorizationError('Consultant access is required.');
   const data = await getOperationalEngagement(session);
   if (name === 'list_engagement_records') {
     const kind = recordKind(input.recordKind);
@@ -38,7 +39,7 @@ export async function executeOperationalMcpTool(session: PortalSession, name: st
   }
   if (name === 'get_guided_record') return getGuidedRecord(data, recordKind(input.recordKind), requiredText(input.recordId, 'recordId'));
   if (name === 'save_guided_response') {
-    if (input.confirmed !== true) throw new Error('Explicit user confirmation is required before saving a guided response.');
+    if (input.confirmed !== true) throw validationError('Explicit user confirmation is required before saving a guided response.');
     return mutateOperationalEngagement(session, validateOperationalMutation({
       action: 'SAVE_GUIDED_RESPONSE',
       recordKind: recordKind(input.recordKind),
@@ -47,15 +48,15 @@ export async function executeOperationalMcpTool(session: PortalSession, name: st
       answer: requiredText(input.answer, 'answer'),
     }));
   }
-  throw new Error('Unsupported Consulting OS MCP tool.');
+  throw validationError('Unsupported Consulting OS MCP tool.');
 }
 
 function recordKind(value: unknown): GuidedRecordKind {
-  if (value !== 'PRODUCT' && value !== 'AUDIT' && value !== 'INTERVIEW') throw new Error('recordKind must be PRODUCT, AUDIT, or INTERVIEW.');
+  if (value !== 'PRODUCT' && value !== 'AUDIT' && value !== 'INTERVIEW') throw validationError('recordKind must be PRODUCT, AUDIT, or INTERVIEW.');
   return value;
 }
 
 function requiredText(value: unknown, name: string) {
-  if (typeof value !== 'string' || !value.trim()) throw new Error(`${name} is required.`);
+  if (typeof value !== 'string' || !value.trim()) throw validationError(`${name} is required.`);
   return value.trim();
 }

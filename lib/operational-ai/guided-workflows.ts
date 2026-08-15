@@ -1,3 +1,4 @@
+import { notFoundError } from '@/lib/errors';
 import type { GuidedRecordKind, GuidedResponse, OperationalEngagementData } from './types';
 
 export interface GuidedQuestion {
@@ -122,5 +123,5 @@ function findRecord(data: OperationalEngagementData, kind: GuidedRecordKind, rec
     const item = data.interviews.find((interview) => interview.id === recordId);
     if (item) return { title: item.participantLabel, context: item.objective, status: item.status, responses: item.responses };
   }
-  throw new Error('The requested guided record was not found.');
+  throw notFoundError('The requested guided record was not found.');
 }

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { apiErrorResponse } from '@/lib/api/responses';
 import { getPortalSession } from '@/lib/portal/context';
 import { getMeetingCenter, mutateMeeting } from '@/lib/meetings/repository';
 import { validateMeetingMutation } from '@/lib/meetings/workflow';
@@ -9,7 +10,7 @@ export async function GET() {
   try {
     return NextResponse.json(await getMeetingCenter(session));
   } catch (error) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'Meeting data could not be loaded.' }, { status: 400 });
+    return apiErrorResponse('api.meetings.get', error, 'Meeting data could not be loaded.');
   }
 }
 
@@ -20,6 +21,6 @@ export async function POST(request: Request) {
     const mutation = validateMeetingMutation(await request.json());
     return NextResponse.json(await mutateMeeting(session, mutation));
   } catch (error) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'Meeting action could not be completed.' }, { status: 400 });
+    return apiErrorResponse('api.meetings.post', error, 'Meeting action could not be completed.');
   }
 }
