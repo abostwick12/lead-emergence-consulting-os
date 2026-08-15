@@ -15,9 +15,34 @@ export async function mutateOperationalEngagement(session: PortalSession, mutati
   if (session.role !== 'consultant') throw new Error('Consultant access is required.');
   if (!session.fixture) throw new Error('Hosted Operational Product AI mutations remain disabled until the approved infrastructure checkpoint.');
   return updateFixtureOperationalEngagement((current) => {
-    if (mutation.action === 'ADD_PRODUCT') current.products.push({ id: id('product'), name: mutation.name, description: mutation.description, ownerLabel: mutation.ownerLabel, status: 'ACTIVE', handlingLabel: current.handlingLabel });
+    if (mutation.action === 'ADD_PRODUCT') current.products.push({ id: id('product'), name: mutation.name, description: mutation.description, ownerLabel: mutation.ownerLabel, status: 'ACTIVE', handlingLabel: current.handlingLabel, responses: [] });
+    if (mutation.action === 'UPDATE_PRODUCT_SUMMARY') current.products = current.products.map((item) => item.id === mutation.id ? { ...item, name: mutation.name, description: mutation.description, ownerLabel: mutation.ownerLabel, status: mutation.status } : item);
     if (mutation.action === 'UPDATE_AUDIT_STATUS') current.audits = current.audits.map((item) => item.id === mutation.id ? { ...item, status: mutation.status } : item);
-    if (mutation.action === 'ADD_INTERVIEW') current.interviews.push({ id: id('interview'), productId: mutation.productId, participantLabel: mutation.participantLabel, interviewType: mutation.interviewType, objective: mutation.objective, scheduledFor: mutation.scheduledFor, status: 'PLANNED', notesCount: 0 });
+    if (mutation.action === 'ADD_INTERVIEW') current.interviews.push({ id: id('interview'), productId: mutation.productId, participantLabel: mutation.participantLabel, interviewType: mutation.interviewType, objective: mutation.objective, scheduledFor: mutation.scheduledFor, status: 'PLANNED', notesCount: 0, responses: [] });
+    if (mutation.action === 'UPDATE_INTERVIEW_STATUS') current.interviews = current.interviews.map((item) => item.id === mutation.id ? { ...item, status: mutation.status } : item);
+    if (mutation.action === 'SAVE_GUIDED_RESPONSE') {
+      const response = { questionId: mutation.questionId, answer: mutation.answer, updatedAt: new Date().toISOString() };
+      const save = (responses: typeof current.products[number]['responses']) => [...responses.filter((item) => item.questionId !== mutation.questionId), response];
+      let found = false;
+      if (mutation.recordKind === 'PRODUCT') current.products = current.products.map((item) => {
+        if (item.id !== mutation.recordId) return item;
+        found = true;
+        return { ...item, responses: save(item.responses) };
+      });
+      if (mutation.recordKind === 'AUDIT') current.audits = current.audits.map((item) => {
+        if (item.id !== mutation.recordId) return item;
+        found = true;
+        const responses = save(item.responses);
+        return { ...item, responses, completedResponses: responses.length, status: item.status === 'NOT_STARTED' ? 'IN_PROGRESS' : item.status };
+      });
+      if (mutation.recordKind === 'INTERVIEW') current.interviews = current.interviews.map((item) => {
+        if (item.id !== mutation.recordId) return item;
+        found = true;
+        const responses = save(item.responses);
+        return { ...item, responses, notesCount: responses.length, status: item.status === 'PLANNED' ? 'IN_PROGRESS' : item.status };
+      });
+      if (!found) throw new Error('The requested guided record was not found.');
+    }
     if (mutation.action === 'ADD_EVIDENCE') current.evidence.push({ id: id('evidence'), productId: mutation.productId, title: mutation.title, sourceType: mutation.sourceType, observation: mutation.observation, sourceLocator: mutation.sourceLocator, visibility: mutation.visibility, status: 'CAPTURED' });
     if (mutation.action === 'ADD_REQUEST') current.requests.push({ id: id('request'), productId: mutation.productId, title: mutation.title, requestedFrom: mutation.requestedFrom, requestedOn: new Date().toISOString().slice(0, 10), dueOn: mutation.dueOn, status: 'REQUESTED', handlingNote: 'Sanitized material only; no operational content.' });
     if (mutation.action === 'ADD_ACTION') current.actions.push({ id: id('action'), title: mutation.title, ownerLabel: mutation.ownerLabel, dueOn: mutation.dueOn, status: 'OPEN', visibility: mutation.visibility });

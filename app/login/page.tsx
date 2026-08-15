@@ -8,6 +8,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   const params = await searchParams;
   const returnTo = safeReturnPath(params.returnTo ?? '/');
   const fixture = isFixtureMode();
+  const selectedRole = returnTo === '/consultant' || returnTo.startsWith('/consultant/') ? 'consultant' : returnTo === '/client' || returnTo.startsWith('/client/') ? 'client' : null;
   return (
     <main className="login-page">
       <aside className="login-story" aria-label="Product introduction">
@@ -35,8 +36,8 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         {fixture ? (
           <div className="fixture-login" data-testid="fixture-login">
             <p>Local review access</p>
-            <Link className="primary-button" href={`/api/test-session?role=consultant&returnTo=${encodeURIComponent(returnTo === '/' ? '/consultant' : returnTo)}`}>Enter consultant portal <ArrowRight aria-hidden="true" /></Link>
-            <Link className="secondary-button" href={`/api/test-session?role=client&returnTo=${encodeURIComponent(returnTo === '/' ? '/client' : returnTo)}`}>Enter client portal</Link>
+            {selectedRole !== 'client' && <Link className="primary-button" href={`/api/test-session?role=consultant&returnTo=${encodeURIComponent(returnTo === '/' ? '/consultant' : returnTo)}`}>Enter consultant portal <ArrowRight aria-hidden="true" /></Link>}
+            {selectedRole !== 'consultant' && <Link className={selectedRole === 'client' ? 'primary-button' : 'secondary-button'} href={`/api/test-session?role=client&returnTo=${encodeURIComponent(returnTo === '/' ? '/client' : returnTo)}`}>Enter client portal {selectedRole === 'client' && <ArrowRight aria-hidden="true" />}</Link>}
           </div>
         ) : (
           <form action={signIn} className="login-form">

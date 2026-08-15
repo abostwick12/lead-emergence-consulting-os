@@ -11,11 +11,12 @@ import { resetOnboardingFixtures } from '@/lib/onboarding/fixtures';
 import { resetDiscoveryFixtures } from '@/lib/discovery/fixtures';
 import { resetAccessFixtures } from '@/lib/access/fixtures';
 import { resetHandoffFixtures } from '@/lib/handoff/fixtures';
+import { resetOperationalFixtures } from '@/lib/operational-ai/fixtures';
 
 export function GET(request: NextRequest) {
   if (!isFixtureMode()) return new NextResponse('Not found', { status: 404 });
   if (request.nextUrl.searchParams.get('reset') === 'true') {
-    resetAlignmentFixtures(); resetMeetingFixtures(); resetMeridianAiFixtures(); resetOutcomeFixtures(); resetSignalsFixtures(); resetOnboardingFixtures(); resetDiscoveryFixtures(); resetAccessFixtures(); resetHandoffFixtures();
+    resetAlignmentFixtures(); resetMeetingFixtures(); resetMeridianAiFixtures(); resetOutcomeFixtures(); resetSignalsFixtures(); resetOnboardingFixtures(); resetDiscoveryFixtures(); resetAccessFixtures(); resetHandoffFixtures(); resetOperationalFixtures();
   }
   const role = request.nextUrl.searchParams.get('role');
   if (role !== 'consultant' && role !== 'client') return new NextResponse('Invalid synthetic role', { status: 400 });
