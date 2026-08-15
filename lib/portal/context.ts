@@ -62,7 +62,7 @@ export const getPortalSession = cache(async (): Promise<PortalSession | null> =>
   const organization = organizations.find((item) => item.id === requestedOrgId) ?? organizations[0];
   const { data: engagementRows } = await supabase
     .from('engagements')
-    .select('id, organization_id, name, status, starts_on, ends_on')
+    .select('id, organization_id, name, status, starts_on, ends_on, engagement_type, handling_label, current_phase')
     .eq('organization_id', organization.id)
     .in('status', ['ACTIVE', 'PLANNED', 'PAUSED'])
     .order('starts_on', { ascending: false });
@@ -73,6 +73,9 @@ export const getPortalSession = cache(async (): Promise<PortalSession | null> =>
     status: row.status,
     startsOn: row.starts_on ?? undefined,
     endsOn: row.ends_on ?? undefined,
+    engagementType: row.engagement_type ?? undefined,
+    handlingLabel: row.handling_label ?? undefined,
+    currentPhase: row.current_phase ?? undefined,
   }));
   if (!engagements.length) return null;
   const requestedEngagementId = cookieStore.get('le_engagement_id')?.value;

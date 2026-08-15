@@ -21,7 +21,7 @@ export function startFixtureEngagement(input: StartEngagementInput): StartEngage
   const engagementId = `20000000-0000-4000-8001-${suffix}`;
   const slugBase = input.organizationName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'client';
   current.organizations.push({ id: organizationId, name: input.organizationName, slug: `${slugBase}-${current.revision}` });
-  current.engagements.push({ id: engagementId, organizationId, name: input.engagementName, status: 'ACTIVE', startsOn: input.startsOn, endsOn: input.endsOn });
+  current.engagements.push({ id: engagementId, organizationId, name: input.engagementName, status: 'ACTIVE', startsOn: input.startsOn, endsOn: input.endsOn, engagementType: input.engagementType, handlingLabel: input.engagementType === 'OPERATIONAL_PRODUCT_AI_TRANSFORMATION' ? 'Internal — Sanitized Only' : undefined, currentPhase: input.engagementType === 'OPERATIONAL_PRODUCT_AI_TRANSFORMATION' ? 'SEE REALITY' : undefined });
   return { organizationId, engagementId };
 }
 

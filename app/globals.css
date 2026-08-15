@@ -469,7 +469,9 @@ h3 { font-size: 1.3rem; }
 .client-setup-form label { color: var(--platform-muted); font-size: .74rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
 .client-setup-form label > svg { width: 16px; margin-right: 7px; vertical-align: middle; color: var(--platform-cyan); }
 .client-setup-form label small { color: var(--platform-dim); font-weight: 500; }
-.client-setup-form input { width: 100%; margin-top: 8px; border: 1px solid var(--platform-line); border-radius: 9px; padding: 12px 13px; background: rgba(2,8,18,.8); color: #f8fbff; color-scheme: dark; }
+.client-setup-form input, .client-setup-form select, .client-setup-form textarea { width: 100%; margin-top: 8px; border: 1px solid var(--platform-line); border-radius: 9px; padding: 12px 13px; background: rgba(2,8,18,.8); color: #f8fbff; color-scheme: dark; }
+.client-setup-form textarea { min-height: 88px; resize: vertical; }
+.client-setup-form label.wide { grid-column: 1 / -1; }
 .client-setup-form .form-guidance { align-self: center; margin: 0; color: var(--platform-muted); font-size: .78rem; }
 .client-setup-form .form-error { margin: 0; color: #ff9f9f; }
 .client-setup-form button { justify-self: start; }

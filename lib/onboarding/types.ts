@@ -3,6 +3,9 @@ export interface StartEngagementInput {
   engagementName: string;
   startsOn: string;
   endsOn?: string;
+  engagementType: 'ORGANIZATIONAL_TRANSFORMATION' | 'OPERATIONAL_PRODUCT_AI_TRANSFORMATION';
+  objective?: string;
+  scopeStatement?: string;
 }
 
 export interface StartEngagementResult {

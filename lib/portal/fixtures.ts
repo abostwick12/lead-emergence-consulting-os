@@ -10,6 +10,7 @@ import {
   type PortalSession,
 } from './types';
 import { fixtureOnboardingOptions } from '../onboarding/fixtures';
+import { SEVENTH_SOS_ENGAGEMENT_ID, SEVENTH_SOS_ORGANIZATION_ID } from '../operational-ai/fixtures';
 
 export const FIXTURE_ORGANIZATION_ID = '10000000-0000-4000-8000-000000000001';
 export const FIXTURE_ENGAGEMENT_ID = '20000000-0000-4000-8000-000000000001';
@@ -27,6 +28,24 @@ const engagement: EngagementOption = {
   status: 'ACTIVE',
   startsOn: '2026-06-01',
   endsOn: '2027-02-28',
+};
+
+const seventhSosOrganization: OrganizationOption = {
+  id: SEVENTH_SOS_ORGANIZATION_ID,
+  name: '7th Special Operations Squadron',
+  slug: '7th-special-operations-squadron',
+};
+
+const seventhSosEngagement: EngagementOption = {
+  id: SEVENTH_SOS_ENGAGEMENT_ID,
+  organizationId: seventhSosOrganization.id,
+  name: 'Operational Product AI Transformation',
+  status: 'ACTIVE',
+  startsOn: '2026-08-14',
+  endsOn: '2026-10-30',
+  engagementType: 'OPERATIONAL_PRODUCT_AI_TRANSFORMATION',
+  handlingLabel: 'Internal — Sanitized Only',
+  currentPhase: 'SEE REALITY',
 };
 
 const records: PortalRecord[] = [
@@ -168,8 +187,8 @@ const clientAttention: AttentionItem[] = [
 export function fixtureSession(role: PortalRole, requestedOrganizationId?: string, requestedEngagementId?: string): PortalSession | null {
   if (role === 'outsider') return null;
   const onboarding = fixtureOnboardingOptions();
-  const organizations = [organization, ...onboarding.organizations];
-  const engagements = [engagement, ...onboarding.engagements];
+  const organizations = [organization, seventhSosOrganization, ...onboarding.organizations];
+  const engagements = [engagement, seventhSosEngagement, ...onboarding.engagements];
   const selectedOrganization = organizations.find((item) => item.id === requestedOrganizationId) ?? organization;
   const selectedEngagement = engagements.find((item) => item.id === requestedEngagementId && item.organizationId === selectedOrganization.id)
     ?? engagements.find((item) => item.organizationId === selectedOrganization.id)

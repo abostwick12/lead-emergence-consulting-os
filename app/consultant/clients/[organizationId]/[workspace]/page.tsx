@@ -18,6 +18,9 @@ import { getMinistryHandoff } from '@/lib/handoff/repository';
 import { requirePortalRole } from '@/lib/portal/context';
 import { getPortalDashboard, recordsForWorkspace } from '@/lib/portal/repository';
 import { workspaceDefinitions, type WorkspaceKey } from '@/lib/portal/types';
+import { OperationalEngagementCenter } from '@/components/operational-ai/operational-engagement-center';
+import { getOperationalEngagement } from '@/lib/operational-ai/repository';
+import { isOperationalSection, operationalSections } from '@/lib/operational-ai/types';
 
 export default async function WorkspacePage({ params }: { params: Promise<{ organizationId: string; workspace: string }> }) {
   const session = await requirePortalRole('consultant');
@@ -25,6 +28,14 @@ export default async function WorkspacePage({ params }: { params: Promise<{ orga
   if (organizationId !== session.organization.id) {
     if (!session.organizations.some((item) => item.id === organizationId)) notFound();
     redirect(`/api/portal-context?organizationId=${organizationId}&returnTo=${encodeURIComponent(`/consultant/clients/${organizationId}/${workspace}`)}`);
+  }
+  if (session.engagement.engagementType === 'OPERATIONAL_PRODUCT_AI_TRANSFORMATION') {
+    if (!isOperationalSection(workspace)) notFound();
+    const section = operationalSections.find((item) => item.key === workspace)!;
+    return <><PageIntro eyebrow={`${session.organization.name} · ${session.engagement.name}`} title={section.label} description={section.phase === 'P0' ? 'Operational product assessment and evidence workspace.' : `${section.phase} engagement workspace — deliberately phase-gated.`} />
+      <nav className="workspace-tabs operational-tabs" aria-label="Operational Product AI workspace sections">{operationalSections.map((item) => <a className={item.key === workspace ? 'active' : ''} href={`/consultant/clients/${organizationId}/${item.key}`} key={item.key}>{item.label}<small>{item.phase}</small></a>)}</nav>
+      <OperationalEngagementCenter initialData={await getOperationalEngagement(session)} section={workspace} />
+    </>;
   }
   const definition = workspaceDefinitions.find((item) => item.key === workspace);
   if (!definition) notFound();

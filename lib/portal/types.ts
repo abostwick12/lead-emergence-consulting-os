@@ -36,6 +36,9 @@ export interface EngagementOption {
   status: string;
   startsOn?: string;
   endsOn?: string;
+  engagementType?: string;
+  handlingLabel?: string;
+  currentPhase?: string;
 }
 
 export interface PortalSession {
