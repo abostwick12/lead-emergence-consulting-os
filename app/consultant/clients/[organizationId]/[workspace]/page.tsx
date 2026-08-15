@@ -1,4 +1,5 @@
 import { notFound, redirect } from 'next/navigation';
+import { LockKeyhole } from 'lucide-react';
 import { PageIntro, RecordList } from '@/components/portal/dashboard';
 import { StateLegend } from '@/components/portal/state-badge';
 import { AlignmentCapabilityCenter } from '@/components/alignment/alignment-capability-center';
@@ -19,7 +20,7 @@ import { requirePortalRole } from '@/lib/portal/context';
 import { getPortalDashboard, recordsForWorkspace } from '@/lib/portal/repository';
 import { workspaceDefinitions, type WorkspaceKey } from '@/lib/portal/types';
 import { OperationalEngagementCenter } from '@/components/operational-ai/operational-engagement-center';
-import { getOperationalEngagement } from '@/lib/operational-ai/repository';
+import { getOperationalEngagement, isOperationalWorkspaceProvisioned, operationalProvisioningGateNotice } from '@/lib/operational-ai/repository';
 import { isOperationalSection, operationalSections } from '@/lib/operational-ai/types';
 
 export default async function WorkspacePage({ params }: { params: Promise<{ organizationId: string; workspace: string }> }) {
@@ -34,7 +35,9 @@ export default async function WorkspacePage({ params }: { params: Promise<{ orga
     const section = operationalSections.find((item) => item.key === workspace)!;
     return <><PageIntro eyebrow={`${session.organization.name} · ${session.engagement.name}`} title={section.label} description={section.phase === 'P0' ? 'Operational product assessment and evidence workspace.' : `${section.phase} engagement workspace — deliberately phase-gated.`} />
       <nav className="workspace-tabs operational-tabs" aria-label="Operational Product AI workspace sections">{operationalSections.map((item) => <a className={item.key === workspace ? 'active' : ''} href={`/consultant/clients/${organizationId}/${item.key}`} key={item.key}>{item.label}<small>{item.phase}</small></a>)}</nav>
-      <OperationalEngagementCenter initialData={await getOperationalEngagement(session)} section={workspace} />
+      {isOperationalWorkspaceProvisioned(session)
+        ? <OperationalEngagementCenter initialData={await getOperationalEngagement(session)} section={workspace} />
+        : <section className="phase-gate"><LockKeyhole aria-hidden="true" /><p className="eyebrow">Infrastructure checkpoint</p><h2>This workspace is not provisioned in the hosted environment yet.</h2><p>{operationalProvisioningGateNotice} Nothing can be read or written here until that checkpoint is approved, and no automation is running.</p></section>}
     </>;
   }
   const definition = workspaceDefinitions.find((item) => item.key === workspace);

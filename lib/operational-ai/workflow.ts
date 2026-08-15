@@ -14,8 +14,13 @@ export type OperationalMutation =
   | { action: 'UPDATE_ACTION_STATUS'; id: string; status: 'OPEN' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' }
   | { action: 'UPDATE_STEP_SUITABILITY'; id: string; aiSuitability: 'NOT_ASSESSED' | 'ASSISTIVE_CANDIDATE' | 'HUMAN_ONLY' };
 
-const forbidden = /\b(classified|secret|no-forn|noforn|cui|coordinates?|frequency|frequencies|callsign|target(?:ing)?|intelligence|mission timeline)\b/i;
-function text(input: Record<string, unknown>, key: string) { const value = input[key]; if (typeof value !== 'string' || !value.trim()) throw validationError(`${key} is required.`); const clean = value.trim(); if (forbidden.test(clean)) throw validationError('This workspace accepts sanitized consulting content only. Remove operational or controlled details.'); return clean }
+const controlledIndicators = [
+  /\b(classified|secret|no-forn|noforn|cui|coordinates?|callsign|target(?:ing)?|intelligence|mission timeline)\b/i,
+  /\b(?:radio|communications?|operating|transmit|receive|tactical|mission)\s+frequenc(?:y|ies)\b/i,
+  /\bfrequenc(?:y|ies)\s+(?:assignment|allocation|plan|channel)\b/i,
+];
+export function containsControlledContent(value: string) { return controlledIndicators.some((pattern) => pattern.test(value)) }
+function text(input: Record<string, unknown>, key: string) { const value = input[key]; if (typeof value !== 'string' || !value.trim()) throw validationError(`${key} is required.`); const clean = value.trim(); if (containsControlledContent(clean)) throw validationError('This workspace accepts sanitized consulting content only. Remove operational or controlled details.'); return clean }
 function oneOf<T extends string>(input: Record<string, unknown>, key: string, values: readonly T[]): T { const value = text(input, key); if (!values.includes(value as T)) throw validationError(`${key} is invalid.`); return value as T }
 
 export function validateOperationalMutation(value: unknown): OperationalMutation {

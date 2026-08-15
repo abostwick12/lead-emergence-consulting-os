@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { cache } from 'react';
+import { AuthInvalidJwtError, isAuthSessionMissingError } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 import { fixtureSession } from './fixtures';
@@ -8,7 +9,7 @@ import type { EngagementOption, OrganizationOption, PortalRole, PortalSession } 
 import { isFixtureMode } from '@/lib/supabase/config';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { assertSucceeded, unwrap } from '@/lib/supabase/errors';
-import { logError } from '@/lib/errors';
+import { dataAccessError } from '@/lib/errors';
 
 const FIXTURE_COOKIE = 'le_fixture_role';
 
@@ -23,8 +24,11 @@ export const getPortalSession = cache(async (): Promise<PortalSession | null> =>
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.auth.getClaims();
   const authUserId = data?.claims?.sub;
-  if (error) logError('portal.session.claims', error);
-  if (error || typeof authUserId !== 'string') return null;
+  if (error) {
+    if (isAuthSessionMissingError(error) || error instanceof AuthInvalidJwtError) return null;
+    throw dataAccessError('portal.session.claims', error, 'Authentication is temporarily unavailable.');
+  }
+  if (typeof authUserId !== 'string') return null;
 
   const person = unwrap('portal.session.person', await supabase
     .from('people')

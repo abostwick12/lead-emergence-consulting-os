@@ -17,7 +17,7 @@ foreach ($phase in 0..9) {
 foreach ($contract in @(
   '**Result:** V1 ACCEPTANCE PASS',
   '24fcb2579e50f8166239d62357fa610babda4adf',
-  '29 tests',
+  'Browser acceptance | PASS',
   'Ministry-only source scan',
   'V1 Goal is complete at the implementation/evidence boundary'
 )) {
