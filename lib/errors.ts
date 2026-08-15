@@ -4,6 +4,9 @@ export type AppErrorKind =
   | 'AUTHORIZATION'
   | 'NOT_FOUND'
   | 'CONFLICT'
+  | 'PAYLOAD_TOO_LARGE'
+  | 'UNPROCESSABLE'
+  | 'RATE_LIMITED'
   | 'DATA_ACCESS'
   | 'UNAVAILABLE';
 
@@ -13,6 +16,9 @@ const statusByKind: Record<AppErrorKind, number> = {
   AUTHORIZATION: 403,
   NOT_FOUND: 404,
   CONFLICT: 409,
+  PAYLOAD_TOO_LARGE: 413,
+  UNPROCESSABLE: 422,
+  RATE_LIMITED: 429,
   DATA_ACCESS: 500,
   UNAVAILABLE: 503,
 };
@@ -58,6 +64,18 @@ export function notFoundError(message: string, options?: { cause?: unknown; scop
 
 export function conflictError(message: string, options?: { cause?: unknown; scope?: string }) {
   return new AppError(message, 'CONFLICT', options);
+}
+
+export function payloadTooLargeError(message = 'The request payload is too large.') {
+  return new AppError(message, 'PAYLOAD_TOO_LARGE');
+}
+
+export function unprocessableError(message: string, options?: { cause?: unknown; scope?: string }) {
+  return new AppError(message, 'UNPROCESSABLE', options);
+}
+
+export function rateLimitedError(message = 'Too many requests. Please wait and try again.') {
+  return new AppError(message, 'RATE_LIMITED');
 }
 
 export function unavailableError(message: string, options?: { cause?: unknown; scope?: string }) {

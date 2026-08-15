@@ -3,10 +3,12 @@ import { ArrowRight, GitBranch, LockKeyhole, ScanSearch } from 'lucide-react';
 import { signIn } from './actions';
 import { isFixtureMode } from '@/lib/supabase/config';
 import { safeReturnPath } from '@/lib/portal/navigation';
+import { safeLoginError } from '@/lib/portal/login-messages';
 
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ error?: string; returnTo?: string }> }) {
   const params = await searchParams;
   const returnTo = safeReturnPath(params.returnTo ?? '/');
+  const error = safeLoginError(params.error);
   const fixture = isFixtureMode();
   const selectedRole = returnTo === '/consultant' || returnTo.startsWith('/consultant/') ? 'consultant' : returnTo === '/client' || returnTo.startsWith('/client/') ? 'client' : null;
   return (
@@ -32,7 +34,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           <p className="eyebrow">SECURE ACCESS</p>
           <h2>Welcome back.</h2>
           <p className="login-copy">Enter the workspace authorized for your current consulting assignment or organization membership.</p>
-        {params.error && <p className="form-error" role="alert">{params.error}</p>}
+        {error && <p className="form-error" role="alert">{error}</p>}
         {fixture ? (
           <div className="fixture-login" data-testid="fixture-login">
             <p>Local review access</p>

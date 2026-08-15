@@ -3,8 +3,13 @@ import { apiErrorResponse } from '@/lib/api/responses';
 import { requirePortalRole } from '@/lib/portal/context';
 import { mutateOperationalEngagement } from '@/lib/operational-ai/repository';
 import { validateOperationalMutation } from '@/lib/operational-ai/workflow';
+import { readJsonBody } from '@/lib/http/json';
 
 export async function POST(request: Request) {
-  try { const session = await requirePortalRole('consultant'); return NextResponse.json(await mutateOperationalEngagement(session, validateOperationalMutation(await request.json()))); }
-  catch (error) { return apiErrorResponse('api.operationalAi', error, 'The workspace could not be updated.'); }
+  try {
+    const session = await requirePortalRole('consultant');
+    return NextResponse.json(await mutateOperationalEngagement(session, validateOperationalMutation(await readJsonBody(request))));
+  } catch (error) {
+    return apiErrorResponse('api.operationalAi', error, 'The workspace could not be updated.');
+  }
 }

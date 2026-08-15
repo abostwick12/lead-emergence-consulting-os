@@ -1,5 +1,5 @@
 export function isFixtureMode() {
-  return process.env.E2E_MOCK_AUTH === 'true' && process.env.NODE_ENV !== 'production';
+  return process.env.E2E_MOCK_AUTH === 'true' && process.env.NODE_ENV !== 'production' && process.env.VERCEL_ENV !== 'production';
 }
 export function getSupabasePublicConfig() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
