@@ -28,8 +28,8 @@ values ('ad500000-0000-4000-8000-000000000002', 'ad300000-0000-4000-8000-0000000
 insert into consulting_os.assessment_instruments (id, organization_id, name, framework_name, instrument_status, validation_claim_status, created_by)
 values ('ad500000-0000-4000-8000-000000000001', 'ad300000-0000-4000-8000-000000000001', 'Two Item Inquiry', 'Test fixture', 'ACTIVE', 'NOT_VALIDATED', 'ad200000-0000-4000-8000-000000000001');
 
-insert into consulting_os.assessment_instrument_versions (id, organization_id, instrument_id, version_number, version_label, dimensions, scoring_rules, created_by)
-values ('ad600000-0000-4000-8000-000000000001', 'ad300000-0000-4000-8000-000000000001', 'ad500000-0000-4000-8000-000000000001', 1, '1.0', '["RHYTHM"]', '{"method":"descriptive"}', 'ad200000-0000-4000-8000-000000000001');
+insert into consulting_os.assessment_instrument_versions (id, organization_id, instrument_id, version_number, version_label, dimensions, scoring_rules, compatibility_key, created_by)
+values ('ad600000-0000-4000-8000-000000000001', 'ad300000-0000-4000-8000-000000000001', 'ad500000-0000-4000-8000-000000000001', 1, '1.0', '["RHYTHM"]', '{"method":"descriptive"}', 'rhythm-v1', 'ad200000-0000-4000-8000-000000000001');
 
 insert into consulting_os.assessment_items (id, organization_id, instrument_version_id, item_key, prompt, dimension_key, response_type, response_options, ordinal, created_by)
 values
