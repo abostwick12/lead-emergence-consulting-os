@@ -1,3 +1,4 @@
+import { authorizationError, validationError } from '@/lib/errors';
 import type { PortalSession } from '@/lib/portal/types';
 import type { OutcomeDisposition, OutcomesMutation, OutcomesNewRealityData } from './types';
 import { nextOutcomeAction } from './workflow';
@@ -36,10 +37,10 @@ export function fixtureOutcomesNewReality(session: PortalSession): OutcomesNewRe
 }
 
 export function mutateFixtureOutcomes(session: PortalSession, mutation: OutcomesMutation) {
-  if (session.role !== 'consultant') throw new Error('Only the assigned consultant may advance this workflow.');
+  if (session.role !== 'consultant') throw authorizationError('Only the assigned consultant may advance this workflow.');
   const state = store();
   const current = fixtureOutcomesNewReality(session);
-  if (mutation.action !== nextOutcomeAction(current)) throw new Error('Complete the preceding outcome step first.');
+  if (mutation.action !== nextOutcomeAction(current)) throw validationError('Complete the preceding outcome step first.');
   if (mutation.action === 'RECORD_OUTCOME') { state.measuredValue = mutation.measuredValue; state.outcomeStatement = mutation.statement; }
   if (mutation.action === 'EVALUATE_VALUE') { state.harvest = mutation.harvest; state.soil = mutation.soil; }
   if (mutation.action === 'VALIDATE_LEARNING') { state.learning = mutation.statement; state.disposition = mutation.disposition; }

@@ -12,6 +12,7 @@ import {
   type Visibility,
 } from './types';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { assertSucceeded, unwrap } from '@/lib/supabase/errors';
 
 export const getPortalDashboard = cache(async (session: PortalSession): Promise<PortalDashboard> => {
   if (session.fixture) {
@@ -32,13 +33,13 @@ export const getPortalDashboard = cache(async (session: PortalSession): Promise<
   const records: PortalRecord[] = [];
 
   if (session.role === 'client') {
-    const { data } = await supabase
+    const conclusions = unwrap('portal.dashboard.clientConclusions', await supabase
       .from('client_visible_validated_conclusions')
       .select('id, organization_id, object_type, statement, rationale, limitations, reviewed_at')
       .eq('organization_id', session.organization.id)
       .order('reviewed_at', { ascending: false })
-      .limit(20);
-    for (const row of data ?? []) {
+      .limit(20));
+    for (const row of conclusions ?? []) {
       records.push({
         id: row.id,
         organizationId: row.organization_id,
@@ -56,7 +57,7 @@ export const getPortalDashboard = cache(async (session: PortalSession): Promise<
       });
     }
   } else {
-    const [{ data: states }, { data: decisions }] = await Promise.all([
+    const [statesResult, decisionsResult] = await Promise.all([
       supabase
         .from('epistemic_record_states')
         .select('id, organization_id, object_type, origin, current_review_state, created_at')
@@ -70,14 +71,17 @@ export const getPortalDashboard = cache(async (session: PortalSession): Promise<
         .order('created_at', { ascending: false })
         .limit(20),
     ]);
+    assertSucceeded('portal.dashboard.records', statesResult, decisionsResult);
+    const states = statesResult.data;
+    const decisions = decisionsResult.data;
     const domainIds = [...(states ?? []).map((row) => row.id), ...(decisions ?? []).map((row) => row.id)];
-    const { data: domains } = domainIds.length
-      ? await supabase
+    const domains = domainIds.length
+      ? unwrap('portal.dashboard.domainObjects', await supabase
           .from('domain_objects')
           .select('id, engagement_id, visibility_scope')
           .eq('organization_id', session.organization.id)
-          .in('id', domainIds)
-      : { data: [] };
+          .in('id', domainIds))
+      : [];
     const domainMap = new Map((domains ?? []).map((row) => [row.id, row]));
     const typedTables = [
       'observations', 'patterns', 'assumptions', 'hypotheses', 'interpretations',
@@ -88,6 +92,7 @@ export const getPortalDashboard = cache(async (session: PortalSession): Promise<
           supabase.from(table).select('*').eq('organization_id', session.organization.id).in('id', domainIds),
         ))
       : [];
+    assertSucceeded('portal.dashboard.typedRecords', ...typedResults);
     const contentMap = new Map<string, Record<string, unknown>>();
     for (const result of typedResults) {
       for (const row of result.data ?? []) contentMap.set(row.id, row as Record<string, unknown>);

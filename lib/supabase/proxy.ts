@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
+import { logError } from '@/lib/errors';
 import { getSupabasePublicConfig, isFixtureMode } from './config';
 
 export async function refreshSupabaseSession(request: NextRequest) {
@@ -19,6 +20,7 @@ export async function refreshSupabaseSession(request: NextRequest) {
       },
     },
   });
-  await supabase.auth.getClaims();
+  const { error } = await supabase.auth.getClaims();
+  if (error) logError('supabase.proxy.refresh', error);
   return response;
 }

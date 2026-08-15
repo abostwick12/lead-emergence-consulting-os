@@ -1,3 +1,4 @@
+import { notFoundError } from '@/lib/errors';
 import type { PortalSession } from '@/lib/portal/types';
 import type { AlignmentCapabilityData, AlignmentMutation } from './types';
 
@@ -59,10 +60,10 @@ export function mutateFixtureAlignment(session: PortalSession, mutation: Alignme
   const fixtureStore = store();
   const current = fixtureAlignmentCapability(session);
   const pathway = current.capabilityPathways.find((item) => item.id === mutation.pathwayId);
-  if (!pathway) throw new Error('Capability pathway is not available.');
+  if (!pathway) throw notFoundError('Capability pathway is not available.');
   if (mutation.action === 'ADD_PRACTICE') { fixtureStore.recordedPractices.push(mutation.practice); fixtureStore.revision += 1; }
   else {
-    if (!pathway.activities.some((activity) => activity.id === mutation.activityId)) throw new Error('Development activity is not available.');
+    if (!pathway.activities.some((activity) => activity.id === mutation.activityId)) throw notFoundError('Development activity is not available.');
     fixtureStore.completedActivities = mutation.status === 'COMPLETED'
       ? [...new Set([...fixtureStore.completedActivities, mutation.activityId])]
       : fixtureStore.completedActivities.filter((id) => id !== mutation.activityId);

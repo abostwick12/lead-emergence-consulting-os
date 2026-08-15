@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { apiErrorResponse } from '@/lib/api/responses';
 import { requirePortalRole } from '@/lib/portal/context';
 import { startClientEngagement } from '@/lib/onboarding/repository';
 import { validateStartEngagement } from '@/lib/onboarding/workflow';
@@ -13,6 +14,6 @@ export async function POST(request: Request) {
     response.cookies.set('le_engagement_id', result.engagementId, options);
     return response;
   } catch (error) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'Client setup failed.' }, { status: 400 });
+    return apiErrorResponse('api.engagements', error, 'Client setup failed.');
   }
 }
