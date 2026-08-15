@@ -1,6 +1,7 @@
-import type { PortalSession } from '@/lib/portal/types'; import type { AccessCenterData, AccessMutation, AccessMutationResult } from './types';
-interface Store { invitations: AccessCenterData['invitations']; links: number } declare global { var __leAccessFixtures: Store | undefined }
-function store() { globalThis.__leAccessFixtures ??= { invitations: [], links: 0 }; return globalThis.__leAccessFixtures; }
+import type { PortalSession } from '@/lib/portal/types'; import { createFixtureStore } from '../fixtures/store'; import type { AccessCenterData, AccessMutation, AccessMutationResult } from './types';
+interface Store { invitations: AccessCenterData['invitations']; links: number }
+const fixtures = createFixtureStore<Store>('access', () => ({ invitations: [], links: 0 }));
+const store = fixtures.read;
 export function fixtureAccessCenter(session: PortalSession): AccessCenterData { return { organizationId: session.organization.id, engagementId: session.engagement.id, invitations: [...store().invitations], assessments: [{ id: '74000000-0000-4000-8000-000000000016', name: 'Ministry Rhythm Discovery', audience: 'Pastoral staff and ministry leads', confidentiality: 'CONFIDENTIAL', status: 'DRAFT', closesAt: '2026-09-12T22:00:00.000Z' }] }; }
 export function mutateFixtureAccess(session: PortalSession, mutation: AccessMutation, origin: string): AccessMutationResult { const current = store(); let participantUrl: string | undefined; if (mutation.action === 'INVITE_CLIENT') current.invitations.unshift({ id: `invite-${current.invitations.length + 1}`, email: mutation.email, displayName: mutation.displayName, role: mutation.role, status: 'SENT', expiresAt: new Date(Date.now() + 3 * 86400000).toISOString() }); if (mutation.action === 'CREATE_ASSESSMENT_LINK') { current.links += 1; participantUrl = `${origin}/assessment/fixture-participant-${current.links}`; } return { ...fixtureAccessCenter(session), participantUrl }; }
-export function resetAccessFixtures() { globalThis.__leAccessFixtures = { invitations: [], links: 0 }; }
+export function resetAccessFixtures() { fixtures.reset(); }

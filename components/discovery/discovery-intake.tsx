@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { ClipboardCheck, FileText, MessagesSquare, ShieldCheck } from 'lucide-react';
 import type { AssessmentConfidentiality, DiscoveryIntakeData, DiscoveryMutation, EvidenceSourceType } from '@/lib/discovery/types';
+import { postJson } from '@/lib/client/api';
 
 type IntakeMode = 'evidence' | 'interview' | 'assessment';
 
@@ -10,7 +11,7 @@ export function DiscoveryIntake({ initialData }: { initialData: DiscoveryIntakeD
   const [data, setData] = useState(initialData); const [mode, setMode] = useState<IntakeMode>('evidence'); const [pending, setPending] = useState(false); const [message, setMessage] = useState('');
   async function mutate(mutation: DiscoveryMutation, form: HTMLFormElement) {
     setPending(true); setMessage('');
-    try { const response = await fetch('/api/discovery', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(mutation) }); const body = await response.json(); if (!response.ok) throw new Error(body.error); setData(body); form.reset(); setMessage('Saved with tenant, provenance, and visibility boundaries intact.'); }
+    try { setData(await postJson<DiscoveryIntakeData>('/api/discovery', mutation, 'Discovery intake could not be saved.')); form.reset(); setMessage('Saved with tenant, provenance, and visibility boundaries intact.'); }
     catch (error) { setMessage(error instanceof Error ? error.message : 'Discovery intake could not be saved.'); }
     finally { setPending(false); }
   }

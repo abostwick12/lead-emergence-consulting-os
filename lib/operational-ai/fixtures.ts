@@ -1,3 +1,4 @@
+import { createFixtureStore } from '../fixtures/store';
 import type { OperationalEngagementData } from './types';
 
 export const SEVENTH_SOS_ORGANIZATION_ID = '70000000-0000-4000-8000-000000000007';
@@ -40,7 +41,7 @@ const initialData: OperationalEngagementData = {
   ],
 };
 
-declare global { var __leOperationalAiFixture: OperationalEngagementData | undefined }
-export function fixtureOperationalEngagement(): OperationalEngagementData { globalThis.__leOperationalAiFixture ??= structuredClone(initialData); return structuredClone(globalThis.__leOperationalAiFixture) }
-export function updateFixtureOperationalEngagement(updater: (current: OperationalEngagementData) => OperationalEngagementData) { globalThis.__leOperationalAiFixture = updater(fixtureOperationalEngagement()); return fixtureOperationalEngagement() }
-export function resetOperationalFixtures() { globalThis.__leOperationalAiFixture = structuredClone(initialData) }
+const fixtures = createFixtureStore<OperationalEngagementData>('operational-ai', () => structuredClone(initialData));
+export function fixtureOperationalEngagement(): OperationalEngagementData { return structuredClone(fixtures.read()) }
+export function updateFixtureOperationalEngagement(updater: (current: OperationalEngagementData) => OperationalEngagementData) { fixtures.write(updater(fixtureOperationalEngagement())); return fixtureOperationalEngagement() }
+export function resetOperationalFixtures() { fixtures.reset(); }

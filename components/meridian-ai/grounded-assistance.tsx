@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from 'react';
 import { AlertTriangle, BookOpenCheck, BrainCircuit, CheckCircle2, LockKeyhole, Quote, ShieldCheck, Sparkles, XCircle } from 'lucide-react';
 import type { MeridianAiData, MeridianMutation, MeridianSource, MeridianSuggestion } from '@/lib/meridian-ai/types';
+import { postJson } from '@/lib/client/api';
 
 export function GroundedAssistance({ initialData }: { initialData: MeridianAiData }) {
   const [data, setData] = useState(initialData);
@@ -12,10 +13,7 @@ export function GroundedAssistance({ initialData }: { initialData: MeridianAiDat
   async function mutate(mutation: MeridianMutation) {
     setPending(true); setMessage('');
     try {
-      const response = await fetch('/api/meridian-ai', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(mutation) });
-      const body = await response.json();
-      if (!response.ok) throw new Error(body.error ?? 'Meridian could not complete the grounded request.');
-      setData(body);
+      setData(await postJson<MeridianAiData>('/api/meridian-ai', mutation, 'Meridian could not complete the grounded request.'));
       setMessage(mutation.action === 'REJECT_SUGGESTION' ? 'Rejected suggestion preserved in review history and removed from active retrieval.' : 'Grounded suggestion created with its exact permission-eligible source set.');
     } catch (error) { setMessage(error instanceof Error ? error.message : 'Meridian could not complete the grounded request.'); }
     finally { setPending(false); }

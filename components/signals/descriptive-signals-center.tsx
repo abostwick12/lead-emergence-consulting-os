@@ -4,15 +4,14 @@ import { useState } from 'react';
 import { ArrowRight, BarChart3, CircleHelp, Eye, FileSearch, History, LockKeyhole, RefreshCcw, ShieldCheck } from 'lucide-react';
 import type { SignalKind, SignalsMutation, SignalsWorkspaceData } from '@/lib/signals/types';
 import { signalKinds } from '@/lib/signals/workflow';
+import { postJson } from '@/lib/client/api';
 
 export function DescriptiveSignalsCenter({ initialData }: { initialData: SignalsWorkspaceData }) {
   const [data, setData] = useState(initialData); const [pending, setPending] = useState(false); const [message, setMessage] = useState('');
   async function mutate(mutation: SignalsMutation) {
     setPending(true); setMessage('');
     try {
-      const response = await fetch('/api/signals', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(mutation) });
-      const body = await response.json(); if (!response.ok) throw new Error(body.error);
-      setData(body); setMessage(mutation.action === 'REENTER_SIGNAL' ? 'Signal re-entered as a new Observation. The original Signal and source path remain intact.' : 'Saved. Longitudinal context and source boundaries remain inspectable.');
+      setData(await postJson<SignalsWorkspaceData>('/api/signals', mutation, 'The Signals action could not be completed.')); setMessage(mutation.action === 'REENTER_SIGNAL' ? 'Signal re-entered as a new Observation. The original Signal and source path remain intact.' : 'Saved. Longitudinal context and source boundaries remain inspectable.');
     } catch (error) { setMessage(error instanceof Error ? error.message : 'The Signals action could not be completed.'); }
     finally { setPending(false); }
   }

@@ -1,9 +1,10 @@
 import type { PortalSession } from '@/lib/portal/types';
+import { createFixtureStore } from '../fixtures/store';
 import type { DiscoveryIntakeData, DiscoveryMutation } from './types';
 
 interface DiscoveryFixtureStore { items: Array<{ id: string; kind: string; title: string; detail: string }>; revision: number }
-declare global { var __leDiscoveryFixtures: DiscoveryFixtureStore | undefined; }
-function store() { globalThis.__leDiscoveryFixtures ??= { items: [], revision: 0 }; return globalThis.__leDiscoveryFixtures; }
+const fixtures = createFixtureStore<DiscoveryFixtureStore>('discovery', () => ({ items: [], revision: 0 }));
+const store = fixtures.read;
 
 export function fixtureDiscoveryIntake(session: PortalSession): DiscoveryIntakeData {
   const current = store();
@@ -17,4 +18,4 @@ export function mutateFixtureDiscovery(session: PortalSession, mutation: Discove
   if (mutation.action === 'CREATE_ASSESSMENT') current.items.push({ id: `assessment-${current.revision}`, kind: 'ASSESSMENT', title: mutation.name, detail: `${mutation.audience} · ${mutation.confidentiality}` });
   return fixtureDiscoveryIntake(session);
 }
-export function resetDiscoveryFixtures() { globalThis.__leDiscoveryFixtures = { items: [], revision: 0 }; }
+export function resetDiscoveryFixtures() { fixtures.reset(); }

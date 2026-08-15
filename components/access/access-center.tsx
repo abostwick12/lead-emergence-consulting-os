@@ -2,7 +2,8 @@
 
 import { useState, type FormEvent } from 'react';
 import { ClipboardCheck, Copy, MailCheck, ShieldCheck, UserRoundPlus } from 'lucide-react';
-import type { AccessCenterData, AccessMutation, ClientPlatformRole } from '@/lib/access/types';
+import type { AccessCenterData, AccessMutation, AccessMutationResult, ClientPlatformRole } from '@/lib/access/types';
+import { postJson } from '@/lib/client/api';
 
 export function AccessCenter({ initialData }: { initialData: AccessCenterData }) {
   const [data, setData] = useState(initialData);
@@ -13,8 +14,7 @@ export function AccessCenter({ initialData }: { initialData: AccessCenterData })
   async function mutate(mutation: AccessMutation, form?: HTMLFormElement) {
     setPending(true); setMessage('');
     try {
-      const response = await fetch('/api/access', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(mutation) });
-      const body = await response.json(); if (!response.ok) throw new Error(body.error);
+      const body = await postJson<AccessMutationResult>('/api/access', mutation, 'Access action failed.');
       setData(body);
       if (body.participantUrl) { setParticipantUrl(body.participantUrl); setMessage('Participant link created. Copy it now; the raw token is not stored.'); }
       else { form?.reset(); setMessage('Secure client invitation sent. Access activates only after verification.'); }

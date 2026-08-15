@@ -1,14 +1,11 @@
-import { NextResponse } from 'next/server';
-import { getPortalSession } from '@/lib/portal/context';
+import { jsonRoute } from '@/lib/http/json-route';
+import { requireApiConsultant } from '@/lib/http/session';
 import { mutateSignalsWorkspace } from '@/lib/signals/repository';
 import { validateSignalsMutation } from '@/lib/signals/workflow';
 
 export async function POST(request: Request) {
-  try {
-    const session = await getPortalSession();
-    if (!session || session.role !== 'consultant') return NextResponse.json({ error: 'Assigned consultant authorization is required.' }, { status: 401 });
-    return NextResponse.json(await mutateSignalsWorkspace(session, validateSignalsMutation(await request.json())));
-  } catch (error) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'The Signals action could not be completed.' }, { status: 400 });
-  }
+  return jsonRoute('The Signals action could not be completed.', async () => {
+    const session = await requireApiConsultant('Assigned consultant authorization is required.');
+    return mutateSignalsWorkspace(session, validateSignalsMutation(await request.json()));
+  });
 }

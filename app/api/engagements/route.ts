@@ -1,18 +1,14 @@
 import { NextResponse } from 'next/server';
+import { jsonRoute } from '@/lib/http/json-route';
 import { requirePortalRole } from '@/lib/portal/context';
+import { setEngagementContextCookies } from '@/lib/portal/cookies';
 import { startClientEngagement } from '@/lib/onboarding/repository';
 import { validateStartEngagement } from '@/lib/onboarding/workflow';
 
 export async function POST(request: Request) {
-  try {
+  return jsonRoute('Client setup failed.', async () => {
     const session = await requirePortalRole('consultant');
     const result = await startClientEngagement(session, validateStartEngagement(await request.json()));
-    const response = NextResponse.json(result, { status: 201 });
-    const options = { httpOnly: true, sameSite: 'lax' as const, path: '/', secure: process.env.NODE_ENV === 'production' };
-    response.cookies.set('le_organization_id', result.organizationId, options);
-    response.cookies.set('le_engagement_id', result.engagementId, options);
-    return response;
-  } catch (error) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'Client setup failed.' }, { status: 400 });
-  }
+    return setEngagementContextCookies(NextResponse.json(result, { status: 201 }), result);
+  });
 }

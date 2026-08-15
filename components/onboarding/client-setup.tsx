@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Building2, CalendarRange, Plus, X } from 'lucide-react';
+import { postJson } from '@/lib/client/api';
 
 export function ClientSetup() {
   const router = useRouter();
@@ -10,8 +11,7 @@ export function ClientSetup() {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); const values = new FormData(event.currentTarget); setPending(true); setMessage('');
     try {
-      const response = await fetch('/api/engagements', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ organizationName: values.get('organizationName'), engagementName: values.get('engagementName'), engagementType: values.get('engagementType'), objective: values.get('objective'), scopeStatement: values.get('scopeStatement'), startsOn: values.get('startsOn'), endsOn: values.get('endsOn') }) });
-      const body = await response.json(); if (!response.ok) throw new Error(body.error);
+      const body = await postJson<{ organizationId: string }>('/api/engagements', { organizationName: values.get('organizationName'), engagementName: values.get('engagementName'), engagementType: values.get('engagementType'), objective: values.get('objective'), scopeStatement: values.get('scopeStatement'), startsOn: values.get('startsOn'), endsOn: values.get('endsOn') }, 'Client setup failed.');
       const returnTo = `/consultant/clients/${body.organizationId}/overview`;
       router.push(returnTo);
       router.refresh();

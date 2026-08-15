@@ -4,18 +4,17 @@ import { cache } from 'react';
 import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 import { fixtureSession } from './fixtures';
+import { ENGAGEMENT_COOKIE, FIXTURE_ROLE_COOKIE, ORGANIZATION_COOKIE } from './cookies';
 import type { EngagementOption, OrganizationOption, PortalRole, PortalSession } from './types';
 import { isFixtureMode } from '@/lib/supabase/config';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
-const FIXTURE_COOKIE = 'le_fixture_role';
-
 export const getPortalSession = cache(async (): Promise<PortalSession | null> => {
   if (isFixtureMode()) {
     const cookieStore = await cookies();
-    const value = cookieStore.get(FIXTURE_COOKIE)?.value;
+    const value = cookieStore.get(FIXTURE_ROLE_COOKIE)?.value;
     const role: PortalRole = value === 'consultant' || value === 'client' ? value : 'outsider';
-    return fixtureSession(role, cookieStore.get('le_organization_id')?.value, cookieStore.get('le_engagement_id')?.value);
+    return fixtureSession(role, cookieStore.get(ORGANIZATION_COOKIE)?.value, cookieStore.get(ENGAGEMENT_COOKIE)?.value);
   }
 
   const supabase = await createSupabaseServerClient();
@@ -58,7 +57,7 @@ export const getPortalSession = cache(async (): Promise<PortalSession | null> =>
   if (!organizations.length) return null;
 
   const cookieStore = await cookies();
-  const requestedOrgId = cookieStore.get('le_organization_id')?.value;
+  const requestedOrgId = cookieStore.get(ORGANIZATION_COOKIE)?.value;
   const organization = organizations.find((item) => item.id === requestedOrgId) ?? organizations[0];
   const { data: engagementRows } = await supabase
     .from('engagements')
@@ -78,7 +77,7 @@ export const getPortalSession = cache(async (): Promise<PortalSession | null> =>
     currentPhase: row.current_phase ?? undefined,
   }));
   if (!engagements.length) return null;
-  const requestedEngagementId = cookieStore.get('le_engagement_id')?.value;
+  const requestedEngagementId = cookieStore.get(ENGAGEMENT_COOKIE)?.value;
   const engagement = engagements.find((item) => item.id === requestedEngagementId) ?? engagements[0];
 
   return {
@@ -101,5 +100,5 @@ export async function requirePortalRole(role: Exclude<PortalRole, 'outsider'>) {
 }
 
 export function fixtureCookieName() {
-  return FIXTURE_COOKIE;
+  return FIXTURE_ROLE_COOKIE;
 }

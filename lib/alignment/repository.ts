@@ -4,6 +4,7 @@ import type { PortalSession } from '@/lib/portal/types';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { fixtureAlignmentCapability, mutateFixtureAlignment } from './fixtures';
 import type { AlignmentCapabilityData, AlignmentMutation, CapabilityLevel } from './types';
+import { throwOnError } from '@/lib/supabase/results';
 
 export async function getAlignmentCapability(session: PortalSession): Promise<AlignmentCapabilityData> {
   if (session.fixture) return fixtureAlignmentCapability(session);
@@ -15,7 +16,7 @@ export async function getAlignmentCapability(session: PortalSession): Promise<Al
     supabase.from('reinvention_initiatives').select('*').eq('organization_id', session.organization.id).eq('engagement_id', session.engagement.id),
     supabase.from(pathwayView).select('*').eq('organization_id', session.organization.id).eq('engagement_id', session.engagement.id),
   ]);
-  for (const result of [rolesResult, workflowsResult, initiativesResult, pathwaysResult]) if (result.error) throw new Error(result.error.message);
+  throwOnError(rolesResult, workflowsResult, initiativesResult, pathwaysResult);
 
   const workflowIds = (workflowsResult.data ?? []).map((row) => row.id);
   const planIds = (pathwaysResult.data ?? []).map((row) => row.development_plan_id).filter(Boolean);
@@ -26,7 +27,7 @@ export async function getAlignmentCapability(session: PortalSession): Promise<Al
     planIds.length ? supabase.from('resources').select('*').eq('organization_id', session.organization.id).in('development_plan_id', planIds) : Promise.resolve({ data: [], error: null }),
     supabase.from('capability_maturity_assessments').select('*').eq('organization_id', session.organization.id).eq('engagement_id', session.engagement.id).order('assessed_at', { ascending: false }),
   ]);
-  for (const result of [stepsResult, activitiesResult, practicesResult, resourcesResult, maturityResult]) if (result.error) throw new Error(result.error.message);
+  throwOnError(stepsResult, activitiesResult, practicesResult, resourcesResult, maturityResult);
 
   const roleNames = new Map((rolesResult.data ?? []).map((row) => [row.id, row.name]));
   return {

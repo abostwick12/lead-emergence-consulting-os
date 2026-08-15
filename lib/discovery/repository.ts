@@ -3,6 +3,7 @@ import type { PortalSession } from '@/lib/portal/types';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { fixtureDiscoveryIntake, mutateFixtureDiscovery } from './fixtures';
 import type { DiscoveryIntakeData, DiscoveryMutation } from './types';
+import { throwOnError } from '@/lib/supabase/results';
 
 export async function getDiscoveryIntake(session: PortalSession): Promise<DiscoveryIntakeData> {
   if (session.fixture) return fixtureDiscoveryIntake(session);
@@ -15,7 +16,7 @@ export async function getDiscoveryIntake(session: PortalSession): Promise<Discov
     supabase.from('interviews').select('id, participant_label, guide_name, created_at').eq('organization_id', session.organization.id).eq('engagement_id', session.engagement.id).order('created_at', { ascending: false }).limit(20),
     supabase.from('assessment_administrations').select('id, audience_description, confidentiality, created_at').eq('organization_id', session.organization.id).eq('engagement_id', session.engagement.id).order('created_at', { ascending: false }).limit(20),
   ]);
-  for (const result of [evidence, interviews, assessments]) if (result.error) throw new Error(result.error.message);
+  throwOnError(evidence, interviews, assessments);
   const recentItems = [
     ...(evidence.data ?? []).map((item) => ({ id: item.id, kind: 'EVIDENCE', title: item.relevance_note, detail: 'Traceable evidence item', createdAt: item.created_at })),
     ...(interviews.data ?? []).map((item) => ({ id: item.id, kind: 'INTERVIEW', title: item.participant_label, detail: item.guide_name, createdAt: item.created_at })),

@@ -1,3 +1,4 @@
+import { objectInput } from '../validation/input';
 import type { SignalKind, SignalsMutation, TrendDirection } from './types';
 
 export const signalKinds: SignalKind[] = ['REPORTED_CHANGE', 'MEASURED_CHANGE', 'OPERATING_CHANGE', 'RELATIONSHIP_CHANGE', 'CONTEXT_CHANGE'];
@@ -21,16 +22,9 @@ export function indicatorsAreCompatible(
 }
 
 export function validateSignalsMutation(value: unknown): SignalsMutation {
-  if (!value || typeof value !== 'object') throw new Error('A Signals action is required.');
-  const input = value as Record<string, unknown>;
-  const required = (key: string) => {
-    const field = input[key];
-    if (typeof field !== 'string' || !field.trim()) throw new Error(`${key} is required.`);
-    return field.trim();
-  };
+  const { raw: input, required, oneOf } = objectInput(value, 'A Signals action is required.');
   if (input.action === 'ADD_SIGNAL') {
-    const kind = required('kind') as SignalKind;
-    if (!signalKinds.includes(kind)) throw new Error('The Signal type is invalid.');
+    const kind = oneOf('kind', signalKinds, 'The Signal type is invalid.');
     return { action: input.action, statement: assertDescriptiveLanguage(required('statement')), kind, context: required('context'), evidenceId: required('evidenceId') };
   }
   if (input.action === 'REENTER_SIGNAL') return {

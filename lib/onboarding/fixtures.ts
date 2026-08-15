@@ -1,12 +1,10 @@
 import type { EngagementOption, OrganizationOption } from '@/lib/portal/types';
+import { createFixtureStore } from '../fixtures/store';
 import type { StartEngagementInput, StartEngagementResult } from './types';
 
 interface OnboardingFixtureStore { organizations: OrganizationOption[]; engagements: EngagementOption[]; revision: number }
-declare global { var __leOnboardingFixtures: OnboardingFixtureStore | undefined; }
-function store() {
-  globalThis.__leOnboardingFixtures ??= { organizations: [], engagements: [], revision: 0 };
-  return globalThis.__leOnboardingFixtures;
-}
+const fixtures = createFixtureStore<OnboardingFixtureStore>('onboarding', () => ({ organizations: [], engagements: [], revision: 0 }));
+const store = fixtures.read;
 
 export function fixtureOnboardingOptions() {
   const current = store();
@@ -25,6 +23,4 @@ export function startFixtureEngagement(input: StartEngagementInput): StartEngage
   return { organizationId, engagementId };
 }
 
-export function resetOnboardingFixtures() {
-  globalThis.__leOnboardingFixtures = { organizations: [], engagements: [], revision: 0 };
-}
+export function resetOnboardingFixtures() { fixtures.reset(); }

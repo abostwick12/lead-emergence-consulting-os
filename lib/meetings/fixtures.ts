@@ -1,6 +1,7 @@
 import 'server-only';
 
 import type { PortalSession } from '@/lib/portal/types';
+import { createFixtureStore } from '../fixtures/store';
 import type { MeetingCenterData, MeetingMutation, MeetingPerson, MeetingView } from './types';
 import { canMoveToPhase } from './workflow';
 
@@ -36,16 +37,10 @@ const initialMeetings: MeetingView[] = [
   },
 ];
 
-declare global {
-  var __leMeetingFixtures: MeetingView[] | undefined;
-}
+const fixtures = createFixtureStore<MeetingView[]>('meetings', () => structuredClone(initialMeetings));
+const store = fixtures.read;
 
-function store() {
-  globalThis.__leMeetingFixtures ??= structuredClone(initialMeetings);
-  return globalThis.__leMeetingFixtures;
-}
-
-export function resetMeetingFixtures() { globalThis.__leMeetingFixtures = structuredClone(initialMeetings); }
+export function resetMeetingFixtures() { fixtures.reset(); }
 
 export function fixtureMeetingCenter(session: PortalSession): MeetingCenterData {
   const meetings = store()

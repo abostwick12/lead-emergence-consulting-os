@@ -1,2 +1,11 @@
-import { NextResponse } from 'next/server'; import { requirePortalRole } from '@/lib/portal/context'; import { saveMinistryHandoff } from '@/lib/handoff/repository'; import { validateMinistryHandoff } from '@/lib/handoff/workflow';
-export async function POST(request: Request) { try { const session = await requirePortalRole('consultant'); return NextResponse.json(await saveMinistryHandoff(session, validateMinistryHandoff(await request.json()))); } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : 'Ministry handoff could not be saved.' }, { status: 400 }); } }
+import { jsonRoute } from '@/lib/http/json-route';
+import { requirePortalRole } from '@/lib/portal/context';
+import { saveMinistryHandoff } from '@/lib/handoff/repository';
+import { validateMinistryHandoff } from '@/lib/handoff/workflow';
+
+export async function POST(request: Request) {
+  return jsonRoute('Ministry handoff could not be saved.', async () => {
+    const session = await requirePortalRole('consultant');
+    return saveMinistryHandoff(session, validateMinistryHandoff(await request.json()));
+  });
+}

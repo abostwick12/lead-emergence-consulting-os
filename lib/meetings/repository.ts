@@ -5,6 +5,7 @@ import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { fixtureMeetingCenter, mutateFixtureMeeting } from './fixtures';
 import type { MeetingCenterData, MeetingCommitmentView, MeetingMutation, MeetingNoteView, MeetingPerson, MeetingView } from './types';
 import { canMoveToPhase } from './workflow';
+import { throwOnError } from '@/lib/supabase/results';
 
 export async function getMeetingCenter(session: PortalSession): Promise<MeetingCenterData> {
   if (session.fixture) return fixtureMeetingCenter(session);
@@ -29,7 +30,7 @@ export async function getMeetingCenter(session: PortalSession): Promise<MeetingC
     supabase.from('meeting_context_items').select('meeting_id, context_domain_object_id').eq('organization_id', session.organization.id).in('meeting_id', ids),
     supabase.from('meeting_decisions').select('meeting_id, decision_id').eq('organization_id', session.organization.id).in('meeting_id', ids),
   ]);
-  for (const result of [participantsResult, notesResult, commitmentsResult, coachingResult, contextResult, decisionLinksResult]) if (result.error) throw new Error(result.error.message);
+  throwOnError(participantsResult, notesResult, commitmentsResult, coachingResult, contextResult, decisionLinksResult);
 
   const privateNotes = new Map<string, MeetingNoteView[]>();
   for (const id of ids) {

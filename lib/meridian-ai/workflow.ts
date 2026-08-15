@@ -1,3 +1,4 @@
+import { objectInput } from '../validation/input';
 import type { GroundedGenerationResult, MeridianMutation, MeridianSource, MeridianSuggestion, MeridianTask } from './types';
 
 const forbiddenTasks = new Set(['VALIDATE_INSIGHT', 'VALIDATE_DIAGNOSIS', 'MAKE_DECISION']);
@@ -37,19 +38,13 @@ export function rejectSuggestion(suggestion: MeridianSuggestion, rationale: stri
 }
 
 export function validateMeridianMutation(value: unknown): MeridianMutation {
-  if (!value || typeof value !== 'object') throw new Error('A Meridian review action is required.');
-  const input = value as Record<string, unknown>;
+  const { raw: input, required } = objectInput(value, 'A Meridian review action is required.');
   if (typeof input.action === 'string' && forbiddenTasks.has(input.action)) throw new Error('Meridian cannot validate an Insight or Diagnosis or make a Decision.');
   if (input.action === 'GENERATE_PATTERN') {
     const sourceIds = Array.isArray(input.sourceIds) ? input.sourceIds.filter((item): item is string => typeof item === 'string' && item.length > 0) : [];
     return { action: 'GENERATE_PATTERN', sourceIds };
   }
-  if (input.action === 'REJECT_SUGGESTION') return { action: 'REJECT_SUGGESTION', suggestionId: requiredString(input, 'suggestionId'), rationale: requiredString(input, 'rationale') };
+  if (input.action === 'REJECT_SUGGESTION') return { action: 'REJECT_SUGGESTION', suggestionId: required('suggestionId'), rationale: required('rationale') };
   throw new Error('The Meridian review action is not supported.');
 }
 
-function requiredString(input: Record<string, unknown>, key: string) {
-  const value = input[key];
-  if (typeof value !== 'string' || !value.trim()) throw new Error(`${key} is required.`);
-  return value.trim();
-}

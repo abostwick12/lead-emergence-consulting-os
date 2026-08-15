@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from 'react';
 import { ArrowRight, Check, CircleGauge, Gavel, GitBranch, ShieldCheck, Sparkles, Target, UsersRound } from 'lucide-react';
 import type { AlignmentCapabilityData, AlignmentMutation, CapabilityPathwayView } from '@/lib/alignment/types';
+import { postJson } from '@/lib/client/api';
 
 export function AlignmentCapabilityCenter({ initialData, mode }: { initialData: AlignmentCapabilityData; mode: 'alignment' | 'development' }) {
   const [data, setData] = useState(initialData);
@@ -12,10 +13,7 @@ export function AlignmentCapabilityCenter({ initialData, mode }: { initialData: 
   async function mutate(mutation: AlignmentMutation) {
     setPending(true); setMessage('');
     try {
-      const response = await fetch('/api/alignment', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(mutation) });
-      const body = await response.json();
-      if (!response.ok) throw new Error(body.error ?? 'The change could not be saved.');
-      setData(body); setMessage('Saved. The development record remains linked to its requirement, evidence, and plan.');
+      setData(await postJson<AlignmentCapabilityData>('/api/alignment', mutation, 'The change could not be saved.')); setMessage('Saved. The development record remains linked to its requirement, evidence, and plan.');
     } catch (error) { setMessage(error instanceof Error ? error.message : 'The change could not be saved.'); }
     finally { setPending(false); }
   }

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ArrowRight, CheckCircle2, Compass, GitCompareArrows, LockKeyhole, Sprout, Target } from 'lucide-react';
 import type { OutcomeDisposition, OutcomesMutation, OutcomesNewRealityData } from '@/lib/outcomes/types';
 import { nextOutcomeAction, outcomeDispositions } from '@/lib/outcomes/workflow';
+import { postJson } from '@/lib/client/api';
 
 export function OutcomesNewRealityCenter({ initialData }: { initialData: OutcomesNewRealityData }) {
   const [data, setData] = useState(initialData); const [pending, setPending] = useState(false); const [message, setMessage] = useState('');
@@ -11,9 +12,7 @@ export function OutcomesNewRealityCenter({ initialData }: { initialData: Outcome
   async function mutate(mutation: OutcomesMutation) {
     setPending(true); setMessage('');
     try {
-      const response = await fetch('/api/outcomes', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(mutation) });
-      const body = await response.json(); if (!response.ok) throw new Error(body.error);
-      setData(body); setMessage('Saved. The reasoning path and historical state remain inspectable.');
+      setData(await postJson<OutcomesNewRealityData>('/api/outcomes', mutation, 'The outcome workflow could not be advanced.')); setMessage('Saved. The reasoning path and historical state remain inspectable.');
     } catch (error) { setMessage(error instanceof Error ? error.message : 'The outcome workflow could not be advanced.'); }
     finally { setPending(false); }
   }

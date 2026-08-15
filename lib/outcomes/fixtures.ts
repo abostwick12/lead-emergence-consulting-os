@@ -1,4 +1,5 @@
 import type { PortalSession } from '@/lib/portal/types';
+import { createFixtureStore } from '../fixtures/store';
 import type { OutcomeDisposition, OutcomesMutation, OutcomesNewRealityData } from './types';
 import { nextOutcomeAction } from './workflow';
 
@@ -7,8 +8,8 @@ interface OutcomeFixtureStore {
   learning?: string; disposition?: OutcomeDisposition;
   profileName?: string; actualState?: string; difference?: string; baseline?: boolean;
 }
-declare global { var __leOutcomeFixtures: OutcomeFixtureStore | undefined; }
-function store() { globalThis.__leOutcomeFixtures ??= {}; return globalThis.__leOutcomeFixtures; }
+const fixtures = createFixtureStore<OutcomeFixtureStore>('outcomes', () => ({}));
+const store = fixtures.read;
 
 export function fixtureOutcomesNewReality(session: PortalSession): OutcomesNewRealityData {
   const state = store();
@@ -47,4 +48,4 @@ export function mutateFixtureOutcomes(session: PortalSession, mutation: Outcomes
   return fixtureOutcomesNewReality(session);
 }
 
-export function resetOutcomeFixtures() { globalThis.__leOutcomeFixtures = {}; }
+export function resetOutcomeFixtures() { fixtures.reset(); }

@@ -3,6 +3,7 @@
 import { useMemo, useState, type FormEvent } from 'react';
 import { CalendarPlus, Check, ChevronRight, Clock3, Gavel, LockKeyhole, MessageSquareText, ShieldCheck, UserRoundCheck, UsersRound } from 'lucide-react';
 import { meetingPhases, type MeetingCenterData, type MeetingMutation, type MeetingView } from '@/lib/meetings/types';
+import { postJson } from '@/lib/client/api';
 
 export function MeetingCenter({ initialData, initialMeetingId }: { initialData: MeetingCenterData; initialMeetingId?: string }) {
   const [data, setData] = useState(initialData);
@@ -15,9 +16,7 @@ export function MeetingCenter({ initialData, initialMeetingId }: { initialData: 
   async function mutate(mutation: MeetingMutation) {
     setPending(true); setMessage('');
     try {
-      const response = await fetch('/api/meetings', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(mutation) });
-      const body = await response.json();
-      if (!response.ok) throw new Error(body.error ?? 'The change could not be saved.');
+      const body = await postJson<MeetingCenterData>('/api/meetings', mutation, 'The change could not be saved.');
       setData(body);
       if (mutation.action === 'CREATE_MEETING') setSelectedId(body.meetings[0]?.id ?? selectedId);
       setCreating(false); setMessage('Saved. The shared meeting record and its privacy boundary are current.');

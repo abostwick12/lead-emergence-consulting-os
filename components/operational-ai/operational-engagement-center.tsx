@@ -3,6 +3,7 @@
 import { useState, useTransition, type FormEvent, type ReactNode } from 'react';
 import { AlertTriangle, ArrowRight, CheckCircle2, ClipboardCheck, FileSearch, LockKeyhole, Plus, Route, ShieldCheck, Sparkles, Users } from 'lucide-react';
 import type { GuidedRecordKind, OperationalEngagementData, OperationalSection } from '@/lib/operational-ai/types';
+import { ApiError, postJson } from '@/lib/client/api';
 import { GuidedRecordWorkspace } from './guided-record-workspace';
 
 const engagementDateTime = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' });
@@ -14,12 +15,10 @@ export function OperationalEngagementCenter({ initialData, section }: { initialD
     startTransition(async () => {
       setMessage('');
       try {
-        const response = await fetch('/api/operational-ai', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
-        const body = await response.json();
-        if (!response.ok) { setMessage(body.error ?? 'The workspace could not be updated.'); return; }
-        setData(body); form?.reset(); setMessage('Workspace updated.');
-      } catch {
-        setMessage('The workspace could not be reached. Try again.');
+        setData(await postJson<OperationalEngagementData>('/api/operational-ai', payload, 'The workspace could not be updated.'));
+        form?.reset(); setMessage('Workspace updated.');
+      } catch (error) {
+        setMessage(error instanceof ApiError ? error.message : 'The workspace could not be reached. Try again.');
       }
     });
   }

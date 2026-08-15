@@ -1,12 +1,10 @@
 import type { PortalSession } from '@/lib/portal/types';
+import { createFixtureStore } from '../fixtures/store';
 import type { AlignmentCapabilityData, AlignmentMutation } from './types';
 
 interface AlignmentFixtureStore { revision: number; recordedPractices: string[]; completedActivities: string[] }
-declare global { var __leAlignmentFixtures: AlignmentFixtureStore | undefined; }
-function store() {
-  globalThis.__leAlignmentFixtures ??= { revision: 0, recordedPractices: [], completedActivities: [] };
-  return globalThis.__leAlignmentFixtures;
-}
+const fixtures = createFixtureStore<AlignmentFixtureStore>('alignment', () => ({ revision: 0, recordedPractices: [], completedActivities: [] }));
+const store = fixtures.read;
 
 export function fixtureAlignmentCapability(session: PortalSession): AlignmentCapabilityData {
   const fixtureStore = store();
@@ -70,4 +68,4 @@ export function mutateFixtureAlignment(session: PortalSession, mutation: Alignme
   return fixtureAlignmentCapability(session);
 }
 
-export function resetAlignmentFixtures() { globalThis.__leAlignmentFixtures = { revision: 0, recordedPractices: [], completedActivities: [] }; }
+export function resetAlignmentFixtures() { fixtures.reset(); }

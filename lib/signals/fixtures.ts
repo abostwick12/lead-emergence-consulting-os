@@ -1,4 +1,5 @@
 import type { PortalSession } from '@/lib/portal/types';
+import { createFixtureStore } from '../fixtures/store';
 import type { SignalItem, SignalsMutation, SignalsWorkspaceData } from './types';
 
 interface SignalsFixtureStore {
@@ -6,8 +7,8 @@ interface SignalsFixtureStore {
   reentries: SignalsWorkspaceData['reentries'];
   completedSchedules: string[];
 }
-declare global { var __leSignalsFixtures: SignalsFixtureStore | undefined; }
-function store() { globalThis.__leSignalsFixtures ??= { addedSignals: [], reentries: [], completedSchedules: [] }; return globalThis.__leSignalsFixtures; }
+const fixtures = createFixtureStore<SignalsFixtureStore>('signals', () => ({ addedSignals: [], reentries: [], completedSchedules: [] }));
+const store = fixtures.read;
 
 const seededSignals: SignalItem[] = [
   {
@@ -72,4 +73,4 @@ export function mutateFixtureSignals(session: PortalSession, mutation: SignalsMu
   return fixtureSignalsWorkspace(session);
 }
 
-export function resetSignalsFixtures() { globalThis.__leSignalsFixtures = { addedSignals: [], reentries: [], completedSchedules: [] }; }
+export function resetSignalsFixtures() { fixtures.reset(); }

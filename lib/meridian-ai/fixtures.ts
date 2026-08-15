@@ -1,13 +1,11 @@
 import type { PortalSession } from '@/lib/portal/types';
+import { createFixtureStore } from '../fixtures/store';
 import { generateGroundedPattern, rejectSuggestion } from './workflow';
 import type { MeridianAiData, MeridianMutation, MeridianSource, MeridianSuggestion } from './types';
 
 interface MeridianFixtureStore { generated: MeridianSuggestion[]; rejected: MeridianSuggestion[] }
-declare global { var __leMeridianAiFixtures: MeridianFixtureStore | undefined; }
-function store() {
-  globalThis.__leMeridianAiFixtures ??= { generated: [], rejected: [] };
-  return globalThis.__leMeridianAiFixtures;
-}
+const fixtures = createFixtureStore<MeridianFixtureStore>('meridian-ai', () => ({ generated: [], rejected: [] }));
+const store = fixtures.read;
 
 export const fixtureMeridianSources: MeridianSource[] = [
   { id: 'source-interview-04', fragmentId: 'fragment-interview-04-12', title: 'Interview 04', locator: 'Excerpt 12', excerpt: 'Team leads described waiting for senior approval in routine exception cases.', role: 'SUPPORTING', visibility: 'ENGAGEMENT_SHARED' },
@@ -57,4 +55,4 @@ export function mutateFixtureMeridianAi(session: PortalSession, mutation: Meridi
   return fixtureMeridianAi(session);
 }
 
-export function resetMeridianAiFixtures() { globalThis.__leMeridianAiFixtures = { generated: [], rejected: [] }; }
+export function resetMeridianAiFixtures() { fixtures.reset(); }

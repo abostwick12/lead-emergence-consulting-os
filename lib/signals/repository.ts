@@ -4,6 +4,7 @@ import type { PortalSession } from '@/lib/portal/types';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { fixtureSignalsWorkspace, mutateFixtureSignals } from './fixtures';
 import type { SignalKind, SignalsMutation, SignalsWorkspaceData } from './types';
+import { throwOnError } from '@/lib/supabase/results';
 
 export async function getSignalsWorkspace(session: PortalSession): Promise<SignalsWorkspaceData> {
   if (session.fixture) return fixtureSignalsWorkspace(session);
@@ -17,7 +18,7 @@ export async function getSignalsWorkspace(session: PortalSession): Promise<Signa
     supabase.from('current_baselines').select('*').eq('organization_id', organizationId).or(`engagement_id.eq.${engagementId},next_engagement_id.eq.${engagementId}`).order('snapshot_at', { ascending: false }).limit(1),
     supabase.from('domain_objects').select('id').eq('organization_id', organizationId).eq('engagement_id', engagementId).eq('object_type', 'EVIDENCE'),
   ]);
-  for (const result of [signalResult, trendResult, assumptionResult, questionResult, baselineResult, evidenceRegistryResult]) if (result.error) throw new Error(result.error.message);
+  throwOnError(signalResult, trendResult, assumptionResult, questionResult, baselineResult, evidenceRegistryResult);
   const evidenceIds = (evidenceRegistryResult.data ?? []).map((item) => item.id);
   const evidenceResult = evidenceIds.length ? await supabase.from('evidence_items').select('id,relevance_note').in('id', evidenceIds) : { data: [], error: null };
   if (evidenceResult.error) throw new Error(evidenceResult.error.message);

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { requirePortalRole } from '@/lib/portal/context';
+import { setEngagementContextCookies } from '@/lib/portal/cookies';
 import { safeReturnPath } from '@/lib/portal/navigation';
 
 export async function GET(request: NextRequest) {
@@ -10,8 +11,5 @@ export async function GET(request: NextRequest) {
   if (!engagementId || !session.engagements.some((item) => item.id === engagementId && item.organizationId === organizationId)) return new NextResponse('Engagement not available', { status: 404 });
   const returnTo = safeReturnPath(request.nextUrl.searchParams.get('returnTo'));
   const response = NextResponse.redirect(new URL(returnTo === '/' ? `/consultant/clients/${organizationId}/overview` : returnTo, request.url));
-  const options = { httpOnly: true, sameSite: 'lax' as const, path: '/', secure: process.env.NODE_ENV === 'production' };
-  response.cookies.set('le_organization_id', organizationId, options);
-  response.cookies.set('le_engagement_id', engagementId, options);
-  return response;
+  return setEngagementContextCookies(response, { organizationId, engagementId });
 }
