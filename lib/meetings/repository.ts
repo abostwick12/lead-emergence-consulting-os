@@ -5,6 +5,7 @@ import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { fixtureMeetingCenter, mutateFixtureMeeting } from './fixtures';
 import type { MeetingCenterData, MeetingCommitmentView, MeetingMutation, MeetingNoteView, MeetingPerson, MeetingView } from './types';
 import { canMoveToPhase } from './workflow';
+import { dataAccessError } from '@/lib/http/errors';
 
 export async function getMeetingCenter(session: PortalSession): Promise<MeetingCenterData> {
   if (session.fixture) return fixtureMeetingCenter(session);
@@ -13,11 +14,11 @@ export async function getMeetingCenter(session: PortalSession): Promise<MeetingC
     p_organization_id: session.organization.id,
     p_engagement_id: session.engagement.id,
   });
-  if (peopleError) throw new Error(peopleError.message);
+  if (peopleError) throw dataAccessError(peopleError, 'lib/meetings/repository.ts');
   const people: MeetingPerson[] = (peopleRows ?? []).map((row: { person_id: string; display_name: string; relationship: string }) => ({ id: row.person_id, name: row.display_name, relationship: row.relationship as 'CONSULTANT' | 'CLIENT' }));
   const names = new Map(people.map((person) => [person.id, person.name]));
   const { data: meetingRows, error: meetingError } = await supabase.from('meetings').select('*').eq('organization_id', session.organization.id).eq('engagement_id', session.engagement.id).order('scheduled_start', { ascending: true });
-  if (meetingError) throw new Error(meetingError.message);
+  if (meetingError) throw dataAccessError(meetingError, 'lib/meetings/repository.ts');
   const ids = (meetingRows ?? []).map((row) => row.id);
   if (!ids.length) return { meetings: [], people, currentPersonId: session.personId, role: session.role as 'consultant' | 'client' };
 
@@ -29,12 +30,12 @@ export async function getMeetingCenter(session: PortalSession): Promise<MeetingC
     supabase.from('meeting_context_items').select('meeting_id, context_domain_object_id').eq('organization_id', session.organization.id).in('meeting_id', ids),
     supabase.from('meeting_decisions').select('meeting_id, decision_id').eq('organization_id', session.organization.id).in('meeting_id', ids),
   ]);
-  for (const result of [participantsResult, notesResult, commitmentsResult, coachingResult, contextResult, decisionLinksResult]) if (result.error) throw new Error(result.error.message);
+  for (const result of [participantsResult, notesResult, commitmentsResult, coachingResult, contextResult, decisionLinksResult]) if (result.error) throw dataAccessError(result.error, 'lib/meetings/repository.ts');
 
   const privateNotes = new Map<string, MeetingNoteView[]>();
   for (const id of ids) {
     const { data, error } = await supabase.rpc('private_meeting_notes_for_meeting', { p_meeting_id: id });
-    if (error) throw new Error(error.message);
+    if (error) throw dataAccessError(error, 'lib/meetings/repository.ts');
     privateNotes.set(id, (data ?? []).map((row: { note_id: string; kind: MeetingNoteView['kind']; content: string; author_person_id: string; created_at: string }) => ({ id: row.note_id, kind: row.kind, content: row.content, authorName: names.get(row.author_person_id) ?? 'Private author', createdLabel: formatDate(row.created_at), privacy: 'PRIVATE' as const })));
   }
   const contextIds = [...new Set((contextResult.data ?? []).map((row) => row.context_domain_object_id))];
@@ -44,7 +45,7 @@ export async function getMeetingCenter(session: PortalSession): Promise<MeetingC
   const { data: decisionRows, error: decisionsError } = decisionIds.length
     ? await supabase.from('decisions').select('*').eq('organization_id', session.organization.id).in('id', decisionIds)
     : { data: [], error: null };
-  if (decisionsError) throw new Error(decisionsError.message);
+  if (decisionsError) throw dataAccessError(decisionsError, 'lib/meetings/repository.ts');
 
   const meetings: MeetingView[] = (meetingRows ?? []).map((row) => {
     const participants = (participantsResult.data ?? []).filter((item) => item.meeting_id === row.id).map((item) => people.find((person) => person.id === item.person_id) ?? { id: item.person_id, name: 'Named participant', relationship: 'CLIENT' as const });
@@ -110,7 +111,7 @@ export async function mutateMeeting(session: PortalSession, mutation: MeetingMut
 
 async function checked(resultPromise: PromiseLike<{ error: { message: string } | null }>) {
   const { error } = await resultPromise;
-  if (error) throw new Error(error.message);
+  if (error) throw dataAccessError(error, 'lib/meetings/repository.ts');
 }
 
 function formatDate(value: string) {

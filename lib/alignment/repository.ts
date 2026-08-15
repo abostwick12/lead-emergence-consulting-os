@@ -4,6 +4,7 @@ import type { PortalSession } from '@/lib/portal/types';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { fixtureAlignmentCapability, mutateFixtureAlignment } from './fixtures';
 import type { AlignmentCapabilityData, AlignmentMutation, CapabilityLevel } from './types';
+import { dataAccessError } from '@/lib/http/errors';
 
 export async function getAlignmentCapability(session: PortalSession): Promise<AlignmentCapabilityData> {
   if (session.fixture) return fixtureAlignmentCapability(session);
@@ -15,7 +16,7 @@ export async function getAlignmentCapability(session: PortalSession): Promise<Al
     supabase.from('reinvention_initiatives').select('*').eq('organization_id', session.organization.id).eq('engagement_id', session.engagement.id),
     supabase.from(pathwayView).select('*').eq('organization_id', session.organization.id).eq('engagement_id', session.engagement.id),
   ]);
-  for (const result of [rolesResult, workflowsResult, initiativesResult, pathwaysResult]) if (result.error) throw new Error(result.error.message);
+  for (const result of [rolesResult, workflowsResult, initiativesResult, pathwaysResult]) if (result.error) throw dataAccessError(result.error, 'lib/alignment/repository.ts');
 
   const workflowIds = (workflowsResult.data ?? []).map((row) => row.id);
   const planIds = (pathwaysResult.data ?? []).map((row) => row.development_plan_id).filter(Boolean);
@@ -26,7 +27,7 @@ export async function getAlignmentCapability(session: PortalSession): Promise<Al
     planIds.length ? supabase.from('resources').select('*').eq('organization_id', session.organization.id).in('development_plan_id', planIds) : Promise.resolve({ data: [], error: null }),
     supabase.from('capability_maturity_assessments').select('*').eq('organization_id', session.organization.id).eq('engagement_id', session.engagement.id).order('assessed_at', { ascending: false }),
   ]);
-  for (const result of [stepsResult, activitiesResult, practicesResult, resourcesResult, maturityResult]) if (result.error) throw new Error(result.error.message);
+  for (const result of [stepsResult, activitiesResult, practicesResult, resourcesResult, maturityResult]) if (result.error) throw dataAccessError(result.error, 'lib/alignment/repository.ts');
 
   const roleNames = new Map((rolesResult.data ?? []).map((row) => [row.id, row.name]));
   return {
@@ -68,7 +69,7 @@ export async function mutateAlignmentCapability(session: PortalSession, mutation
   if (mutation.action === 'UPDATE_ACTIVITY') {
     if (!pathway.activities.some((item) => item.id === mutation.activityId)) throw new Error('Development activity is not available.');
     const { error } = await supabase.from('development_activities').update({ status: mutation.status, completed_at: mutation.status === 'COMPLETED' ? new Date().toISOString() : null }).eq('id', mutation.activityId).eq('organization_id', session.organization.id);
-    if (error) throw new Error(error.message);
+    if (error) throw dataAccessError(error, 'lib/alignment/repository.ts');
   } else {
     if (!pathway.developmentPlanId) throw new Error('Create an authorized development plan before recording practice.');
     const { error } = await supabase.rpc('record_development_practice', {
@@ -78,7 +79,7 @@ export async function mutateAlignmentCapability(session: PortalSession, mutation
       p_repetition_target: mutation.repetitionTarget,
       p_feedback_method: mutation.feedbackMethod,
     });
-    if (error) throw new Error(error.message);
+    if (error) throw dataAccessError(error, 'lib/alignment/repository.ts');
   }
   return getAlignmentCapability(session);
 }

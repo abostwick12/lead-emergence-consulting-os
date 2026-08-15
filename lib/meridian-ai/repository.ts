@@ -4,6 +4,7 @@ import type { PortalSession } from '@/lib/portal/types';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { fixtureMeridianAi, mutateFixtureMeridianAi } from './fixtures';
 import type { MeridianAiData, MeridianMutation, MeridianSource } from './types';
+import { dataAccessError } from '@/lib/http/errors';
 
 export async function getMeridianAi(session: PortalSession): Promise<MeridianAiData> {
   if (session.role !== 'consultant') throw new Error('Grounded Meridian review is available only in the assigned consultant context.');
@@ -13,8 +14,8 @@ export async function getMeridianAi(session: PortalSession): Promise<MeridianAiD
     supabase.from('ai_generation_runs').select('*').eq('organization_id', session.organization.id).eq('engagement_id', session.engagement.id).order('created_at', { ascending: false }),
     supabase.from('ai_output_review').select('*').eq('organization_id', session.organization.id).eq('engagement_id', session.engagement.id).order('created_at', { ascending: false }),
   ]);
-  if (runsResult.error) throw new Error(runsResult.error.message);
-  if (outputsResult.error) throw new Error(outputsResult.error.message);
+  if (runsResult.error) throw dataAccessError(runsResult.error, 'lib/meridian-ai/repository.ts');
+  if (outputsResult.error) throw dataAccessError(outputsResult.error, 'lib/meridian-ai/repository.ts');
   const outputRows = outputsResult.data ?? [];
   const mapSuggestion = (row: Record<string, unknown>) => ({
     id: String(row.id), task: 'SUGGEST_PATTERN' as const, title: String(row.title), statement: String(row.statement),
@@ -53,10 +54,10 @@ export async function mutateMeridianAi(session: PortalSession, mutation: Meridia
       p_contrary_evidence_summary: 'Contrary sources remain visible in the source set.',
       p_limitations: 'Reviewable suggestion only; not a diagnosis.',
     });
-    if (error) throw new Error(error.message);
+    if (error) throw dataAccessError(error, 'lib/meridian-ai/repository.ts');
   } else {
     const { error } = await supabase.rpc('reject_ai_suggestion', { p_output_id: mutation.suggestionId, p_rationale: mutation.rationale });
-    if (error) throw new Error(error.message);
+    if (error) throw dataAccessError(error, 'lib/meridian-ai/repository.ts');
   }
   return getMeridianAi(session);
 }
