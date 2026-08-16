@@ -11,7 +11,7 @@ const contentTypes: Record<AssessmentInstrumentFormat, string> = {
   pdf: 'application/pdf',
 };
 
-export async function GET(request: Request, context: RouteContext<'/api/assessment-instruments/[slug]/[format]'>) {
+export async function GET(request: Request, context: { params: Promise<{ slug: string; format: string }> }) {
   try {
     await requireApiRole('consultant');
     const { slug, format: rawFormat } = await context.params;
