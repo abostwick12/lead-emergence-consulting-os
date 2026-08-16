@@ -1,6 +1,6 @@
 # ADR-0002: Consulting tenancy, schema, and migration ownership
 
-- **Status:** Accepted — approved 2026-08-10
+- **Status:** Accepted — approved 2026-08-10; hosted topology amended 2026-08-15
 - **Date:** 2026-08-09; private-repository path incorporated 2026-08-10
 - **Depends on:** ADR-0001
 
@@ -17,6 +17,25 @@ Create Consulting-owned Postgres schemas and migrations:
 - `consulting_private`: physically partitioned private coaching/consultant content with no ordinary Data API grants.
 
 Migrations live only in this private Consulting repository at `supabase/migrations/`. They are additive, idempotent where practical, environment-verified before application, and never applied as part of the public Ministry repository migration workflow.
+
+## Hosted Supabase topology amendment — 2026-08-15
+
+Ministry and Consulting use one hosted Supabase project because a completed Consulting engagement is expected to lead into an authorized Ministry setup. This is shared infrastructure, not a shared product data model:
+
+- Ministry continues to own its existing `public` tables and Ministry migrations.
+- Consulting owns `consulting_os`, `consulting_security`, `consulting_private`, the `consulting-private` storage bucket, and Consulting migrations.
+- Personal remains on a separate Supabase project and is not part of the Ministry/Consulting tenant graph.
+- Supabase Auth identity may be shared by Ministry and Consulting, but authorization remains product-local. An Auth user receives no Consulting access without a Consulting assignment or membership and no Ministry access merely because Consulting access exists.
+- Each client church or organization is represented by a row in `consulting_os.organizations`; scaling to additional clients does not create additional Supabase projects.
+- Ministry and Consulting remain separate repositories, Vercel projects, deployments, domains, and application authorization surfaces.
+
+The hosted project's API and Auth settings are a deliberately managed union of both products' needs. The Consulting `supabase/config.toml` remains a local-development configuration and must not be pushed wholesale to the shared hosted project. In particular:
+
+- `public` remains available to the Ministry application under its existing grants and RLS policies.
+- `consulting_os` may be exposed only with its explicit grants and RLS policies.
+- `consulting_security` and `consulting_private` remain unexposed.
+- Auth redirect allowlists include only approved Ministry and Consulting origins.
+- Consulting migrations do not alter Ministry-owned tables, functions, policies, or grants without a future shared-interface ADR.
 
 ## Identity and membership core
 
@@ -90,7 +109,9 @@ Visibility uses: `CONSULTANT_PRIVATE`, `INDIVIDUAL_PRIVATE`, `COACHING_SHARED`, 
 - Consulting security can fail closed without changing Ministry behavior.
 - Composite keys add schema verbosity but make tenant invariants database-verifiable.
 - Sharing one Supabase project remains possible while schemas, migration ownership, and future extraction stay explicit.
+- The accepted hosted topology now uses that shared-project option while preserving schema and deployment isolation.
 - Separate Consulting storage and private schemas reduce accidental Data API exposure.
+- A project-wide privileged key has a larger blast radius in a shared project. Consulting therefore keeps privileged operations server-only, narrowly inventoried, tenant-validated, and auditable; user-facing data access continues through user JWTs and RLS.
 
 ## Rejected alternatives
 
