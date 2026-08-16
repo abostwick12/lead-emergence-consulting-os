@@ -63,6 +63,10 @@ Later-phase navigation is visible so the engagement has a coherent destination, 
 - Only sanitized, process-level information may be entered.
 - The in-platform guided assessment works without ChatGPT. Conversation-led delivery additionally requires a deployed and connected Consulting OS MCP service.
 
-## Deployment blocker
+## Release verification
 
-The migration exists and the application build passes, but local database execution is not verified on this machine because Docker Desktop or Podman is not installed or available on PATH. Do not apply the migration to a hosted environment until it passes local migration, RLS, and database tests.
+- The complete application browser suite passed in CI.
+- The isolated CI database applied every migration, linted the Consulting schemas, and passed the adversarial pgTAP suite.
+- The additive Mission Product assessment-administration migration was applied to the existing shared Ministry/Consulting Supabase project after CI passed.
+- The merged Consulting OS commit deployed successfully through the existing Vercel project.
+- The local workstation still does not provide Docker Desktop or Podman; database verification therefore remains a CI responsibility on this machine.
