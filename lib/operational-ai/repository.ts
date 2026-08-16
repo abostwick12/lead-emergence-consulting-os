@@ -3,17 +3,24 @@ import type { PortalSession } from '@/lib/portal/types';
 import { fixtureOperationalEngagement, updateFixtureOperationalEngagement } from './fixtures';
 import type { OperationalEngagementData } from './types';
 import type { OperationalMutation } from './workflow';
+import { authorizationError, notFoundError, unavailableError } from '@/lib/errors';
+
+export const operationalProvisioningGateNotice = 'Hosted Operational Product AI storage is not provisioned yet.';
+
+export function isOperationalWorkspaceProvisioned(session: PortalSession) {
+  return session.fixture;
+}
 
 function id(prefix: string) { return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}` }
 
 export async function getOperationalEngagement(session: PortalSession): Promise<OperationalEngagementData> {
   if (session.fixture) return fixtureOperationalEngagement();
-  throw new Error('Hosted Operational Product AI provisioning remains disabled until the approved infrastructure checkpoint.');
+  throw unavailableError(operationalProvisioningGateNotice);
 }
 
 export async function mutateOperationalEngagement(session: PortalSession, mutation: OperationalMutation) {
-  if (session.role !== 'consultant') throw new Error('Consultant access is required.');
-  if (!session.fixture) throw new Error('Hosted Operational Product AI mutations remain disabled until the approved infrastructure checkpoint.');
+  if (session.role !== 'consultant') throw authorizationError('Consultant access is required.');
+  if (!isOperationalWorkspaceProvisioned(session)) throw unavailableError(operationalProvisioningGateNotice);
   return updateFixtureOperationalEngagement((current) => {
     if (mutation.action === 'ADD_PRODUCT') current.products.push({ id: id('product'), name: mutation.name, description: mutation.description, ownerLabel: mutation.ownerLabel, status: 'ACTIVE', handlingLabel: current.handlingLabel, responses: [] });
     if (mutation.action === 'UPDATE_PRODUCT_SUMMARY') current.products = current.products.map((item) => item.id === mutation.id ? { ...item, name: mutation.name, description: mutation.description, ownerLabel: mutation.ownerLabel, status: mutation.status } : item);
@@ -41,7 +48,7 @@ export async function mutateOperationalEngagement(session: PortalSession, mutati
         const responses = save(item.responses);
         return { ...item, responses, notesCount: responses.length, status: item.status === 'PLANNED' ? 'IN_PROGRESS' : item.status };
       });
-      if (!found) throw new Error('The requested guided record was not found.');
+      if (!found) throw notFoundError('The requested guided record was not found.');
     }
     if (mutation.action === 'ADD_EVIDENCE') current.evidence.push({ id: id('evidence'), productId: mutation.productId, title: mutation.title, sourceType: mutation.sourceType, observation: mutation.observation, sourceLocator: mutation.sourceLocator, visibility: mutation.visibility, status: 'CAPTURED' });
     if (mutation.action === 'ADD_REQUEST') current.requests.push({ id: id('request'), productId: mutation.productId, title: mutation.title, requestedFrom: mutation.requestedFrom, requestedOn: new Date().toISOString().slice(0, 10), dueOn: mutation.dueOn, status: 'REQUESTED', handlingNote: 'Sanitized material only; no operational content.' });

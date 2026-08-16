@@ -1,3 +1,4 @@
+import { authorizationError, conflictError } from '@/lib/errors';
 import type { PortalSession } from '@/lib/portal/types';
 import type { SignalItem, SignalsMutation, SignalsWorkspaceData } from './types';
 
@@ -56,7 +57,7 @@ export function fixtureSignalsWorkspace(session: PortalSession): SignalsWorkspac
 }
 
 export function mutateFixtureSignals(session: PortalSession, mutation: SignalsMutation) {
-  if (session.role !== 'consultant') throw new Error('Only the assigned consultant may advance SEE AGAIN.');
+  if (session.role !== 'consultant') throw authorizationError('Only the assigned consultant may advance SEE AGAIN.');
   const state = store();
   if (mutation.action === 'ADD_SIGNAL') state.addedSignals.push({
     id: `signal-${state.addedSignals.length + 1}`,
@@ -65,7 +66,7 @@ export function mutateFixtureSignals(session: PortalSession, mutation: SignalsMu
     visibility: 'ENGAGEMENT_SHARED', status: 'NEW',
   });
   if (mutation.action === 'REENTER_SIGNAL') {
-    if (state.reentries.some((entry) => entry.signalId === mutation.signalId)) throw new Error('This Signal has already re-entered inquiry.');
+    if (state.reentries.some((entry) => entry.signalId === mutation.signalId)) throw conflictError('This Signal has already re-entered inquiry.');
     state.reentries.push({ signalId: mutation.signalId, observationId: `observation-${state.reentries.length + 1}`, statement: mutation.observationStatement, relationship: 'REENTERS_AS' });
   }
   if (mutation.action === 'COMPLETE_ASSUMPTION_REVIEW' && !state.completedSchedules.includes(mutation.scheduleId)) state.completedSchedules.push(mutation.scheduleId);

@@ -1,3 +1,4 @@
+import { validationError } from '@/lib/errors';
 import type { GroundedGenerationResult, MeridianMutation, MeridianSource, MeridianSuggestion, MeridianTask } from './types';
 
 const forbiddenTasks = new Set(['VALIDATE_INSIGHT', 'VALIDATE_DIAGNOSIS', 'MAKE_DECISION']);
@@ -27,29 +28,29 @@ export function generateGroundedPattern(sources: MeridianSource[], authorizedSou
 }
 
 export function assertPermittedTask(task: string): asserts task is MeridianTask {
-  if (forbiddenTasks.has(task)) throw new Error('Meridian cannot validate an Insight or Diagnosis or make a Decision.');
-  if (!['SUGGEST_PATTERN', 'SUGGEST_INTERPRETATION', 'MEETING_PREPARATION'].includes(task)) throw new Error('The Meridian task is not supported.');
+  if (forbiddenTasks.has(task)) throw validationError('Meridian cannot validate an Insight or Diagnosis or make a Decision.');
+  if (!['SUGGEST_PATTERN', 'SUGGEST_INTERPRETATION', 'MEETING_PREPARATION'].includes(task)) throw validationError('The Meridian task is not supported.');
 }
 
 export function rejectSuggestion(suggestion: MeridianSuggestion, rationale: string): MeridianSuggestion {
-  if (!rationale.trim()) throw new Error('A rejection rationale is required so the review history remains reconstructable.');
+  if (!rationale.trim()) throw validationError('A rejection rationale is required so the review history remains reconstructable.');
   return { ...suggestion, reviewState: 'REJECTED', reviewRationale: rationale.trim() };
 }
 
 export function validateMeridianMutation(value: unknown): MeridianMutation {
-  if (!value || typeof value !== 'object') throw new Error('A Meridian review action is required.');
+  if (!value || typeof value !== 'object') throw validationError('A Meridian review action is required.');
   const input = value as Record<string, unknown>;
-  if (typeof input.action === 'string' && forbiddenTasks.has(input.action)) throw new Error('Meridian cannot validate an Insight or Diagnosis or make a Decision.');
+  if (typeof input.action === 'string' && forbiddenTasks.has(input.action)) throw validationError('Meridian cannot validate an Insight or Diagnosis or make a Decision.');
   if (input.action === 'GENERATE_PATTERN') {
     const sourceIds = Array.isArray(input.sourceIds) ? input.sourceIds.filter((item): item is string => typeof item === 'string' && item.length > 0) : [];
     return { action: 'GENERATE_PATTERN', sourceIds };
   }
   if (input.action === 'REJECT_SUGGESTION') return { action: 'REJECT_SUGGESTION', suggestionId: requiredString(input, 'suggestionId'), rationale: requiredString(input, 'rationale') };
-  throw new Error('The Meridian review action is not supported.');
+  throw validationError('The Meridian review action is not supported.');
 }
 
 function requiredString(input: Record<string, unknown>, key: string) {
   const value = input[key];
-  if (typeof value !== 'string' || !value.trim()) throw new Error(`${key} is required.`);
+  if (typeof value !== 'string' || !value.trim()) throw validationError(`${key} is required.`);
   return value.trim();
 }

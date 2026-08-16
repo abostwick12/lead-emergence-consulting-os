@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { ArrowLeft, ArrowRight, Check, Clipboard, ExternalLink, MessageCircle, Pencil, X } from 'lucide-react';
+import { logError } from '@/lib/errors';
 import { getGuidedRecord } from '@/lib/operational-ai/guided-workflows';
 import type { GuidedRecordKind, OperationalEngagementData } from '@/lib/operational-ai/types';
 
@@ -20,6 +21,7 @@ export function GuidedRecordWorkspace({ data, kind, recordId, pending, onClose, 
   const [activeQuestionId, setActiveQuestionId] = useState(snapshot.nextQuestionId ?? snapshot.questions[0].id);
   const [drafts, setDrafts] = useState<Record<string, string>>({});
   const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState('');
   const questionPanelRef = useRef<HTMLFormElement>(null);
   const closeHandlerRef = useRef(onClose);
   const activeIndex = Math.max(0, snapshot.questions.findIndex((item) => item.id === activeQuestionId));
@@ -53,7 +55,14 @@ export function GuidedRecordWorkspace({ data, kind, recordId, pending, onClose, 
   }
 
   async function copyConversationBrief() {
-    await navigator.clipboard.writeText(snapshot.conversationBrief);
+    setCopyError('');
+    try {
+      await navigator.clipboard.writeText(snapshot.conversationBrief);
+    } catch (error) {
+      logError('operationalAi.copyConversationBrief', error);
+      setCopyError('The brief could not be copied. Select the questions and copy them manually.');
+      return;
+    }
     setCopied(true);
     window.setTimeout(() => setCopied(false), 2200);
   }
@@ -72,8 +81,9 @@ export function GuidedRecordWorkspace({ data, kind, recordId, pending, onClose, 
       <section className="conversation-handoff" aria-label="ChatGPT conversation workflow">
         <MessageCircle aria-hidden="true" />
         <div><strong>Conversation-first workflow</strong><span>Use ChatGPT to ask these questions naturally. The MCP-ready contract reads this record and saves only answers you explicitly confirm.</span></div>
-        <button type="button" onClick={copyConversationBrief}>{copied ? <Check aria-hidden="true" /> : <Clipboard aria-hidden="true" />}{copied ? 'Copied' : 'Copy ChatGPT brief'}</button>
+        <button type="button" onClick={() => void copyConversationBrief()}>{copied ? <Check aria-hidden="true" /> : <Clipboard aria-hidden="true" />}{copied ? 'Copied' : 'Copy ChatGPT brief'}</button>
         <a href="https://chatgpt.com/" target="_blank" rel="noreferrer">Open ChatGPT <ExternalLink aria-hidden="true" /></a>
+        {copyError && <p className="operational-message error" role="alert">{copyError}</p>}
       </section>
 
       <nav className="guided-mode-tabs" aria-label="Guided record views">

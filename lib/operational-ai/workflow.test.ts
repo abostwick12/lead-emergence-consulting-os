@@ -10,6 +10,22 @@ describe('operational product AI boundary', () => {
     expect(() => validateOperationalMutation({ action: 'ADD_EVIDENCE', title: 'Classified mission timeline', sourceType: 'OBSERVATION', observation: 'Unsafe', sourceLocator: 'Unsafe', visibility: 'CONSULTANT_PRIVATE' })).toThrow(/sanitized consulting content only/i);
   });
 
+  it('allows ordinary process-frequency language', () => {
+    expect(validateOperationalMutation({ action: 'ADD_EVIDENCE', title: 'Review cadence', sourceType: 'OBSERVATION', observation: 'The team increased the frequency of weekly quality reviews.', sourceLocator: 'Sanitized walkthrough', visibility: 'CONSULTANT_PRIVATE' })).toMatchObject({ action: 'ADD_EVIDENCE' });
+  });
+
+  it('rejects communications-frequency detail', () => {
+    expect(() => validateOperationalMutation({ action: 'ADD_EVIDENCE', title: 'Radio frequency plan', sourceType: 'OBSERVATION', observation: 'Unsafe', sourceLocator: 'Unsafe', visibility: 'CONSULTANT_PRIVATE' })).toThrow(/sanitized consulting content only/i);
+  });
+
+  it('allows ordinary process-frequency language used by the guided workflow', () => {
+    expect(validateOperationalMutation({ action: 'SAVE_GUIDED_RESPONSE', recordKind: 'PRODUCT', recordId: 'product-1', questionId: 'product-rhythm', answer: 'The product is prepared weekly, with increased frequency during quarterly planning.' })).toMatchObject({ action: 'SAVE_GUIDED_RESPONSE', questionId: 'product-rhythm' });
+  });
+
+  it('continues to reject communications-frequency details', () => {
+    expect(() => validateOperationalMutation({ action: 'SAVE_GUIDED_RESPONSE', recordKind: 'PRODUCT', recordId: 'product-1', questionId: 'product-rhythm', answer: 'Use the assigned radio frequency for this workflow.' })).toThrow(/sanitized consulting content only/i);
+  });
+
   it('accepts a confirmed sanitized guided response', () => {
     expect(validateOperationalMutation({ action: 'SAVE_GUIDED_RESPONSE', recordKind: 'PRODUCT', recordId: 'product-1', questionId: 'product-purpose', answer: 'It gives reviewers a consistent, traceable preparation structure.' })).toMatchObject({ action: 'SAVE_GUIDED_RESPONSE', questionId: 'product-purpose' });
   });

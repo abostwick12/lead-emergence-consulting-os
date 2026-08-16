@@ -29,7 +29,7 @@ The serial complete-engagement browser acceptance exercises the operational path
 | Evidence and contrary evidence remain inspectable | PASS | Evidence Fragment provenance, claim citations, grounded AI source roles, portal record history. |
 | Historical versions remain queryable | PASS | Assumption, design, capability, goal, indicator, Future State, Profile, and Baseline version/immutability tests. |
 | Tenant and visibility security is release-blocking | PASS | RLS on every exposed phase table, composite tenant FKs, record-ID substitution tests, private-source attacks, schema lint. |
-| Consultant and Client portals are one domain with distinct permissions | PASS | 26 browser tests, including URL guessing and shared-only client projections. |
+| Consultant and Client portals are one domain with distinct permissions | PASS | Browser coverage includes URL guessing and shared-only client projections. |
 | Private coaching cannot leak through AI/search/longitudinal views | PASS | Physical private partition, controlled promotion, permission-before-ranking retrieval, Phase 9 source exclusion, adversarial tests. |
 | AI cannot silently validate, decide, or assert causality | PASS | authority/attribution triggers, explicit SUGGESTED state, rejection history, insufficient-evidence refusal. |
 | Current and historical truth are time-appropriate | PASS | current-state views, immutable append records, supersession/version tests, baseline snapshot manifest. |
@@ -89,9 +89,9 @@ No production infrastructure action is implied or authorized by this implementat
 | Locked dependency install | PASS — 464 packages from the committed lockfile; zero reported vulnerabilities. |
 | Typecheck | PASS. |
 | Lint | PASS — current source only; historical `.worktrees/` and their generated output are explicitly excluded. |
-| Unit tests | PASS — 8 files, 33 tests; historical worktrees are excluded from discovery. |
+| Unit tests | PASS — current unit suite; historical worktrees are excluded from discovery. |
 | Production build | PASS — 14 application routes generated/compiled. |
-| Browser acceptance | PASS — 29 tests, including landing desktop/mobile, complete engagement, privacy, grounded AI, Signals, and role-safe Client projection. |
+| Browser acceptance | PASS — current Playwright suite, including landing desktop/mobile, complete engagement, privacy, grounded AI, Signals, and role-safe Client projection. |
 | Database/security gate | PASS — unified-entry PR run `31514697894` repeated static, application, browser, schema-lint, and cumulative pgTAP gates in isolated CI. |
 | Ministry-only source scan | PASS — current public `main` remains `dd28c74...`; 1,091 tracked files and no Consulting-owned path or identifier. |
 

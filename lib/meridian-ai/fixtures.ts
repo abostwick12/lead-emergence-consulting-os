@@ -1,3 +1,4 @@
+import { notFoundError, validationError } from '@/lib/errors';
 import type { PortalSession } from '@/lib/portal/types';
 import { generateGroundedPattern, rejectSuggestion } from './workflow';
 import type { MeridianAiData, MeridianMutation, MeridianSource, MeridianSuggestion } from './types';
@@ -47,11 +48,11 @@ export function mutateFixtureMeridianAi(session: PortalSession, mutation: Meridi
   const fixtureStore = store();
   if (mutation.action === 'GENERATE_PATTERN') {
     const result = generateGroundedPattern(fixtureMeridianSources, new Set(mutation.sourceIds), `meridian-pattern-${fixtureStore.generated.length + 1}`);
-    if (result.status === 'INSUFFICIENT_EVIDENCE') throw new Error(result.limitation);
+    if (result.status === 'INSUFFICIENT_EVIDENCE') throw validationError(result.limitation ?? 'Insufficient permission-eligible evidence for a grounded suggestion.');
     if (result.suggestion) fixtureStore.generated = [...fixtureStore.generated, result.suggestion];
   } else {
     const current = fixtureMeridianAi(session).suggestions.find((item) => item.id === mutation.suggestionId);
-    if (!current) throw new Error('The suggestion is not active in the current permission context.');
+    if (!current) throw notFoundError('The suggestion is not active in the current permission context.');
     fixtureStore.rejected = [...fixtureStore.rejected, rejectSuggestion(current, mutation.rationale)];
   }
   return fixtureMeridianAi(session);

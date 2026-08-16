@@ -1,12 +1,15 @@
 import 'server-only';
 
 import { cache } from 'react';
+import { AuthInvalidJwtError, isAuthSessionMissingError } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 import { fixtureSession } from './fixtures';
 import type { EngagementOption, OrganizationOption, PortalRole, PortalSession } from './types';
 import { isFixtureMode } from '@/lib/supabase/config';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { assertSucceeded, unwrap } from '@/lib/supabase/errors';
+import { dataAccessError } from '@/lib/errors';
 
 const FIXTURE_COOKIE = 'le_fixture_role';
 
@@ -21,16 +24,20 @@ export const getPortalSession = cache(async (): Promise<PortalSession | null> =>
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.auth.getClaims();
   const authUserId = data?.claims?.sub;
-  if (error || typeof authUserId !== 'string') return null;
+  if (error) {
+    if (isAuthSessionMissingError(error) || error instanceof AuthInvalidJwtError) return null;
+    throw dataAccessError('portal.session.claims', error, 'Authentication is temporarily unavailable.');
+  }
+  if (typeof authUserId !== 'string') return null;
 
-  const { data: person } = await supabase
+  const person = unwrap('portal.session.person', await supabase
     .from('people')
     .select('id, display_name')
     .eq('auth_user_id', authUserId)
-    .maybeSingle();
+    .maybeSingle());
   if (!person) return null;
 
-  const [{ data: assignments }, { data: memberships }] = await Promise.all([
+  const [assignmentsResult, membershipsResult] = await Promise.all([
     supabase
       .from('consultant_assignments')
       .select('organization_id')
@@ -42,30 +49,33 @@ export const getPortalSession = cache(async (): Promise<PortalSession | null> =>
       .eq('person_id', person.id)
       .eq('status', 'ACTIVE'),
   ]);
+  assertSucceeded('portal.session.roles', assignmentsResult, membershipsResult);
+  const assignments = assignmentsResult.data;
+  const memberships = membershipsResult.data;
 
   const role: PortalRole = assignments?.length ? 'consultant' : memberships?.length ? 'client' : 'outsider';
   if (role === 'outsider') return null;
   const organizationIds = role === 'consultant'
     ? assignments!.map((item) => item.organization_id)
     : memberships!.map((item) => item.organization_id);
-  const { data: organizationRows } = await supabase
+  const organizationRows = unwrap('portal.session.organizations', await supabase
     .from('organizations')
     .select('id, name, slug')
     .in('id', organizationIds)
     .eq('is_active', true)
-    .order('name');
+    .order('name'));
   const organizations = (organizationRows ?? []) as OrganizationOption[];
   if (!organizations.length) return null;
 
   const cookieStore = await cookies();
   const requestedOrgId = cookieStore.get('le_organization_id')?.value;
   const organization = organizations.find((item) => item.id === requestedOrgId) ?? organizations[0];
-  const { data: engagementRows } = await supabase
+  const engagementRows = unwrap('portal.session.engagements', await supabase
     .from('engagements')
     .select('id, organization_id, name, status, starts_on, ends_on, engagement_type, handling_label, current_phase')
     .eq('organization_id', organization.id)
     .in('status', ['ACTIVE', 'PLANNED', 'PAUSED'])
-    .order('starts_on', { ascending: false });
+    .order('starts_on', { ascending: false }));
   const engagements: EngagementOption[] = (engagementRows ?? []).map((row) => ({
     id: row.id,
     organizationId: row.organization_id,
