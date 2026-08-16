@@ -2,13 +2,16 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft, Download, FileText, Printer, ShieldCheck } from 'lucide-react';
 import { PageIntro } from '@/components/portal/dashboard';
 import { assessmentInstrumentUrl, getAssessmentInstrument } from '@/lib/operational-ai/assessment-instruments';
+import { getAssessmentWorkflowDefinition } from '@/lib/operational-ai/assessment-workflow-definitions';
 import { requirePortalRole } from '@/lib/portal/context';
+import { AssessmentStartActions } from '@/components/operational-ai/assessment-start-actions';
 
 export default async function AssessmentInstrumentPage({ params }: { params: Promise<{ slug: string }> }) {
   const session = await requirePortalRole('consultant');
   const { slug } = await params;
   const instrument = getAssessmentInstrument(slug);
-  if (!instrument) notFound();
+  const workflow = getAssessmentWorkflowDefinition(slug);
+  if (!instrument || !workflow) notFound();
 
   return <>
     <PageIntro eyebrow={`${session.organization.name} · assessment instrument`} title={instrument.title} description={instrument.purpose} />
@@ -29,6 +32,11 @@ export default async function AssessmentInstrumentPage({ params }: { params: Pro
             <a className="secondary-button" href={assessmentInstrumentUrl(instrument.slug, 'docx', true)}><FileText aria-hidden="true" /> Download editable Word file</a>
           </div>
           <p className="assessment-print-guidance">The PDF is the print-ready edition. Open it in a new tab, then use the browser’s print control. The Word file preserves the original editable worksheet.</p>
+          <div className="assessment-guided-divider" />
+          <p className="eyebrow">MCP-FIRST ADMINISTRATION</p>
+          <h2>Facilitate every field without flattening the worksheet.</h2>
+          <p className="assessment-print-guidance">The guided administration contains all {workflow.items.length} narrative, checklist, matrix, ranking, confirmation, and synthesis items from authoritative version {workflow.version}. Items may be skipped; the platform never fills them in by inference.</p>
+          <AssessmentStartActions slug={instrument.slug} />
         </article>
         <aside className="assessment-safety-card">
           <ShieldCheck aria-hidden="true" />

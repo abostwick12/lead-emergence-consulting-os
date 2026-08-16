@@ -1,8 +1,8 @@
-# MCP-Guided Product, Audit, and Interview Workflows
+# MCP-Guided Product, Audit, Interview, and Assessment Workflows
 
 ## Decision
 
-Products, written audits, and interviews use one guided-record contract across the native Consulting OS interface and future ChatGPT MCP access.
+Products, written audits, interviews, and versioned Mission Product assessments use guided contracts across the native Consulting OS interface and future ChatGPT MCP access.
 
 The native interface is the immediate, fully functional fallback. ChatGPT conversation mode is the preferred facilitation surface once the Consulting OS MCP server is hosted behind the approved authorization boundary.
 
@@ -16,14 +16,20 @@ The native interface is the immediate, fully functional fallback. ChatGPT conver
 - The ChatGPT brief identifies the engagement, record type, record ID, next guided question, confirmation rule, and sanitized-data boundary.
 - Guided responses are rejected when they contain controlled-information indicators covered by the engagement guardrail.
 - Product, audit, and interview question sets remain distinct typed workflows.
+- The two Mission Product assessments preserve every authoritative section, prompt, checklist, rating, ranking, and matrix field from their source documents.
+- Assessment responses remain evidence and are never automatically scored, diagnosed, or promoted into a finding.
 
 ## MCP tool contract
 
-`lib/operational-ai/mcp-tools.ts` defines three focused operations:
+`lib/operational-ai/mcp-tools.ts` defines seven focused operations:
 
 1. `list_engagement_records`
 2. `get_guided_record`
 3. `save_guided_response`
+4. `list_assessment_instruments`
+5. `get_assessment_instrument`
+6. `start_assessment_administration`
+7. `save_assessment_response`
 
 The write operation requires `confirmed: true`. The contract never authorizes the model to infer an answer, silently summarize a response, promote evidence into diagnosis, or bypass the tenant/role boundary.
 
