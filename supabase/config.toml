@@ -184,6 +184,13 @@ minimum_password_length = 12
 # are: `letters_digits`, `lower_upper_letters_digits`, `lower_upper_letters_digits_symbols`
 password_requirements = "lower_upper_letters_digits"
 
+# OAuth 2.1 authorization server used by remote MCP clients. Production uses
+# the matching Supabase Dashboard settings and the canonical Consulting origin.
+[auth.oauth_server]
+enabled = true
+authorization_url_path = "/oauth/consent"
+allow_dynamic_registration = true
+
 # Configure passkey sign-ins.
 # [auth.passkey]
 # enabled = false
@@ -365,15 +372,6 @@ enabled = false
 enabled = false
 # Obtain from https://clerk.com/setup/supabase
 # domain = "example.clerk.accounts.dev"
-
-# OAuth server configuration
-[auth.oauth_server]
-# Enable OAuth server functionality
-enabled = false
-# Path for OAuth consent flow UI
-authorization_url_path = "/oauth/consent"
-# Allow dynamic client registration
-allow_dynamic_registration = false
 
 [edge_runtime]
 enabled = true
