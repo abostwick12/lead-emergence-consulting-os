@@ -19,8 +19,11 @@ begin
   where setting like 'pgrst.db_schemas=%'
   limit 1;
 
+  -- Fresh local Supabase stacks do not persist this role setting. In that
+  -- environment, start from Supabase's standard API schemas. Hosted targets
+  -- retain their complete existing value from pg_roles above.
   if v_schemas is null or btrim(v_schemas) = '' then
-    raise exception 'authenticator pgrst.db_schemas is not configured; refusing to replace shared Data API settings';
+    v_schemas := 'public,graphql_public';
   end if;
 
   if not ('consulting_os' = any(string_to_array(v_schemas, ','))) then
