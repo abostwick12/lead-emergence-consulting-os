@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import '@/components/operational-ai/operational-ai.css';
+import '@/components/operational-ai/assessment-instruments.css';
 
 export const metadata: Metadata = {
   title: { default: 'Lead Emergence Consulting OS', template: '%s · Lead Emergence' },

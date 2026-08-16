@@ -48,6 +48,9 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   devIndicators: false,
   turbopack: { root: process.cwd() },
+  outputFileTracingIncludes: {
+    '/api/assessment-instruments/*': ['./assets/assessments/**/*'],
+  },
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   },
