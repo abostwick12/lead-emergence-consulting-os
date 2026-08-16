@@ -37,6 +37,7 @@ test('consultant can run the sanitized 7th SOS P0 workspace', async ({ page }) =
   await leadershipCard.getByRole('link', { name: /Open assessment/ }).click();
   await expect(page.getByRole('heading', { name: 'Mission Product Automation Leadership Assessment', exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: /Open and print PDF/ })).toBeVisible();
+  await expect(page.getByText(/all 36 narrative, checklist, matrix, ranking, confirmation, and synthesis items/i)).toBeVisible();
   const pdfResponse = await page.request.get('/api/assessment-instruments/mission-product-automation-leadership-assessment/pdf');
   expect(pdfResponse.ok()).toBe(true);
   expect(pdfResponse.headers()['content-type']).toBe('application/pdf');
@@ -45,7 +46,17 @@ test('consultant can run the sanitized 7th SOS P0 workspace', async ({ page }) =
   expect(wordResponse.ok()).toBe(true);
   expect(wordResponse.headers()['content-type']).toBe('application/vnd.openxmlformats-officedocument.wordprocessingml.document');
   expect(wordResponse.headers()['content-disposition']).toContain('attachment');
-  await page.getByRole('link', { name: /Back to assessments/ }).click();
+  await page.getByRole('button', { name: 'Prepare guided administration' }).click();
+  await expect(page.getByRole('heading', { name: 'Choose the facilitation experience.' })).toBeVisible();
+  await page.getByRole('link', { name: /Open guided assessment/ }).click();
+  await expect(page.getByRole('heading', { name: 'Mission Product Automation Leadership Assessment' })).toBeVisible();
+  await expect(page.getByText('Respondent information · Item 1 of 36')).toBeVisible();
+  await page.getByLabel('Unit / organization').fill('7th SOS — sanitized process review');
+  await page.getByLabel('Name and role').fill('Consultant-facilitated leadership response');
+  await page.getByRole('button', { name: 'Save and continue' }).click();
+  await expect(page.getByText(/Which mission area, staff function, or operational problem is in scope/)).toBeVisible();
+  await page.screenshot({ path: 'test-results/leadership-assessment-guided-desktop.png', fullPage: true });
+  await page.goto(`/consultant/clients/${organizationId}/audits`);
   await page.getByRole('button', { name: /Product owner written audit/ }).click();
   await expect(page.getByRole('heading', { name: 'What is your role in creating, reviewing, approving, or using this product?' })).toBeVisible();
   await page.getByLabel('Confirmed response').fill('I am accountable for the product standard and final quality review.');

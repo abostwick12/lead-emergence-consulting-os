@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     await enforceAssessmentResponseRateLimit(request);
     const body = await readJsonBody(request);
     const input = (body && typeof body === 'object' && !Array.isArray(body) ? body : {}) as Record<string, unknown>;
-    if (typeof input.token !== 'string' || typeof input.itemId !== 'string' || (typeof input.value !== 'string' && typeof input.value !== 'number')) {
+    if (typeof input.token !== 'string' || typeof input.itemId !== 'string' || input.value === undefined || input.value === null) {
       throw validationError('A complete assessment response is required.');
     }
     return NextResponse.json(await submitParticipantAssessment(input.token, input.itemId, input.value), { status: 201 });
