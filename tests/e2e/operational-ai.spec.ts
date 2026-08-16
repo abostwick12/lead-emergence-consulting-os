@@ -29,6 +29,23 @@ test('consultant can run the sanitized 7th SOS P0 workspace', async ({ page }) =
   await expect(page.getByRole('heading', { name: 'Sanitized Product Four' })).toBeVisible();
 
   await page.getByRole('link', { name: /Audits P0/ }).click();
+  await expect(page.getByRole('heading', { name: 'Mission product assessments' })).toBeVisible();
+  const leadershipCard = page.getByRole('article').filter({ hasText: 'Mission Product Automation Leadership Assessment' });
+  await expect(leadershipCard.getByRole('link', { name: /Open assessment/ })).toBeVisible();
+  await expect(leadershipCard.getByRole('link', { name: /Print PDF/ })).toHaveAttribute('href', /leadership-assessment\/pdf$/);
+  await expect(leadershipCard.getByRole('link', { name: /Word/ })).toHaveAttribute('href', /leadership-assessment\/docx\?download=1$/);
+  await leadershipCard.getByRole('link', { name: /Open assessment/ }).click();
+  await expect(page.getByRole('heading', { name: 'Mission Product Automation Leadership Assessment', exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: /Open and print PDF/ })).toBeVisible();
+  const pdfResponse = await page.request.get('/api/assessment-instruments/mission-product-automation-leadership-assessment/pdf');
+  expect(pdfResponse.ok()).toBe(true);
+  expect(pdfResponse.headers()['content-type']).toBe('application/pdf');
+  expect(pdfResponse.headers()['content-disposition']).toContain('inline');
+  const wordResponse = await page.request.get('/api/assessment-instruments/mission-product-workflow-and-automation-assessment/docx?download=1');
+  expect(wordResponse.ok()).toBe(true);
+  expect(wordResponse.headers()['content-type']).toBe('application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+  expect(wordResponse.headers()['content-disposition']).toContain('attachment');
+  await page.getByRole('link', { name: /Back to assessments/ }).click();
   await page.getByRole('button', { name: /Product owner written audit/ }).click();
   await expect(page.getByRole('heading', { name: 'What is your role in creating, reviewing, approving, or using this product?' })).toBeVisible();
   await page.getByLabel('Confirmed response').fill('I am accountable for the product standard and final quality review.');
