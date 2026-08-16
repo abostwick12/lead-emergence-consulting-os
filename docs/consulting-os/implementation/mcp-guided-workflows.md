@@ -2,9 +2,9 @@
 
 ## Decision
 
-Products, written audits, interviews, and versioned Mission Product assessments use guided contracts across the native Consulting OS interface and future ChatGPT MCP access.
+Products, written audits, interviews, and versioned Mission Product assessments use guided contracts across the native Consulting OS interface and the OAuth-protected remote MCP used by ChatGPT, Claude, Microsoft Copilot, and GitHub Copilot.
 
-The native interface is the immediate, fully functional fallback. ChatGPT conversation mode is the preferred facilitation surface once the Consulting OS MCP server is hosted behind the approved authorization boundary.
+The native interface remains a fully functional fallback. Conversation mode in a supported AI assistant is the preferred facilitation surface when the client permits a custom remote MCP connection.
 
 ## Current implementation
 
@@ -13,7 +13,7 @@ The native interface is the immediate, fully functional fallback. ChatGPT conver
 - Consultants may skip a question, revisit any question, edit confirmed responses, and review the complete working record.
 - Product identity, owner, purpose, and status remain directly editable.
 - Audit and interview workflow statuses remain directly editable.
-- The ChatGPT brief identifies the engagement, record type, record ID, next guided question, confirmation rule, and sanitized-data boundary.
+- The conversation brief identifies the engagement, record type, record ID, next guided question, confirmation rule, and sanitized-data boundary.
 - Guided responses are rejected when they contain controlled-information indicators covered by the engagement guardrail.
 - Product, audit, and interview question sets remain distinct typed workflows.
 - The two Mission Product assessments preserve every authoritative section, prompt, checklist, rating, ranking, and matrix field from their source documents.
@@ -21,15 +21,16 @@ The native interface is the immediate, fully functional fallback. ChatGPT conver
 
 ## MCP tool contract
 
-`lib/operational-ai/mcp-tools.ts` defines seven focused operations:
+`lib/operational-ai/mcp-tools.ts` defines seven focused domain operations. The hosted server adds `list_available_engagements` so a newly connected assistant can discover only the organizations and engagements already assigned to the signed-in consultant:
 
-1. `list_engagement_records`
-2. `get_guided_record`
-3. `save_guided_response`
-4. `list_assessment_instruments`
-5. `get_assessment_instrument`
-6. `start_assessment_administration`
-7. `save_assessment_response`
+1. `list_available_engagements`
+2. `list_engagement_records`
+3. `get_guided_record`
+4. `save_guided_response`
+5. `list_assessment_instruments`
+6. `get_assessment_instrument`
+7. `start_assessment_administration`
+8. `save_assessment_response`
 
 The write operation requires `confirmed: true`. The contract never authorizes the model to infer an answer, silently summarize a response, promote evidence into diagnosis, or bypass the tenant/role boundary.
 
@@ -38,18 +39,20 @@ This follows OpenAI's guidance to build focused tools around user goals, provide
 - [Build an MCP server](https://developers.openai.com/plugins/build/mcp-server)
 - [Define tools](https://developers.openai.com/plugins/plan/tools)
 
-## Hosted activation gate
+## Hosted authorization boundary
 
-The tool contract is implemented, but it is not exposed as an unauthenticated public endpoint. A production ChatGPT connection still requires:
+The remote MCP is served at `/mcp` and publishes OAuth 2.1 authorization-server and protected-resource discovery metadata. Supabase Auth is the authorization server and the Consulting OS is the protected resource.
 
-- an approved public HTTPS MCP endpoint;
-- OAuth/resource-server metadata;
-- bearer-token validation;
-- consultant-role and engagement-scope enforcement;
-- tenant-aware persistence instead of fixture storage;
-- production audit logging and idempotency for writes.
+- Users never copy an API key or bearer token.
+- A connection must complete authorization-code flow with PKCE and explicit Consulting OS consent.
+- Ordinary web-session tokens are rejected; the MCP requires an OAuth-issued token containing a client ID.
+- The token is resolved to the existing Consultant identity and every repository call continues through row-level security.
+- Organization and engagement assignment are checked again for every tool call.
+- Writes require `confirmed: true`; the model may not infer or silently rewrite an answer.
+- MCP audit rows contain the client ID, tool name, organization, engagement, time, and success state only. Prompts, arguments, answers, and results are not copied into the audit table.
+- Connections may be reviewed and revoked from Consultant Settings.
 
-Until that infrastructure checkpoint is completed, the in-product guided workspace and copied ChatGPT brief provide the same question sequence without implying that a live MCP write occurred.
+Production activation and provider verification are governed by `OAUTH-MCP-OPERATIONS.md`.
 
 ## Login boundary
 
