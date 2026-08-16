@@ -32,6 +32,17 @@ Live HTTP checks establish routing behavior only. Vercel dashboard configuration
 
 The Ministry and Consulting units are in separate repositories. Do not create a cross-repository runtime or build dependency. Do not reuse the Ministry `.vercel/project.json` for Consulting or Entry.
 
+## Supabase boundary
+
+- Ministry and Consulting share one hosted Supabase project while retaining separate schema and migration ownership.
+- Ministry owns its existing `public` domain surface.
+- Consulting owns `consulting_os`, `consulting_security`, `consulting_private`, and its private storage bucket and policies.
+- Personal remains on a separate Supabase project.
+- Client scale is tenant scale: every consulting client/ministry is isolated by organization membership, composite tenant keys, RLS, visibility rules, and negative cross-tenant tests. A new client does not require a new Supabase project.
+- Shared Auth identity does not imply shared product authorization.
+- Consulting's local `supabase/config.toml` is never pushed wholesale to the hosted project. Hosted API schemas and redirect allowlists are managed as an explicit union of Ministry and Consulting requirements.
+- Cross-product provisioning or direct Consulting writes into Ministry-owned tables require a future shared-interface ADR and explicit consent, audit, idempotency, and rollback design.
+
 ## Origin-sensitive dependency inventory
 
 Before any domain reassignment, create an owner-verified inventory covering:
@@ -60,7 +71,7 @@ No inventory item is presumed safe merely because an HTTP redirect exists.
 
 1. Build Consulting and Entry in their approved source boundaries.
 2. Create separate Vercel projects only with explicit production-infrastructure approval.
-3. Establish previews and product-specific environment schemas without importing another product's secrets.
+3. Establish previews and product-specific environment schemas. Consulting may use the shared Supabase URL and publishable key, but privileged secrets remain server-only and product deployments remain independently controlled.
 4. Prove independent install, build, test, rollback, and deployment for all release units.
 
 ### Gate 2 — Ministry subdomain shadow launch
