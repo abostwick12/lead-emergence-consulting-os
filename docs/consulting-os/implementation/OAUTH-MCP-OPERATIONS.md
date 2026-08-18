@@ -2,13 +2,22 @@
 
 ## Purpose
 
-Consulting OS exposes one remote MCP endpoint for ChatGPT, Claude, Microsoft Copilot Studio, and GitHub Copilot. A consultant copies one address, signs in with the same Consulting OS account used for the portal, reviews a plain-language consent screen, and approves the connection. No user-managed API keys or separate MCP passwords are used.
+Consulting OS exposes two remote MCP endpoints for ChatGPT, Claude, Microsoft Copilot Studio, GitHub Copilot, and compatible hosts. The AI host owns the conversation; Lead Emergence owns authorization, engagement state, consulting records, and continuity. No user-managed API keys or separate MCP passwords are used.
 
-The production endpoint is:
+The production endpoints are:
 
-`https://consulting.leademergence.com/mcp`
+| Surface | Endpoint | Authorized user |
+| --- | --- | --- |
+| Consultant MCP | `https://consulting.leademergence.com/mcp` | Assigned Lead Emergence consultant |
+| Client MCP | `https://consulting.leademergence.com/mcp/client` | Active client organization and engagement participant |
 
 `APP_ORIGIN`, the Supabase Auth site URL, redirect allow-list entries, and provider setup must all use this same canonical origin. A generated Vercel deployment URL is for diagnostics only and must not be distributed as the normal MCP address.
+
+## Client workspace continuity
+
+The persistent unit is the Lead Emergence **Engagement**, not an MCP session, AI-host conversation, or vendor-native project. A client may start in one host and later reconnect from another host: `open_workspace` resolves the authenticated person, active organization membership, active engagement membership, explicitly assigned guided work, and confirmed responses again from Consulting OS.
+
+The Client MCP does not create organizations, engagements, memberships, assessments, or native ChatGPT/Claude projects. It returns `selection_required` rather than selecting arbitrarily when multiple active engagements are available. Its initial tool surface is limited to opening a workspace, listing assigned engagements/work, reading an explicitly assigned audit or interview, and saving an explicitly confirmed response. It never exposes consultant-private records or consultant-only administration tools.
 
 ## Verified activation status — 2026-08-16
 
@@ -48,6 +57,15 @@ No OAuth client secret is stored in Vercel. Supported assistants register or dis
 
 Disconnecting an assistant revokes its Supabase OAuth grant. The consultant can reconnect later through the same provider flow.
 
+## Client setup
+
+1. The consultant creates the client account invitation and engagement membership through Consulting OS.
+2. The client signs in, then adds the Client MCP endpoint to a supported AI host.
+3. The client completes the same OAuth consent flow.
+4. The host calls `open_workspace` to resolve the authorized engagement and the next assigned consulting action.
+
+Revoking organization membership, engagement membership, or the OAuth grant blocks later access. An MCP connection does not create client access or broaden it.
+
 ## Provider notes
 
 | Provider | User entry | Expected flow |
@@ -63,7 +81,7 @@ Provider menu labels change over time; the secure server address and OAuth disco
 
 - Only sanitized, unclassified, non-CUI, non-operationally-sensitive information may be used.
 - If restricted information is introduced, stop the workflow and validate hosting requirements before continuing.
-- OAuth does not broaden access. Existing Consultant assignment, organization boundary, engagement boundary, role checks, and database row-level security remain authoritative.
+- OAuth does not broaden access. Existing Consultant assignment or Client membership, organization boundary, engagement boundary, role checks, and database row-level security remain authoritative.
 - Private coaching information cannot be promoted into organizational evidence by an AI tool.
 - Assessment responses remain evidence, not diagnosis.
 - The assistant may read only the focused records exposed by the MCP tools.
@@ -79,7 +97,7 @@ Before declaring the MCP available:
 4. A normal Consulting web-session token is rejected because it has no OAuth client ID.
 5. An OAuth token can initialize MCP and list tools.
 6. A consultant can connect and revoke one test client.
-7. Cross-organization, unassigned-engagement, and Client-role requests fail.
+7. Cross-organization, unassigned-engagement, and consultant-private retrieval attempts fail.
 8. A confirmed guided response persists and can be read back through both MCP and the native workspace.
 9. The audit row contains no prompt, arguments, response, or result content.
 10. ChatGPT, Claude, Microsoft Copilot Studio, and GitHub Copilot each complete one live connection test, subject to the account's administrator policy.

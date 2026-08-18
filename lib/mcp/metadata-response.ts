@@ -1,4 +1,4 @@
-import { protectedResourceMetadata, supabaseAuthIssuer, supabaseAuthorizationServerMetadataUrl } from './configuration';
+import { MCP_PATH, protectedResourceMetadata, supabaseAuthIssuer, supabaseAuthorizationServerMetadataUrl } from './configuration';
 import { getSupabasePublicConfig, isFixtureMode } from '@/lib/supabase/config';
 
 const metadataHeaders = {
@@ -7,10 +7,10 @@ const metadataHeaders = {
   'Content-Type': 'application/json',
 };
 
-export function protectedResourceResponse(request: Request) {
+export function protectedResourceResponse(request: Request, path = MCP_PATH) {
   if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: { ...metadataHeaders, Allow: 'GET, OPTIONS' } });
   if (request.method !== 'GET') return new Response('Method not allowed.', { status: 405, headers: { ...metadataHeaders, Allow: 'GET, OPTIONS' } });
-  return Response.json(protectedResourceMetadata(new URL(request.url).origin), { headers: metadataHeaders });
+  return Response.json(protectedResourceMetadata(new URL(request.url).origin, path), { headers: metadataHeaders });
 }
 
 export async function authorizationServerResponse(request: Request) {

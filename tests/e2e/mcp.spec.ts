@@ -40,6 +40,15 @@ test('MCP discovery and bearer challenge are standards-shaped', async ({ request
   });
   expect(unauthorized.status()).toBe(401);
   expect(unauthorized.headers()['www-authenticate']).toContain('oauth-protected-resource/mcp');
+
+  const clientMetadata = await request.get('/.well-known/oauth-protected-resource/mcp/client');
+  expect(clientMetadata.ok()).toBeTruthy();
+  expect(await clientMetadata.json()).toMatchObject({ resource: 'http://localhost:3200/mcp/client' });
+  const clientUnauthorized = await request.post('/mcp/client', {
+    data: { jsonrpc: '2.0', id: 3, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'e2e', version: '1.0.0' } } },
+  });
+  expect(clientUnauthorized.status()).toBe(401);
+  expect(clientUnauthorized.headers()['www-authenticate']).toContain('oauth-protected-resource/mcp/client');
 });
 
 test('authorized OAuth token can initialize the MCP server and list tools', async ({ request }) => {
@@ -58,6 +67,23 @@ test('authorized OAuth token can initialize the MCP server and list tools', asyn
   expect(toolBody.result.tools.map((tool: { name: string }) => tool.name)).toEqual(expect.arrayContaining([
     'list_available_engagements', 'get_guided_record', 'save_guided_response', 'get_assessment_instrument', 'save_assessment_response',
   ]));
+});
+
+test('authorized client OAuth token initializes the dedicated client MCP with participant-safe tools', async ({ request }) => {
+  const headers = { Authorization: 'Bearer fixture-client-oauth-token', Accept: 'application/json, text/event-stream' };
+  const initialized = await request.post('/mcp/client', {
+    headers,
+    data: { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'client-e2e', version: '1.0.0' } } },
+  });
+  expect(initialized.ok()).toBeTruthy();
+  const initializedBody = await readMcpResponse(initialized);
+  expect(initializedBody.result.serverInfo.name).toBe('Lead Emergence Client Workspace');
+  const tools = await request.post('/mcp/client', { headers, data: { jsonrpc: '2.0', id: 2, method: 'tools/list', params: {} } });
+  const toolBody = await readMcpResponse(tools);
+  const names = toolBody.result.tools.map((tool: { name: string }) => tool.name);
+  expect(names).toEqual(expect.arrayContaining(['open_workspace', 'list_my_engagements', 'list_my_guided_records', 'get_guided_record', 'save_confirmed_response']));
+  expect(names).not.toContain('start_assessment_administration');
+  expect(names).not.toContain('list_engagement_records');
 });
 
 test('OAuth consent clearly states access and handling boundaries', async ({ page }) => {

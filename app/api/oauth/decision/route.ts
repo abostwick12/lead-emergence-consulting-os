@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   if (suppliedOrigin && suppliedOrigin !== expectedOrigin) return NextResponse.json({ error: 'Invalid request origin.' }, { status: 403 });
   if (isFixtureMode()) return NextResponse.redirect(new URL('/consultant/settings?connection=reviewed', request.url), 303);
   const session = await getPortalSession();
-  if (!session || session.role !== 'consultant') return NextResponse.json({ error: 'Consultant authorization is required.' }, { status: 403 });
+  if (!session || (session.role !== 'consultant' && session.role !== 'client')) return NextResponse.json({ error: 'Consulting OS authorization is required.' }, { status: 403 });
 
   const formData = await request.formData();
   const authorizationId = formData.get('authorization_id');

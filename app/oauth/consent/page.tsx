@@ -20,8 +20,8 @@ export default async function OAuthConsentPage({ searchParams }: { searchParams:
     redirect(`/login?returnTo=${encodeURIComponent(returnTo)}`);
   }
   const session = await getPortalSession();
-  if (!session || session.role !== 'consultant') {
-    return <ConsentProblem title="Consultant access required" copy="This connection can only be approved by a user with an active Consulting OS consultant assignment." />;
+  if (!session || (session.role !== 'consultant' && session.role !== 'client')) {
+    return <ConsentProblem title="Consulting OS access required" copy="This connection requires an active Lead Emergence consultant assignment or client engagement membership." />;
   }
 
   const { data, error } = await supabase.auth.oauth.getAuthorizationDetails(authorizationId);
@@ -40,7 +40,7 @@ function ConsentView({ authorizationId, clientName, redirectUri, scope }: { auth
         <div className="oauth-consent-icon"><Bot aria-hidden="true" /></div>
         <p className="eyebrow">SECURE AI CONNECTION</p>
         <h1 id="oauth-consent-heading">Connect {clientName}?</h1>
-        <p className="oauth-consent-copy">This allows the AI assistant to work with the Consulting OS records that your consultant account is already authorized to access.</p>
+        <p className="oauth-consent-copy">This allows the AI assistant to work with the Lead Emergence records your account is already authorized to access.</p>
 
         <div className="oauth-client-identity">
           <span><strong>{clientName}</strong><small>{callbackHost || 'Callback address unavailable'}</small></span>
@@ -50,7 +50,7 @@ function ConsentView({ authorizationId, clientName, redirectUri, scope }: { auth
         <div className="oauth-permissions">
           <h2>This connection can</h2>
           <ul>
-            <li><ShieldCheck aria-hidden="true" /><span><strong>Read assigned engagement records</strong><small>Only organizations and engagements already assigned to you.</small></span></li>
+            <li><ShieldCheck aria-hidden="true" /><span><strong>Read assigned engagement records</strong><small>Only organizations, engagements, and records already authorized for you.</small></span></li>
             <li><CheckCircle2 aria-hidden="true" /><span><strong>Save responses you explicitly confirm</strong><small>Write tools require confirmation and keep the existing audit trail.</small></span></li>
             <li><LockKeyhole aria-hidden="true" /><span><strong>Respect privacy and tenant boundaries</strong><small>Private coaching, other clients, and unassigned engagements remain unavailable.</small></span></li>
           </ul>
@@ -71,7 +71,7 @@ function ConsentView({ authorizationId, clientName, redirectUri, scope }: { auth
 }
 
 function ConsentProblem({ title, copy }: { title: string; copy: string }) {
-  return <main className="oauth-consent-page"><section className="oauth-consent-card"><div className="oauth-consent-icon"><LockKeyhole aria-hidden="true" /></div><p className="eyebrow">SECURE AI CONNECTION</p><h1>{title}</h1><p className="oauth-consent-copy">{copy}</p><Link className="primary-button" href="/consultant/settings">Return to Settings <ArrowRight aria-hidden="true" /></Link></section></main>;
+  return <main className="oauth-consent-page"><section className="oauth-consent-card"><div className="oauth-consent-icon"><LockKeyhole aria-hidden="true" /></div><p className="eyebrow">SECURE AI CONNECTION</p><h1>{title}</h1><p className="oauth-consent-copy">{copy}</p><Link className="primary-button" href="/login">Return to sign in <ArrowRight aria-hidden="true" /></Link></section></main>;
 }
 
 function safeHostname(value: string) {
