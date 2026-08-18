@@ -3,7 +3,7 @@ import 'server-only';
 import { OAuthError, OAuthErrorCode, type AuthInfo, type OAuthTokenVerifier } from '@modelcontextprotocol/server';
 import { createClient } from '@supabase/supabase-js';
 import { isFixtureMode, requireSupabasePublicConfig } from '@/lib/supabase/config';
-import { mcpResourceUrl, supabaseAuthIssuer } from './configuration';
+import { MCP_PATH, mcpResourceUrl, supabaseAuthIssuer } from './configuration';
 
 type JwtClaims = Record<string, unknown> & {
   sub?: string;
@@ -16,16 +16,16 @@ type JwtClaims = Record<string, unknown> & {
 };
 
 export class SupabaseMcpTokenVerifier implements OAuthTokenVerifier {
-  constructor(private readonly requestOrigin?: string) {}
+  constructor(private readonly requestOrigin?: string, private readonly resourcePath = MCP_PATH) {}
 
   async verifyAccessToken(token: string): Promise<AuthInfo> {
-    if (isFixtureMode() && token === 'fixture-consultant-oauth-token') {
+    if (isFixtureMode() && (token === 'fixture-consultant-oauth-token' || token === 'fixture-client-oauth-token')) {
       return {
         token,
         clientId: 'fixture-mcp-client',
         scopes: ['openid', 'email', 'profile'],
         expiresAt: Math.floor(Date.now() / 1000) + 3600,
-        resource: mcpResourceUrl(this.requestOrigin),
+        resource: mcpResourceUrl(this.requestOrigin, this.resourcePath),
         extra: { userId: 'fixture-consultant-user' },
       };
     }
@@ -48,7 +48,7 @@ export class SupabaseMcpTokenVerifier implements OAuthTokenVerifier {
       throw invalidToken('An OAuth-issued access token is required.');
     }
 
-    const expectedResource = mcpResourceUrl(this.requestOrigin);
+    const expectedResource = mcpResourceUrl(this.requestOrigin, this.resourcePath);
     if (typeof claims.resource === 'string' && stripHash(claims.resource) !== stripHash(expectedResource.toString())) {
       throw invalidToken('The access token was issued for a different protected resource.');
     }

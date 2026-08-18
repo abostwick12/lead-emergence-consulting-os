@@ -4,14 +4,15 @@ import { resolveTrustedOrigin } from '@/lib/http/origin';
 import { getSupabasePublicConfig, isFixtureMode, requireSupabasePublicConfig } from '@/lib/supabase/config';
 
 export const MCP_PATH = '/mcp';
+export const CLIENT_MCP_PATH = '/mcp/client';
 export const MCP_OAUTH_SCOPES = ['openid', 'email', 'profile'] as const;
 
-export function mcpResourceUrl(requestOrigin?: string) {
-  return new URL(MCP_PATH, resolveTrustedOrigin(requestOrigin));
+export function mcpResourceUrl(requestOrigin?: string, path = MCP_PATH) {
+  return new URL(path, resolveTrustedOrigin(requestOrigin));
 }
 
-export function mcpResourceMetadataUrl(requestOrigin?: string) {
-  return new URL('/.well-known/oauth-protected-resource/mcp', resolveTrustedOrigin(requestOrigin));
+export function mcpResourceMetadataUrl(requestOrigin?: string, path = MCP_PATH) {
+  return new URL(`/.well-known/oauth-protected-resource${path}`, resolveTrustedOrigin(requestOrigin));
 }
 
 export function supabaseAuthIssuer() {
@@ -25,14 +26,14 @@ export function supabaseAuthorizationServerMetadataUrl() {
   return new URL('/.well-known/oauth-authorization-server/auth/v1', `${url}/`);
 }
 
-export function protectedResourceMetadata(requestOrigin?: string) {
+export function protectedResourceMetadata(requestOrigin?: string, path = MCP_PATH) {
   return {
-    resource: mcpResourceUrl(requestOrigin).toString(),
-    resource_name: 'Lead Emergence Consulting OS',
+    resource: mcpResourceUrl(requestOrigin, path).toString(),
+    resource_name: path === CLIENT_MCP_PATH ? 'Lead Emergence Client Workspace' : 'Lead Emergence Consulting OS',
     authorization_servers: [supabaseAuthIssuer()],
     bearer_methods_supported: ['header'],
     scopes_supported: [...MCP_OAUTH_SCOPES],
-    resource_documentation: new URL('/consultant/settings', resolveTrustedOrigin(requestOrigin)).toString(),
+    resource_documentation: new URL(path === CLIENT_MCP_PATH ? '/client/settings' : '/consultant/settings', resolveTrustedOrigin(requestOrigin)).toString(),
   };
 }
 

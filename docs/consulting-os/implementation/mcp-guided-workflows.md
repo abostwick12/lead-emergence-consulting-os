@@ -2,7 +2,7 @@
 
 ## Decision
 
-Products, written audits, interviews, and versioned Mission Product assessments use guided contracts across the native Consulting OS interface and the OAuth-protected remote MCP used by ChatGPT, Claude, Microsoft Copilot, and GitHub Copilot.
+Products, written audits, interviews, and versioned Mission Product assessments use guided contracts across the native Consulting OS interface and OAuth-protected remote MCP surfaces used by ChatGPT, Claude, Microsoft Copilot, and GitHub Copilot.
 
 The native interface remains a fully functional fallback. Conversation mode in a supported AI assistant is the preferred facilitation surface when the client permits a custom remote MCP connection.
 
@@ -41,13 +41,14 @@ This follows OpenAI's guidance to build focused tools around user goals, provide
 
 ## Hosted authorization boundary
 
-The remote MCP is served at `/mcp` and publishes OAuth 2.1 authorization-server and protected-resource discovery metadata. Supabase Auth is the authorization server and the Consulting OS is the protected resource.
+The Consultant MCP is served at `/mcp`; the Client MCP is served at `/mcp/client`. Each publishes its own OAuth protected-resource metadata. Supabase Auth is the authorization server and Consulting OS is the protected resource.
 
 - Users never copy an API key or bearer token.
 - A connection must complete authorization-code flow with PKCE and explicit Consulting OS consent.
 - Ordinary web-session tokens are rejected; the MCP requires an OAuth-issued token containing a client ID.
-- The token is resolved to the existing Consultant identity and every repository call continues through row-level security.
+- Consultant tokens resolve through existing Consultant assignments. Client tokens resolve through active organization and engagement memberships; client guided work additionally requires that the authenticated person is the named audit respondent or interview participant.
 - Organization and engagement assignment are checked again for every tool call.
+- Client responses persist as confirmed responses. They remain responses/evidence and never create an insight, diagnosis, decision, causation claim, or stage transition.
 - Writes require `confirmed: true`; the model may not infer or silently rewrite an answer.
 - MCP audit rows contain the client ID, tool name, organization, engagement, time, and success state only. Prompts, arguments, answers, and results are not copied into the audit table.
 - Connections may be reviewed and revoked from Consultant Settings.
