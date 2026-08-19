@@ -191,9 +191,6 @@ export function LandingExperience() {
 
       <section className={styles.brandReveal} aria-labelledby="brand-title">
         <div className={styles.brandPanel}>
-          <div className={styles.brandSymbolWrap}>
-            <Image className={styles.brandSymbol} width={1024} height={1024} src="/brand/roadmap/mock-stage-06-new-reality-v10.png" alt="Lead Emergence symbol" unoptimized />
-          </div>
           <div className={styles.brandStatement}>
             <p className={styles.eyebrow}>ONE CONTINUOUS PRACTICE</p>
             <h2 id="brand-title"><i>Lead</i> Emergence</h2>
@@ -205,21 +202,8 @@ export function LandingExperience() {
       <section className={styles.productEntry} id="products" aria-labelledby="products-title">
         <div className={styles.entryFrame}>
           <header className={styles.entryIntro}>
-            <Image
-              alt=""
-              aria-hidden="true"
-              className={styles.entryIntroArtwork}
-              fill
-              priority
-              sizes="(max-width: 720px) calc(100vw - 40px), 529px"
-              src="/brand/roadmap/mock-product-intro-v10.png"
-              unoptimized
-            />
-            <div className={styles.entryIntroSemantic}>
-              <p>TWO ENVIRONMENTS. ONE CONVICTION.</p>
-              <h2 id="products-title">Where are you leading?</h2>
-              <p>Choose the environment that fits your role and calling.</p>
-            </div>
+            <h2 id="products-title">Choose your workspace</h2>
+            <p>Choose the environment that fits your role and calling.</p>
           </header>
 
           <article className={`${styles.productCard} ${styles.ministryCard}`}>

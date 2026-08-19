@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-async function enter(page: Page, role: 'consultant' | 'client', returnTo?: string) {
+async function enter(page: Page, role: 'consultant' | 'client' | 'outsider', returnTo?: string) {
   await page.goto(`/api/test-session?role=${role}&returnTo=${encodeURIComponent(returnTo ?? `/${role}`)}`);
 }
 
@@ -71,6 +71,40 @@ test('unauthenticated portal request returns to secure entry', async ({ page }) 
   await page.goto('/consultant');
   await expect(page).toHaveURL(/\/login\?returnTo=/);
   await expect(page.getByText('Local review access')).toBeVisible();
+  await page.waitForTimeout(250);
+  await expect(page).toHaveURL(/\/login\?returnTo=/);
+});
+
+test('an authenticated outsider is denied consultant access without returning to login', async ({ page }) => {
+  await enter(page, 'outsider', '/consultant');
+  await expect(page).toHaveURL(/\/consultant$/);
+  await expect(page.getByRole('heading', { name: 'This record or workspace is not available.' })).toBeVisible();
+  await expect(page.getByText('Local review access')).toHaveCount(0);
+  await page.waitForTimeout(250);
+  await expect(page).toHaveURL(/\/consultant$/);
+});
+
+test('an authenticated outsider is denied client access without returning to login', async ({ page }) => {
+  await enter(page, 'outsider', '/client');
+  await expect(page).toHaveURL(/\/client$/);
+  await expect(page.getByRole('heading', { name: 'This record or workspace is not available.' })).toBeVisible();
+  await expect(page.getByText('Local review access')).toHaveCount(0);
+  await page.waitForTimeout(250);
+  await expect(page).toHaveURL(/\/client$/);
+});
+
+test('an authenticated consultant reuses the existing session from the canonical login route', async ({ page }) => {
+  await enter(page, 'consultant', '/login?returnTo=%2Fconsultant');
+  await expect(page).toHaveURL(/\/consultant$/);
+  await expect(page.getByTestId('current-organization')).toHaveText('Northstar Community Works');
+  await expect(page.getByText('Local review access')).toHaveCount(0);
+});
+
+test('an authenticated client reuses the existing session from the canonical login route', async ({ page }) => {
+  await enter(page, 'client', '/login?returnTo=%2Fclient');
+  await expect(page).toHaveURL(/\/client$/);
+  await expect(page.getByRole('heading', { name: 'What needs your attention' })).toBeVisible();
+  await expect(page.getByText('Local review access')).toHaveCount(0);
 });
 
 test.describe.serial('Phase 5 meeting and coaching cycles', () => {

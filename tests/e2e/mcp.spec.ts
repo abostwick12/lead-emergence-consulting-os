@@ -87,11 +87,31 @@ test('authorized client OAuth token initializes the dedicated client MCP with pa
 });
 
 test('OAuth consent clearly states access and handling boundaries', async ({ page }) => {
-  await page.goto('/oauth/consent?authorization_id=fixture-review');
+  await page.goto('/api/test-session?role=consultant&returnTo=%2Foauth%2Fconsent%3Fauthorization_id%3Dfixture-review');
+  await expect(page).toHaveURL(/\/oauth\/consent\?authorization_id=fixture-review$/);
   await expect(page.getByRole('heading', { name: 'Connect Local MCP review client?' })).toBeVisible();
   await expect(page.getByText('Sanitized information only.')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Approve connection' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Cancel' })).toBeVisible();
+});
+
+test('unauthenticated OAuth consent preserves the exact safe nested return path through login', async ({ page }) => {
+  await page.goto('/oauth/consent?authorization_id=fixture-review');
+  await expect(page).toHaveURL(/\/login\?returnTo=%2Foauth%2Fconsent%3Fauthorization_id%3Dfixture-review$/);
+  await expect(page.getByText('Local review access')).toBeVisible();
+  await page.getByRole('link', { name: /Enter consultant portal/ }).click();
+  await expect(page).toHaveURL(/\/oauth\/consent\?authorization_id=fixture-review$/);
+  await expect(page.getByRole('heading', { name: 'Connect Local MCP review client?' })).toBeVisible();
+});
+
+test('OAuth approval and denial return to the fixture provider callback', async ({ page }) => {
+  await page.goto('/api/test-session?role=consultant&returnTo=%2Foauth%2Fconsent%3Fauthorization_id%3Dfixture-review');
+  await page.getByRole('button', { name: 'Approve connection' }).click();
+  await expect(page).toHaveURL(/\/oauth\/callback\?state=fixture-review&code=fixture-authorization-code$/);
+
+  await page.goto('/oauth/consent?authorization_id=fixture-review');
+  await page.getByRole('button', { name: 'Cancel' }).click();
+  await expect(page).toHaveURL(/\/oauth\/callback\?state=fixture-review&error=access_denied$/);
 });
 
 test('OAuth decisions reject cross-site form submissions', async ({ request }) => {

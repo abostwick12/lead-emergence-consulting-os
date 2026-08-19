@@ -19,9 +19,9 @@ export function GET(request: NextRequest) {
     resetAlignmentFixtures(); resetMeetingFixtures(); resetMeridianAiFixtures(); resetOutcomeFixtures(); resetSignalsFixtures(); resetOnboardingFixtures(); resetDiscoveryFixtures(); resetAccessFixtures(); resetHandoffFixtures(); resetOperationalFixtures();
   }
   const role = request.nextUrl.searchParams.get('role');
-  if (role !== 'consultant' && role !== 'client') return new NextResponse('Invalid synthetic role', { status: 400 });
+  if (role !== 'consultant' && role !== 'client' && role !== 'outsider') return new NextResponse('Invalid synthetic role', { status: 400 });
   const returnTo = safeReturnPath(request.nextUrl.searchParams.get('returnTo'));
-  const response = NextResponse.redirect(new URL(returnTo === '/' ? `/${role}` : returnTo, request.url));
+  const response = NextResponse.redirect(new URL(returnTo === '/' ? role === 'outsider' ? '/' : `/${role}` : returnTo, request.url));
   response.cookies.set(fixtureCookieName(), role, { httpOnly: true, sameSite: 'lax', path: '/', secure: false });
   return response;
 }
