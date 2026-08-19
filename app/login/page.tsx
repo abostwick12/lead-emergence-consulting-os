@@ -1,15 +1,20 @@
 import Link from 'next/link';
 import { ArrowRight, GitBranch, LockKeyhole, ScanSearch } from 'lucide-react';
 import { signIn } from './actions';
+import { getPortalSession, hasAuthenticatedIdentity } from '@/lib/portal/context';
 import { isFixtureMode } from '@/lib/supabase/config';
 import { safeReturnPath } from '@/lib/portal/navigation';
 import { safeLoginError } from '@/lib/portal/login-messages';
+import { notFound, redirect } from 'next/navigation';
 
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ error?: string; returnTo?: string }> }) {
   const params = await searchParams;
   const returnTo = safeReturnPath(params.returnTo ?? '/');
   const error = safeLoginError(params.error);
   const fixture = isFixtureMode();
+  const portalSession = await getPortalSession();
+  if (portalSession?.role === 'consultant' || portalSession?.role === 'client') redirect(returnTo);
+  if (await hasAuthenticatedIdentity()) notFound();
   const selectedRole = returnTo === '/consultant' || returnTo.startsWith('/consultant/') ? 'consultant' : returnTo === '/client' || returnTo.startsWith('/client/') ? 'client' : null;
   return (
     <main className="login-page">

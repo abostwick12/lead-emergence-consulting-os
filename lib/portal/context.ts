@@ -103,9 +103,27 @@ export const getPortalSession = cache(async (): Promise<PortalSession | null> =>
   };
 });
 
+export const hasAuthenticatedIdentity = cache(async () => {
+  if (isFixtureMode()) {
+    const value = (await cookies()).get(FIXTURE_COOKIE)?.value;
+    return value === 'consultant' || value === 'client' || value === 'outsider';
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.auth.getClaims();
+  if (error) {
+    if (isAuthSessionMissingError(error) || error instanceof AuthInvalidJwtError) return false;
+    throw dataAccessError('portal.session.identity', error, 'Authentication is temporarily unavailable.');
+  }
+  return typeof data?.claims?.sub === 'string';
+});
+
 export async function requirePortalRole(role: Exclude<PortalRole, 'outsider'>) {
   const session = await getPortalSession();
-  if (!session) redirect(`/login?returnTo=${encodeURIComponent(role === 'consultant' ? '/consultant' : '/client')}`);
+  if (!session) {
+    if (await hasAuthenticatedIdentity()) notFound();
+    redirect(`/login?returnTo=${encodeURIComponent(role === 'consultant' ? '/consultant' : '/client')}`);
+  }
   if (session.role !== role) notFound();
   return session;
 }

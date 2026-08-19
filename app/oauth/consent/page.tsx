@@ -11,12 +11,16 @@ export const dynamic = 'force-dynamic';
 export default async function OAuthConsentPage({ searchParams }: { searchParams: Promise<{ authorization_id?: string }> }) {
   const authorizationId = (await searchParams).authorization_id;
   if (!authorizationId) return <ConsentProblem title="Connection request missing" copy="Return to your AI assistant and start the connection again." />;
-  if (isFixtureMode()) return <ConsentView authorizationId={authorizationId} clientName="Local MCP review client" redirectUri="http://localhost:3200/oauth/callback" scope="openid email profile" />;
+  const returnTo = safeReturnPath(`/oauth/consent?authorization_id=${encodeURIComponent(authorizationId)}`);
+  if (isFixtureMode()) {
+    const session = await getPortalSession();
+    if (!session || (session.role !== 'consultant' && session.role !== 'client')) redirect(`/login?returnTo=${encodeURIComponent(returnTo)}`);
+    return <ConsentView authorizationId={authorizationId} clientName="Local MCP review client" redirectUri="http://localhost:3200/oauth/callback" scope="openid email profile" />;
+  }
 
   const supabase = await createSupabaseServerClient();
   const { data: userData } = await supabase.auth.getUser();
   if (!userData.user) {
-    const returnTo = safeReturnPath(`/oauth/consent?authorization_id=${encodeURIComponent(authorizationId)}`);
     redirect(`/login?returnTo=${encodeURIComponent(returnTo)}`);
   }
   const session = await getPortalSession();
