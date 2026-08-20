@@ -6,6 +6,7 @@ import { PortalNavigation, type PortalNavItem } from './portal-navigation';
 const consultantNav: PortalNavItem[] = [
   { href: '/consultant', label: 'Home', icon: 'home' },
   { href: '/consultant/clients', label: 'Clients', icon: 'clients' },
+  { href: '/consultant/prospects', label: 'Prospects', icon: 'clients' },
   { href: '/consultant/meetings', label: 'Meetings', icon: 'meetings' },
   { href: '/consultant/resources', label: 'Resources', icon: 'resources' },
   { href: '/consultant/settings', label: 'Settings', icon: 'settings' },
@@ -35,6 +36,7 @@ export function PortalShell({ session, children }: { session: PortalSession; chi
           <span className="avatar">{session.displayName.split(' ').map((part) => part[0]).join('')}</span>
           <div><strong>{session.displayName}</strong><small>{session.role === 'consultant' ? 'Consultant' : 'Organization member'}</small></div>
         </div>
+        {session.availableContexts.length > 1 && <Link className="text-button" href="/consulting-context">Switch Consulting context</Link>}
         <form action="/auth/sign-out" method="post"><button className="text-button" type="submit"><LogOut aria-hidden="true" /> Sign out</button></form>
       </aside>
       <div className="portal-body">

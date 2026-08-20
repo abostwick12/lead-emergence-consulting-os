@@ -65,6 +65,7 @@ export async function resolveMcpSession(selection: McpEngagementSelection): Prom
     organization,
     engagements: context.engagements.filter((item) => item.organizationId === organization.id),
     engagement,
+    availableContexts: [{ surface: 'consultant', label: 'Consultant work', organizationIds: context.organizations.map((item) => item.id) }],
     fixture: false,
   };
 }
@@ -146,6 +147,7 @@ export async function resolveClientMcpContext(selection: McpEngagementSelection)
       organization,
       engagements: context.engagements.filter((item) => item.organizationId === organization.id),
       engagement: selected,
+      availableContexts: [{ surface: 'client', label: 'Client work', organizationIds: context.organizations.map((item) => item.id) }],
       fixture: false,
     },
   };
