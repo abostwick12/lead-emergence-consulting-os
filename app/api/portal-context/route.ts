@@ -1,11 +1,14 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { apiErrorResponse } from '@/lib/api/responses';
-import { requireApiRole } from '@/lib/api/session';
+import { requireApiSession } from '@/lib/api/session';
+import { portalSurfaceCookieName } from '@/lib/portal/context';
 import { safeReturnPath } from '@/lib/portal/navigation';
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await requireApiRole('consultant');
+    const session = await requireApiSession();
+    const surface = request.nextUrl.searchParams.get('surface');
+    if (surface && !session.availableContexts.some((context) => context.surface === surface)) return new NextResponse('Context not available', { status: 404 });
     const organizationId = request.nextUrl.searchParams.get('organizationId');
     if (!organizationId || !session.organizations.some((item) => item.id === organizationId)) return new NextResponse('Organization not available', { status: 404 });
     const engagementId = request.nextUrl.searchParams.get('engagementId') ?? session.engagements.find((item) => item.organizationId === organizationId)?.id;
@@ -15,6 +18,7 @@ export async function GET(request: NextRequest) {
     const options = { httpOnly: true, sameSite: 'lax' as const, path: '/', secure: process.env.NODE_ENV === 'production' };
     response.cookies.set('le_organization_id', organizationId, options);
     response.cookies.set('le_engagement_id', engagementId, options);
+    if (surface) response.cookies.set(portalSurfaceCookieName(), surface, options);
     return response;
   } catch (error) {
     return apiErrorResponse('api.portalContext', error, 'Portal context could not be updated.');

@@ -12,6 +12,7 @@ import { assertSucceeded, unwrap } from '@/lib/supabase/errors';
 import { dataAccessError } from '@/lib/errors';
 
 const FIXTURE_COOKIE = 'le_fixture_role';
+const PORTAL_SURFACE_COOKIE = 'le_portal_surface';
 
 export const getPortalSession = cache(async (): Promise<PortalSession | null> => {
   if (isFixtureMode()) {
@@ -53,8 +54,14 @@ export const getPortalSession = cache(async (): Promise<PortalSession | null> =>
   const assignments = assignmentsResult.data;
   const memberships = membershipsResult.data;
 
-  const role: PortalRole = assignments?.length ? 'consultant' : memberships?.length ? 'client' : 'outsider';
-  if (role === 'outsider') return null;
+  const availableContexts = [
+    ...(assignments?.length ? [{ surface: 'consultant' as const, label: 'Consultant work', organizationIds: assignments.map((item) => item.organization_id) }] : []),
+    ...(memberships?.length ? [{ surface: 'client' as const, label: 'Client work', organizationIds: memberships.map((item) => item.organization_id) }] : []),
+  ];
+  const requestedSurface = (await cookies()).get(PORTAL_SURFACE_COOKIE)?.value;
+  const role: PortalRole = availableContexts.some((item) => item.surface === requestedSurface)
+    ? requestedSurface as Exclude<PortalRole, 'outsider'>
+    : availableContexts[0]?.surface ?? 'outsider';
   const organizationIds = role === 'consultant'
     ? assignments!.map((item) => item.organization_id)
     : memberships!.map((item) => item.organization_id);
@@ -99,6 +106,7 @@ export const getPortalSession = cache(async (): Promise<PortalSession | null> =>
     organization,
     engagements,
     engagement,
+    availableContexts,
     fixture: false,
   };
 });
@@ -130,4 +138,8 @@ export async function requirePortalRole(role: Exclude<PortalRole, 'outsider'>) {
 
 export function fixtureCookieName() {
   return FIXTURE_COOKIE;
+}
+
+export function portalSurfaceCookieName() {
+  return PORTAL_SURFACE_COOKIE;
 }

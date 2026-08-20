@@ -1,0 +1,34 @@
+import type { ProspectCenterData, ProspectItem, ProspectMutation } from './types';
+
+const iso = '2026-08-19T10:00:00.000Z';
+let prospects: ProspectItem[] = [];
+function event(type: string, detail: string) { return { id: crypto.randomUUID(), occurredAt: new Date().toISOString(), type, detail }; }
+function seed(): ProspectItem {
+  const responses = [
+    ['context','What kind of organization or leadership context are you working in right now?','A growing regional services organization with leaders carrying too many operational decisions.'],
+    ['challenge','What leadership challenge is asking for attention?','We need clearer decision ownership without losing quality or trust.'],
+    ['friction','Where are people, systems, or decisions creating the most friction?','Routine work escalates to executives and teams wait longer than they should.'],
+    ['outcome','What would meaningfully improve in the next 90 days?','Team leaders could make more routine decisions with confidence and clear boundaries.'],
+    ['attempts','What have you already tried?','We have held meetings and written guidance, but the habits did not change.'],
+    ['authority','Who needs to participate in or authorize meaningful change?','The executive team and the leaders responsible for daily operations.'],
+  ].map(([questionKey,prompt,answer]) => ({ questionKey, prompt, answer }));
+  const draft = { id: 'prospect-revision-ai-1', number: 1, origin: 'AI' as const, signals: ['Several responses may indicate that routine decisions are repeatedly returning to executive leaders.', 'The reported friction may reflect unclear decision boundaries rather than a lack of care or effort.', 'Previous guidance may not yet be connected to daily operating practice.'], possibilities: ['Clarify ownership for recurring decisions that currently escalate.', 'Protect senior leadership attention by creating practical decision boundaries.'], firstMove: 'Map the three routine decisions that most often require executive involvement and identify what prevents a decision one level lower.', limitations: 'AI-assisted draft based only on reported prospect input. It is not a diagnosis, validated observation, or causal claim.', createdAt: iso };
+  return { id: 'a1000000-0000-4000-8000-000000000001', firstName: 'Morgan', email: 'morgan@example.test', organizationName: 'Northstar Services', roleTitle: 'Executive Director', status: 'AI_DRAFT_READY', assignedConsultant: 'Alex Morgan', nextFollowUpAt: '2026-08-20T15:00:00.000Z', followUpStatus: 'FOLLOW_UP_DUE', responses, revisions: [draft], deliveryStatus: 'PREVIEW_READY', privateNotes: [], events: [{ id: 'intake', occurredAt: iso, type: 'INTAKE_COMPLETED', detail: 'Consulting intake completed.' }, { id: 'draft', occurredAt: iso, type: 'AI_DRAFT_READY', detail: 'AI-assisted internal draft created for consultant review.' }], conversionStatus: 'NOT_CONVERTED' };
+}
+export function resetProspectFixtures() { prospects = [seed()]; }
+resetProspectFixtures();
+export function fixtureProspectCenter(): ProspectCenterData { return { prospects: structuredClone(prospects) }; }
+export function addFixtureProspect(input: Omit<ProspectItem, 'id' | 'status' | 'assignedConsultant' | 'nextFollowUpAt' | 'followUpStatus' | 'revisions' | 'approvedRevisionId' | 'deliveryStatus' | 'privateNotes' | 'events' | 'conversionStatus'>) {
+  const draft = seed().revisions[0]; const item: ProspectItem = { ...input, id: crypto.randomUUID(), status: 'AI_DRAFT_READY', assignedConsultant: 'Alex Morgan', followUpStatus: 'NOT_CONTACTED', revisions: [{ ...draft, id: crypto.randomUUID(), createdAt: new Date().toISOString() }], deliveryStatus: 'PREVIEW_READY', privateNotes: [], events: [event('INTAKE_COMPLETED','Consulting intake completed.'), event('AI_DRAFT_READY','AI-assisted internal draft created for consultant review.')], conversionStatus: 'NOT_CONVERTED' }; prospects.unshift(item); return structuredClone(item);
+}
+export function mutateFixtureProspect(mutation: ProspectMutation) {
+  const prospect = prospects.find((item) => item.id === mutation.prospectId); if (!prospect) throw new Error('Prospect not found.');
+  if (mutation.action === 'SAVE_REVISION') { const revision = { id: crypto.randomUUID(), number: prospect.revisions.length + 1, origin: 'CONSULTANT' as const, signals: mutation.signals, possibilities: mutation.possibilities, firstMove: mutation.firstMove, limitations: 'Consultant-edited working revision. Prospect input remains reported information, not validated organizational evidence.', createdAt: new Date().toISOString() }; prospect.revisions.push(revision); prospect.status = 'IN_REVIEW'; prospect.events.unshift(event('REVISION_SAVED','Consultant saved an edited 3-2-1 revision.')); }
+  if (mutation.action === 'APPROVE') { if (!prospect.revisions.some((revision) => revision.id === mutation.revisionId)) throw new Error('Revision not found.'); prospect.approvedRevisionId = mutation.revisionId; prospect.status = 'APPROVED'; prospect.events.unshift(event('321_APPROVED','Consultant explicitly approved the selected revision.')); }
+  if (mutation.action === 'PREPARE_DELIVERY') { if (!prospect.approvedRevisionId) throw new Error('Human approval is required before preparing delivery.'); prospect.deliveryStatus = 'READY_TO_SEND'; prospect.events.unshift(event('DELIVERY_PREPARED','Approved 3-2-1 preview prepared. No email has been sent.')); }
+  if (mutation.action === 'MARK_SENT') { if (!prospect.approvedRevisionId || prospect.deliveryStatus !== 'READY_TO_SEND') throw new Error('An approved delivery preview is required before recording delivery.'); prospect.deliveryStatus = 'SENT'; prospect.status = 'SENT'; prospect.events.unshift(event('321_SENT','Delivery recorded. Transport remains an infrastructure-owned concern.')); }
+  if (mutation.action === 'ADD_NOTE') { prospect.privateNotes.unshift(mutation.note); prospect.events.unshift(event('PRIVATE_NOTE_ADDED','Consultant-private note added.')); }
+  if (mutation.action === 'CREATE_FOLLOW_UP') { prospect.nextFollowUpAt = mutation.dueAt; prospect.followUpStatus = mutation.followUpStatus; prospect.status = 'NEEDS_FOLLOW_UP'; prospect.events.unshift(event('FOLLOW_UP_CREATED', mutation.note || `Follow-up scheduled for ${mutation.dueAt}.`)); }
+  if (mutation.action === 'CONVERT') { prospect.conversionStatus = 'CONVERTED'; prospect.status = 'CONVERTED'; prospect.events.unshift(event('CONVERSION_AUTHORIZED',`Consultant authorized controlled conversion to ${mutation.organizationName} / ${mutation.engagementName}. No membership was created and AI text was not promoted to evidence.`)); }
+  return fixtureProspectCenter();
+}

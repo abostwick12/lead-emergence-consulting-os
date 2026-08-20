@@ -201,6 +201,7 @@ export function fixtureSession(role: PortalRole, requestedOrganizationId?: strin
     organization: selectedOrganization,
     engagements,
     engagement: selectedEngagement,
+    availableContexts: [{ surface: role, label: role === 'consultant' ? 'Consultant work' : 'Client work', organizationIds: organizations.map((item) => item.id) }],
     fixture: true,
   };
 }

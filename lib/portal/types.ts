@@ -41,6 +41,12 @@ export interface EngagementOption {
   currentPhase?: string;
 }
 
+export interface ConsultingContextOption {
+  surface: Exclude<PortalRole, 'outsider'>;
+  label: string;
+  organizationIds: string[];
+}
+
 export interface PortalSession {
   personId: string;
   displayName: string;
@@ -49,6 +55,7 @@ export interface PortalSession {
   organization: OrganizationOption;
   engagements: EngagementOption[];
   engagement: EngagementOption;
+  availableContexts: ConsultingContextOption[];
   fixture: boolean;
 }
 
