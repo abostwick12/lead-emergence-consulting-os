@@ -28,9 +28,9 @@ Email is never an identity-link key. The durable key is the exact custom-provide
 - If the user already has an Entry session, they continue without another password. Entry still checks its exact OAuth client and current `ACTIVE` entitlement.
 - The callback exchanges the code, verifies the provider identity, atomically persists the identity proof, and then sends the user to Consulting context resolution.
 - A denied, expired, malformed, mismatched, or conflicting flow fails closed, clears a newly created sign-in session when needed, and shows only an allow-listed error with a retry action.
-- `/login?legacy=1` is the explicit password rollback route. It remains available during coexistence but is not part of the normal journey.
+- `/login?legacy=1` is the explicit password rollback route. It remains available during coexistence but is not linked from the normal or failed-SSO journey; operators invoke it directly only during an authorized rollback.
 
-An error page may offer the explicit legacy route; that is a recovery option, not a second standard login page.
+An SSO error renders a neutral interruption view with a retry to Entry. It never renders the Consulting credential shell or offers legacy password access, so users do not encounter a second login page.
 
 ## Callback mode binding
 
