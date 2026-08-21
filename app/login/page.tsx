@@ -7,14 +7,16 @@ import { safeReturnPath } from '@/lib/portal/navigation';
 import { safeLoginError } from '@/lib/portal/login-messages';
 import { notFound, redirect } from 'next/navigation';
 
-export default async function LoginPage({ searchParams }: { searchParams: Promise<{ error?: string; returnTo?: string }> }) {
+export default async function LoginPage({ searchParams }: { searchParams: Promise<{ error?: string; legacy?: string; returnTo?: string }> }) {
   const params = await searchParams;
   const returnTo = safeReturnPath(params.returnTo ?? '/');
   const error = safeLoginError(params.error);
+  const legacy = params.legacy === '1';
   const fixture = isFixtureMode();
   const portalSession = await getPortalSession();
   if (portalSession?.role === 'consultant' || portalSession?.role === 'client') redirect(returnTo);
   if (await hasAuthenticatedIdentity()) notFound();
+  if (!fixture && !error && !legacy) redirect('/auth/entry');
   const selectedRole = returnTo === '/consultant' || returnTo.startsWith('/consultant/') ? 'consultant' : returnTo === '/client' || returnTo.startsWith('/client/') ? 'client' : null;
   return (
     <main className="login-page">
@@ -46,13 +48,23 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
             {selectedRole !== 'client' && <Link className="primary-button" href={`/api/test-session?role=consultant&returnTo=${encodeURIComponent(returnTo === '/' ? '/consultant' : returnTo)}`}>Enter consultant portal <ArrowRight aria-hidden="true" /></Link>}
             {selectedRole !== 'consultant' && <Link className={selectedRole === 'client' ? 'primary-button' : 'secondary-button'} href={`/api/test-session?role=client&returnTo=${encodeURIComponent(returnTo === '/' ? '/client' : returnTo)}`}>Enter client portal {selectedRole === 'client' && <ArrowRight aria-hidden="true" />}</Link>}
           </div>
+        ) : legacy ? (
+          <>
+            <p className="login-copy">Legacy Consulting access remains available during the SSO coexistence and rollback period.</p>
+            <form action={signIn} className="login-form">
+              <input type="hidden" name="returnTo" value={returnTo} />
+              <label>Email<input type="email" name="email" autoComplete="email" required /></label>
+              <label>Password<input type="password" name="password" autoComplete="current-password" required /></label>
+              <button className="secondary-button" type="submit">Legacy Consulting sign in</button>
+            </form>
+            <Link href="/auth/entry">Use Lead Emergence sign-in instead</Link>
+          </>
         ) : (
-          <form action={signIn} className="login-form">
-            <input type="hidden" name="returnTo" value={returnTo} />
-            <label>Email<input type="email" name="email" autoComplete="email" required /></label>
-            <label>Password<input type="password" name="password" autoComplete="current-password" required /></label>
-            <button className="primary-button" type="submit">Sign in <ArrowRight aria-hidden="true" /></button>
-          </form>
+          <>
+            <p className="login-copy">Lead Emergence sign-in could not be completed. No Consulting session was created.</p>
+            <Link className="primary-button" href="/auth/entry">Try Lead Emergence again <ArrowRight aria-hidden="true" /></Link>
+            <Link href={`/login?legacy=1&returnTo=${encodeURIComponent(returnTo)}`}>Use legacy Consulting sign-in</Link>
+          </>
         )}
           <div className="security-note"><LockKeyhole aria-hidden="true" /><span><strong>Protected workspace</strong>Private coaching and consultant material remain partitioned from general organizational knowledge.</span></div>
         </div>

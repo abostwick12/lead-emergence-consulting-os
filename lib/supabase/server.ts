@@ -20,6 +20,7 @@ export async function createSupabaseServerClient() {
   const cookieStore = await cookies();
   return createServerClient(url, key, {
     db: { schema: 'consulting_os' },
+    cookieOptions: { secure: process.env.NODE_ENV === 'production' },
     cookies: {
       getAll() {
         return cookieStore.getAll();

@@ -3,6 +3,9 @@ export const loginErrors = {
   invitationInvalid: 'Invitation is invalid.',
   invitationNotActivated: 'Invitation could not be activated.',
   invitationNotVerified: 'Invitation could not be verified.',
+  entryDenied: 'Lead Emergence access was not approved.',
+  entryUnavailable: 'Lead Emergence sign-in is temporarily unavailable.',
+  entryLinkConflict: 'This Lead Emergence identity is not linked to this Consulting account.',
 } as const;
 
 const allowed: readonly string[] = Object.values(loginErrors);
