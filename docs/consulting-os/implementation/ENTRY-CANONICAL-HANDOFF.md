@@ -1,6 +1,6 @@
 # Canonical Entry identity in Consulting
 
-Status on 2026-08-21: **implemented and locally accepted; not ready for production cutover**. This is the Consulting-side identity-linking, authorization, coexistence, migration, rollback, and operating contract. It does not authorize a production database, provider, deployment, DNS, traffic, or real-user change.
+Status on 2026-08-21: **READY FOR PRODUCTION CUTOVER; cutover is not authorized or executed**. Development implementation, security review, hosted acceptance, rollback preparation, and both repository quality gates are complete. This is the Consulting-side identity-linking, authorization, coexistence, migration, rollback, and operating contract. It does not authorize a production database, provider, deployment, DNS, traffic, or real-user change.
 
 ## Non-negotiable authority boundary
 
@@ -134,7 +134,7 @@ After stable OAuth burn-in, zero observed transitional use, successful rollback 
 On 2026-08-21, isolated development and hosted-preview verification passed:
 
 - dedicated `lead-emergence-consulting-dev` project `eudlnlizoioqwqjuxgro` in the Entry sandbox organization, `us-west-1`, `ACTIVE_HEALTHY`, with no Ministry or production data;
-- exact 20-migration local/remote history, clean Consulting database rebuild, schema check, and 358 pgTAP assertions;
+- exact 21-migration local/remote history, clean Consulting database rebuild, schema check, and 361 pgTAP assertions;
 - 164 Consulting unit tests plus Entry's 13 unit tests, lint, typecheck, and production builds;
 - real Entry OAuth authorization with one password across two Consulting arrivals, one durable identity link, zero auto-created memberships/assignments, expected audit events, and zero browser errors;
 - `ACTIVE`, `SUSPENDED`, `REVOKED`, absent, and revoked-with-remembered-grant outcomes with no unauthorized callback session/link mutation;
@@ -147,13 +147,15 @@ On 2026-08-21, isolated development and hosted-preview verification passed:
 
 The hosted proof used only reserved `.test` identities and synthetic Consulting rows. Append-only audit evidence and its referenced synthetic identity/organization shells are intentionally retained in the dedicated development project; no real user, client, Ministry, shared-project, or production data was introduced.
 
+The local and CI pgTAP suite is the canonical database assertion gate. A direct `supabase test db --linked` invocation against the hosted project stops before executing assertions because the hosted pgTAP extension is installed outside the test files' assumed `extensions` search path. Hosted verification therefore uses the exact migration history, linked schema lint/advisors, direct catalog/grant checks, and the real-session browser matrices; this pre-existing test-runner search-path mismatch does not change application or RLS behavior.
+
 ## Hosted advisor review
 
-The final Consulting dev advisor snapshot contained no `ERROR` findings. Security warnings were limited to deliberately executable security-definer application RPCs (including the intentional anonymous intake RPC) and disabled leaked-password screening. Those RPCs retain their explicit in-function authorization and are covered by the hosted matrix and pgTAP suite; do not clear the advisor by blindly revoking application-required execution. Enable leaked-password screening in production or record the approved compensating control.
+The final Consulting dev advisor snapshot contained no `ERROR` findings: 42 security findings (30 warnings and 12 informational notices) and 472 performance findings (one warning and 471 informational notices). Security warnings were limited to deliberately executable security-definer application RPCs (including the intentional anonymous intake RPC) and disabled leaked-password screening. Those RPCs retain their explicit in-function authorization and are covered by the hosted matrix and pgTAP suite; do not clear the advisor by blindly revoking application-required execution. Enable leaked-password screening in production or record the approved compensating control.
 
 The performance advisor reported one warning for multiple permissive `SELECT` policies on `consulting_os.ministry_setup_checklist_items`; it is pre-existing, additive, and unrelated to the Entry identity path. The remaining performance notices are informational indexes/key suggestions and require workload evidence before production index changes.
 
-`consulting_private.prospect_notes` remains a service-only table with no client grants or policies. Enabling RLS with no policies would add defense in depth while preserving service-role access; that forward migration requires the owner's explicit approval. References: [RLS guidance](https://supabase.com/docs/guides/database/postgres/row-level-security), [RLS enabled with no policy](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy), and [multiple permissive policies](https://supabase.com/docs/guides/database/database-linter?lint=0006_multiple_permissive_policies).
+The owner approved the additive `20260822025341_harden_prospect_notes_rls.sql` migration. It is applied to the dedicated Consulting development project and enables RLS on `consulting_private.prospect_notes` without client policies. Hosted catalog verification confirms RLS is enabled, policy count is zero, `anon` and `authenticated` have no `SELECT`, and `service_role` retains `SELECT`/`INSERT` plus `BYPASSRLS`. The resulting `rls_enabled_no_policy` advisor notice is intentional defense in depth for this service-only table. References: [RLS guidance](https://supabase.com/docs/guides/database/postgres/row-level-security), [RLS enabled with no policy](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy), and [multiple permissive policies](https://supabase.com/docs/guides/database/database-linter?lint=0006_multiple_permissive_policies).
 
 ## Operational monitoring
 
@@ -179,8 +181,8 @@ Do not cut over until:
 - both separate code PRs are green, reviewed, and merged in the approved order;
 - production-specific Entry and Consulting origins, OAuth client/provider, exact callbacks, issuer allowlist values, and freshly rotated secrets are recorded in the production secret manager;
 - Entry has its production site URL and exact redirects, plus leaked-password protection or an approved compensating control;
-- the owner approves or explicitly accepts the documented service-only `consulting_private.prospect_notes` RLS hardening decision before the production migration window;
+- the production Consulting migration plan includes the approved `20260822025341_harden_prospect_notes_rls.sql` service-only defense-in-depth migration;
 - backup/restore evidence, forward-repair plan, session/grant/link revocation runbooks, alerts/dashboards, owner/on-call assignments, rollback rehearsal, conflict review, support communication, and explicit release approval are recorded;
 - a production-window synthetic canary repeats the first-time and returning-user path before any real-user linking begins.
 
-Development acceptance is complete. Production configuration, migration, merging, canary execution, and real-user linking remain explicitly out of scope until separately approved; merge alone does not authorize cutover.
+Development acceptance is complete and the system is **READY FOR PRODUCTION CUTOVER**. Production configuration, migration, merging, canary execution, and real-user linking remain explicitly out of scope until separately approved; merge alone does not authorize cutover.
