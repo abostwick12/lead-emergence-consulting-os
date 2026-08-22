@@ -131,18 +131,21 @@ After stable OAuth burn-in, zero observed transitional use, successful rollback 
 
 ## Verification evidence
 
-On 2026-08-21, isolated development verification passed:
+On 2026-08-21, isolated development and hosted-preview verification passed:
 
-- clean Consulting database rebuild, schema check, and 358 pgTAP assertions;
-- 160 unit tests, lint, typecheck, production build, and dependency audit with zero vulnerabilities;
+- dedicated `lead-emergence-consulting-dev` project `eudlnlizoioqwqjuxgro` in the Entry sandbox organization, `us-west-1`, `ACTIVE_HEALTHY`, with no Ministry or production data;
+- exact 20-migration local/remote history, clean Consulting database rebuild, schema check, and 358 pgTAP assertions;
+- 164 Consulting unit tests plus Entry's 13 unit tests, lint, typecheck, and production builds;
 - real Entry OAuth authorization with one password across two Consulting arrivals, one durable identity link, zero auto-created memberships/assignments, expected audit events, and zero browser errors;
 - `ACTIVE`, `SUSPENDED`, `REVOKED`, absent, and revoked-with-remembered-grant outcomes with no unauthorized callback session/link mutation;
 - explicit existing-account linking with stable person/organization/engagement ownership;
 - active membership, no membership, removed membership, wrong tenant, and consultant-private visibility controls;
 - Consulting logout while Entry remained authenticated, followed by passwordless reauthorization;
+- exact protected Vercel Preview deployments behind stable development aliases, with the CSP restricted to the Consulting Supabase origin, Entry OIDC issuer, and Entry application origin;
+- normal `/login` redirecting into Entry, the explicit `/login?legacy=1` rollback page remaining available, and denial rendering one neutral interruption page rather than a second login form;
 - Entry password recovery through a real isolated mailbox, callback exchange, password change, recovery-session sign-out, and old-password rejection.
 
-The hosted Entry and Consulting Vercel previews use dummy backend origins by design. They prove build/deploy behavior, headers, CSP, public pages, redirects, and fail-closed configuration. They do not prove hosted cross-product OAuth with a real isolated Consulting backend.
+The hosted proof used only reserved `.test` identities and synthetic Consulting rows. Append-only audit evidence and its referenced synthetic identity/organization shells are intentionally retained in the dedicated development project; no real user, client, Ministry, shared-project, or production data was introduced.
 
 ## Operational monitoring
 
@@ -161,15 +164,15 @@ Incident containment order:
 7. forward-repair or restore under the approved database plan;
 8. rerun the entire hosted matrix before re-enabling.
 
-## Production cutover checklist — currently blocked
+## Production cutover checklist — development proof complete
 
 Do not cut over until:
 
-- the target schema actually contains `20260819110000_consulting_prospect_321.sql` and `20260821171434_entry_oidc_identity_linking.sql`; current read-only inspection found the prerequisite canonical-link schema absent despite migration-history drift;
-- the target custom provider uses the approved environment-specific Entry client, scopes, issuer, exact callbacks, and rotated credentials; current read-only inspection found provider configuration drift;
-- Entry has its public site URL, exact redirects, OAuth client, leaked-password protection or approved compensating control, and production-shaped deployment;
-- the full matrix passes on isolated hosted backends with synthetic identities and no production/shared data;
+- both separate code PRs are green, reviewed, and merged in the approved order;
+- production-specific Entry and Consulting origins, OAuth client/provider, exact callbacks, issuer allowlist values, and freshly rotated secrets are recorded in the production secret manager;
+- Entry has its production site URL and exact redirects, plus leaked-password protection or an approved compensating control;
+- the owner approves or explicitly accepts the documented service-only `consulting_private.prospect_notes` RLS hardening decision before the production migration window;
 - backup/restore evidence, forward-repair plan, session/grant/link revocation runbooks, alerts/dashboards, owner/on-call assignments, rollback rehearsal, conflict review, support communication, and explicit release approval are recorded;
-- both separate code PRs are green and reviewed. Merge alone does not authorize target configuration or migration.
+- a production-window synthetic canary repeats the first-time and returning-user path before any real-user linking begins.
 
-Until all gates clear, the release decision is **NOT READY FOR PRODUCTION CUTOVER**.
+Development acceptance is complete. Production configuration, migration, merging, canary execution, and real-user linking remain explicitly out of scope until separately approved; merge alone does not authorize cutover.
