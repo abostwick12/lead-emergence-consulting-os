@@ -27,7 +27,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           <p className="eyebrow">SIGN-IN INTERRUPTED</p>
           <h1 id="entry-sign-in-error-title">Lead Emergence sign-in couldn&apos;t continue.</h1>
           <p className="oauth-consent-copy">{error} No Consulting session was created.</p>
-          <Link className="primary-button" href="/auth/entry">Try Lead Emergence again <ArrowRight aria-hidden="true" /></Link>
+          <a className="primary-button" href="/auth/entry">Try Lead Emergence again <ArrowRight aria-hidden="true" /></a>
         </section>
       </main>
     );
@@ -72,7 +72,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
               <label>Password<input type="password" name="password" autoComplete="current-password" required /></label>
               <button className="secondary-button" type="submit">Legacy Consulting sign in</button>
             </form>
-            <Link href="/auth/entry">Use Lead Emergence sign-in instead</Link>
+            <a href="/auth/entry">Use Lead Emergence sign-in instead</a>
           </>
         )}
           <div className="security-note"><LockKeyhole aria-hidden="true" /><span><strong>Protected workspace</strong>Private coaching and consultant material remain partitioned from general organizational knowledge.</span></div>
