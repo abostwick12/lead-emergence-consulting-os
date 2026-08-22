@@ -1,5 +1,50 @@
 # Design QA
 
+## Latest pass — Consulting context selector (2026-08-21)
+
+- Source visual truth: `docs/consulting-os/implementation/evidence/sso/hosted-client-workspace-reference-1440x2569.png`
+- User direction: keep the hosted Consulting flow visually continuous with the dark Consulting OS and do not introduce a second login page.
+- Implementation capture: `docs/consulting-os/implementation/evidence/sso/hosted-context-selector-dark-1440x1000.png`
+- Browser viewport: 1440 × 1000 CSS px, device scale factor 1
+- Source pixels: 1440 × 2569 (full-page client workspace capture)
+- Implementation pixels: 1440 × 1000 (full-page context selector capture)
+- State: authenticated Entry user choosing an authorized Consulting role before entering the client workspace
+- Density normalization: none required; both captures use device scale factor 1 and the same 1440px viewport width
+
+### Full-view comparison evidence
+
+The context selector now uses the authenticated Consulting OS navy grid, deep panel, cyan structure, white serif hierarchy, muted supporting copy, and dark action card. The earlier 700px cream page surface and exposed dark remainder are gone. Because the source is the downstream client workspace rather than the same route, this pass checks design-system continuity instead of claiming pixel-for-pixel layout fidelity.
+
+### Focused comparison evidence
+
+No separate crop was needed: the implementation is a single centered card and all typography, borders, spacing, colors, and the action icon are clearly readable in the full 1440 × 1000 capture.
+
+- Fonts and typography: the selector uses the same serif display face, compact mono eyebrow, sans-serif supporting copy, weights, and hierarchy as the authenticated workspace.
+- Spacing and layout rhythm: the page fills the viewport, the card is centered with balanced padding, and the action row has consistent inset spacing and radius.
+- Colors and visual tokens: no off-white surface remains; the page uses the established deep navy, panel, line, cyan, white, and muted-text tokens.
+- Image quality and asset fidelity: the screen has no raster imagery or decorative image asset to reproduce; the action uses the existing Lucide icon library rather than a text glyph or drawn approximation.
+- Copy and content: role, workspace label, and authorized-work explanation are unchanged in meaning.
+
+### Comparison history
+
+1. The initial hosted capture rendered the context selector as a fixed-width cream page, leaving the dark application background visible beside it.
+2. The selector was changed to a full-width dark shell with a centered Consulting OS panel and dark role card; authentication, authorization, and routing behavior were preserved.
+3. A fresh hosted capture at the same viewport confirmed that the cream split is gone and the page is visually continuous with the client workspace.
+
+### Findings
+
+No actionable P0, P1, or P2 differences remain for the context-selector correction.
+
+### Interaction verification
+
+- The explicit existing-account link journey reaches the context selector after one Entry password submission.
+- Selecting `Client work` opens the authorized client workspace without a Consulting password submission.
+- Consulting logout clears only the Consulting session; the Entry session reauthorizes Consulting without another password.
+- Removed or absent memberships render the dark `No active Consulting workspace` state.
+- Browser page errors and console errors: none in the hosted one-login acceptance journey.
+
+## Prior pass — landing and workbench
+
 - Source visual truth: `C:\Users\awbostwick\Pictures\ChatGPT Image Aug 10, 2026, 03_57_29 PM.png`
 - Behavioral source truth: `C:\Users\awbostwick\.codex\attachments\ff092b8d-a4ff-4663-8f8d-17c435600dc1\pasted-text.txt`
 - Implementation captures:

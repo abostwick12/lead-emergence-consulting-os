@@ -5,16 +5,33 @@ import { getPortalSession, hasAuthenticatedIdentity } from '@/lib/portal/context
 import { isFixtureMode } from '@/lib/supabase/config';
 import { safeReturnPath } from '@/lib/portal/navigation';
 import { safeLoginError } from '@/lib/portal/login-messages';
+import { resolveLoginSurface } from '@/lib/portal/login-surface';
 import { notFound, redirect } from 'next/navigation';
 
-export default async function LoginPage({ searchParams }: { searchParams: Promise<{ error?: string; returnTo?: string }> }) {
+export default async function LoginPage({ searchParams }: { searchParams: Promise<{ error?: string; legacy?: string; returnTo?: string }> }) {
   const params = await searchParams;
   const returnTo = safeReturnPath(params.returnTo ?? '/');
   const error = safeLoginError(params.error);
+  const legacy = params.legacy === '1';
   const fixture = isFixtureMode();
   const portalSession = await getPortalSession();
   if (portalSession?.role === 'consultant' || portalSession?.role === 'client') redirect(returnTo);
   if (await hasAuthenticatedIdentity()) notFound();
+  const surface = resolveLoginSurface({ fixture, hasError: Boolean(error), legacy });
+  if (surface === 'entry-redirect') redirect('/auth/entry');
+  if (surface === 'entry-error') {
+    return (
+      <main className="oauth-consent-page">
+        <section className="oauth-consent-card" aria-labelledby="entry-sign-in-error-title">
+          <div className="oauth-consent-icon"><LockKeyhole aria-hidden="true" /></div>
+          <p className="eyebrow">SIGN-IN INTERRUPTED</p>
+          <h1 id="entry-sign-in-error-title">Lead Emergence sign-in couldn&apos;t continue.</h1>
+          <p className="oauth-consent-copy">{error} No Consulting session was created.</p>
+          <a className="primary-button" href="/auth/entry">Try Lead Emergence again <ArrowRight aria-hidden="true" /></a>
+        </section>
+      </main>
+    );
+  }
   const selectedRole = returnTo === '/consultant' || returnTo.startsWith('/consultant/') ? 'consultant' : returnTo === '/client' || returnTo.startsWith('/client/') ? 'client' : null;
   return (
     <main className="login-page">
@@ -37,22 +54,26 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
       <section className="login-panel">
         <div className="login-panel-inner">
           <p className="eyebrow">SECURE ACCESS</p>
-          <h2>Welcome back.</h2>
-          <p className="login-copy">Enter the workspace authorized for your current consulting assignment or organization membership.</p>
+          <h2>{surface === 'legacy' ? 'Legacy access.' : 'Local review.'}</h2>
+          <p className="login-copy">{surface === 'legacy' ? 'Use the rollback sign-in only when directed by an authorized operator.' : 'Choose the local workspace fixture required for this review.'}</p>
         {error && <p className="form-error" role="alert">{error}</p>}
-        {fixture ? (
+        {surface === 'fixture' ? (
           <div className="fixture-login" data-testid="fixture-login">
             <p>Local review access</p>
             {selectedRole !== 'client' && <Link className="primary-button" href={`/api/test-session?role=consultant&returnTo=${encodeURIComponent(returnTo === '/' ? '/consultant' : returnTo)}`}>Enter consultant portal <ArrowRight aria-hidden="true" /></Link>}
             {selectedRole !== 'consultant' && <Link className={selectedRole === 'client' ? 'primary-button' : 'secondary-button'} href={`/api/test-session?role=client&returnTo=${encodeURIComponent(returnTo === '/' ? '/client' : returnTo)}`}>Enter client portal {selectedRole === 'client' && <ArrowRight aria-hidden="true" />}</Link>}
           </div>
         ) : (
-          <form action={signIn} className="login-form">
-            <input type="hidden" name="returnTo" value={returnTo} />
-            <label>Email<input type="email" name="email" autoComplete="email" required /></label>
-            <label>Password<input type="password" name="password" autoComplete="current-password" required /></label>
-            <button className="primary-button" type="submit">Sign in <ArrowRight aria-hidden="true" /></button>
-          </form>
+          <>
+            <p className="login-copy">Legacy Consulting access remains available during the SSO coexistence and rollback period.</p>
+            <form action={signIn} className="login-form">
+              <input type="hidden" name="returnTo" value={returnTo} />
+              <label>Email<input type="email" name="email" autoComplete="email" required /></label>
+              <label>Password<input type="password" name="password" autoComplete="current-password" required /></label>
+              <button className="secondary-button" type="submit">Legacy Consulting sign in</button>
+            </form>
+            <a href="/auth/entry">Use Lead Emergence sign-in instead</a>
+          </>
         )}
           <div className="security-note"><LockKeyhole aria-hidden="true" /><span><strong>Protected workspace</strong>Private coaching and consultant material remain partitioned from general organizational knowledge.</span></div>
         </div>

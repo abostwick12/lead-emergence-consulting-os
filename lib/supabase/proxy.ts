@@ -11,6 +11,7 @@ export async function refreshSupabaseSession(request: NextRequest) {
   let response = NextResponse.next({ request });
   const supabase = createServerClient(config.url, config.key, {
     db: { schema: 'consulting_os' },
+    cookieOptions: { secure: process.env.NODE_ENV === 'production' },
     cookies: {
       getAll: () => request.cookies.getAll(),
       setAll(cookiesToSet) {

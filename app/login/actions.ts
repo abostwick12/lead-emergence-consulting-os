@@ -11,6 +11,6 @@ export async function signIn(formData: FormData) {
   const returnTo = safeReturnPath(String(formData.get('returnTo') ?? '/'));
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) redirect(`/login?error=${encodeURIComponent(loginErrors.credentials)}&returnTo=${encodeURIComponent(returnTo)}`);
+  if (error) redirect(`/login?legacy=1&error=${encodeURIComponent(loginErrors.credentials)}&returnTo=${encodeURIComponent(returnTo)}`);
   redirect(returnTo);
 }

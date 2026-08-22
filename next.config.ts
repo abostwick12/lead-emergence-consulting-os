@@ -2,8 +2,7 @@ import type { NextConfig } from 'next';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-function supabaseOrigin() {
-  const value = process.env.NEXT_PUBLIC_SUPABASE_URL;
+function configuredOrigin(value: string | undefined) {
   if (!value) return null;
   try {
     return new URL(value).origin;
@@ -13,8 +12,10 @@ function supabaseOrigin() {
 }
 
 function contentSecurityPolicy() {
-  const supabase = supabaseOrigin();
-  const connect = ["'self'", supabase, supabase ? `wss://${new URL(supabase).host}` : null, isProduction ? null : 'ws:']
+  const supabase = configuredOrigin(process.env.NEXT_PUBLIC_SUPABASE_URL);
+  const entryOidc = configuredOrigin(process.env.ENTRY_OIDC_ISSUER_URL);
+  const entryApp = configuredOrigin(process.env.ENTRY_APP_ORIGIN);
+  const connect = ["'self'", supabase, supabase ? `wss://${new URL(supabase).host}` : null, entryOidc, entryApp, isProduction ? null : 'ws:']
     .filter(Boolean)
     .join(' ');
   return [
