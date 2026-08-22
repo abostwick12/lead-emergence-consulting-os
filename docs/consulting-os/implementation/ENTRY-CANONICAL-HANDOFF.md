@@ -104,6 +104,7 @@ Required SSO values:
 - ordinary Consulting Supabase URL, publishable key, secret key, and `APP_ORIGIN`;
 - `ENTRY_OIDC_PROVIDER` with an exact environment-specific custom-provider identifier;
 - `ENTRY_OIDC_ISSUER_URL` with the HTTPS Supabase Auth issuer origin used by that provider, so the CSP can permit only the required cross-origin OAuth connection;
+- `ENTRY_APP_ORIGIN` with the canonical Entry HTTPS application origin used for consent and the workspace launcher;
 - exact Supabase Auth redirects for `/auth/callback/sign-in` and `/auth/callback/link-existing`;
 - custom-provider issuer/client/scopes configured in Supabase Auth;
 - Auth sign-up enabled for first-time OIDC users and manual identity linking enabled for the explicit existing-account ceremony.

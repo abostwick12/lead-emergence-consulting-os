@@ -14,7 +14,8 @@ function configuredOrigin(value: string | undefined) {
 function contentSecurityPolicy() {
   const supabase = configuredOrigin(process.env.NEXT_PUBLIC_SUPABASE_URL);
   const entryOidc = configuredOrigin(process.env.ENTRY_OIDC_ISSUER_URL);
-  const connect = ["'self'", supabase, supabase ? `wss://${new URL(supabase).host}` : null, entryOidc, isProduction ? null : 'ws:']
+  const entryApp = configuredOrigin(process.env.ENTRY_APP_ORIGIN);
+  const connect = ["'self'", supabase, supabase ? `wss://${new URL(supabase).host}` : null, entryOidc, entryApp, isProduction ? null : 'ws:']
     .filter(Boolean)
     .join(' ');
   return [
