@@ -147,6 +147,14 @@ On 2026-08-21, isolated development and hosted-preview verification passed:
 
 The hosted proof used only reserved `.test` identities and synthetic Consulting rows. Append-only audit evidence and its referenced synthetic identity/organization shells are intentionally retained in the dedicated development project; no real user, client, Ministry, shared-project, or production data was introduced.
 
+## Hosted advisor review
+
+The final Consulting dev advisor snapshot contained no `ERROR` findings. Security warnings were limited to deliberately executable security-definer application RPCs (including the intentional anonymous intake RPC) and disabled leaked-password screening. Those RPCs retain their explicit in-function authorization and are covered by the hosted matrix and pgTAP suite; do not clear the advisor by blindly revoking application-required execution. Enable leaked-password screening in production or record the approved compensating control.
+
+The performance advisor reported one warning for multiple permissive `SELECT` policies on `consulting_os.ministry_setup_checklist_items`; it is pre-existing, additive, and unrelated to the Entry identity path. The remaining performance notices are informational indexes/key suggestions and require workload evidence before production index changes.
+
+`consulting_private.prospect_notes` remains a service-only table with no client grants or policies. Enabling RLS with no policies would add defense in depth while preserving service-role access; that forward migration requires the owner's explicit approval. References: [RLS guidance](https://supabase.com/docs/guides/database/postgres/row-level-security), [RLS enabled with no policy](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy), and [multiple permissive policies](https://supabase.com/docs/guides/database/database-linter?lint=0006_multiple_permissive_policies).
+
 ## Operational monitoring
 
 Track OAuth starts, callback successes/failures, safe error categories, new-link/reverification audit events, duplicate-link conflicts, no-workspace outcomes, legacy-login usage, and provider/issuer changes. Alert on callback-mode mismatches, unexpected provider identifiers or subjects, conflict spikes, tenant-denial anomalies, or legacy usage after the burn-in window.
