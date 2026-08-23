@@ -27,6 +27,16 @@ test('consultant can find simple setup instructions for all supported AI assista
   await expect(page.getByRole('button', { name: 'Copied' })).toBeVisible();
 });
 
+test('client can start the dedicated MCP setup from portal settings', async ({ page, context }) => {
+  await page.goto('/api/test-session?role=client&returnTo=/client/settings');
+  await expect(page.getByRole('heading', { name: 'Connect your AI assistant' })).toBeVisible();
+  await expect(page.getByText('http://localhost:3200/mcp/client', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Start setup · copy address' })).toBeVisible();
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  await page.getByRole('button', { name: 'Start setup · copy address' }).click();
+  await expect(page.getByRole('button', { name: 'Ready to paste' })).toBeVisible();
+});
+
 test('MCP discovery and bearer challenge are standards-shaped', async ({ request }) => {
   const metadata = await request.get('/.well-known/oauth-protected-resource/mcp');
   expect(metadata.ok()).toBeTruthy();

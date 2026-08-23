@@ -10,25 +10,31 @@ export interface ConnectedAiGrant {
   grantedAt: string;
 }
 
-export function McpConnectionCenter({ endpoint, readiness, grants }: { endpoint: string; readiness: { ready: boolean; label: string }; grants: ConnectedAiGrant[] }) {
+export function McpConnectionCenter({ endpoint, readiness, grants, audience = 'consultant' }: { endpoint: string; readiness: { ready: boolean; label: string }; grants: ConnectedAiGrant[]; audience?: 'consultant' | 'client' }) {
   const [copied, setCopied] = useState<string | null>(null);
   async function copy(value: string, key: string) {
-    await navigator.clipboard.writeText(value);
+    try {
+      await navigator.clipboard.writeText(value);
+    } catch {
+      // Some managed browsers deny clipboard permission even after a user click.
+      // Keep the setup flow recoverable; the endpoint remains visible for manual copy.
+    }
     setCopied(key);
     window.setTimeout(() => setCopied((current) => current === key ? null : current), 1800);
   }
 
   const vscodeConfig = JSON.stringify({ servers: { 'lead-emergence': { type: 'http', url: endpoint } } }, null, 2);
+  const isClient = audience === 'client';
   return (
     <section className="mcp-connection-center" aria-labelledby="mcp-connections-heading">
       <header className="mcp-connection-hero">
-        <div><p className="eyebrow">ONE SECURE CONNECTION</p><h2 id="mcp-connections-heading">Connect your AI assistant</h2><p>Use Lead Emergence from ChatGPT, Claude, or Copilot without sharing API keys. Paste one address, sign in with your Consulting OS account, and approve access.</p></div>
+        <div><p className="eyebrow">ONE SECURE CONNECTION</p><h2 id="mcp-connections-heading">Connect your AI assistant</h2><p>{isClient ? 'Open your assigned Lead Emergence work from ChatGPT, Claude, or Copilot. One connection keeps the setup simple without sharing API keys.' : 'Use Lead Emergence from ChatGPT, Claude, or Copilot without sharing API keys. Paste one address, sign in with your Consulting OS account, and approve access.'}</p></div>
         <span className={readiness.ready ? 'status-chip' : 'status-chip gold'}>{readiness.ready ? <Check aria-hidden="true" /> : <CircleAlert aria-hidden="true" />}{readiness.label}</span>
       </header>
 
       <div className="mcp-endpoint-panel">
         <div><span>Secure MCP server address</span><code>{endpoint}</code></div>
-        <button className="secondary-button compact" type="button" onClick={() => void copy(endpoint, 'endpoint')}>{copied === 'endpoint' ? <Check aria-hidden="true" /> : <Clipboard aria-hidden="true" />}{copied === 'endpoint' ? 'Copied' : 'Copy address'}</button>
+        <button className="secondary-button compact" type="button" onClick={() => void copy(endpoint, 'endpoint')}>{copied === 'endpoint' ? <Check aria-hidden="true" /> : <Clipboard aria-hidden="true" />}{copied === 'endpoint' ? 'Ready to paste' : isClient ? 'Start setup · copy address' : 'Copy address'}</button>
       </div>
 
       {!readiness.ready && <p className="mcp-activation-note"><CircleAlert aria-hidden="true" /><span><strong>One owner step remains.</strong> OAuth and automatic client registration must be enabled in the project before assistants can connect. The platform code is ready; users should wait until this status reads “Ready to connect.”</span></p>}
@@ -41,7 +47,7 @@ export function McpConnectionCenter({ endpoint, readiness, grants }: { endpoint:
       </div>
 
       <section className="mcp-boundary-panel" aria-label="Connection safeguards">
-        <div><ShieldCheck aria-hidden="true" /><span><strong>Existing access rules stay in force</strong><small>The assistant sees only organizations and engagements assigned to the signed-in consultant.</small></span></div>
+        <div><ShieldCheck aria-hidden="true" /><span><strong>Existing access rules stay in force</strong><small>{isClient ? 'The assistant sees only the organizations, engagements, and guided work assigned to you.' : 'The assistant sees only organizations and engagements assigned to the signed-in consultant.'}</small></span></div>
         <div><KeyRound aria-hidden="true" /><span><strong>No API keys for users</strong><small>OAuth handles sign-in, approval, token expiry, refresh, and revocation.</small></span></div>
         <div><LockKeyhole aria-hidden="true" /><span><strong>Confirmation before writes</strong><small>Answers are saved only after the user explicitly confirms the exact response.</small></span></div>
       </section>
@@ -52,7 +58,7 @@ export function McpConnectionCenter({ endpoint, readiness, grants }: { endpoint:
           <article key={grant.clientId}>
             <Bot aria-hidden="true" />
             <span><strong>{grant.name}</strong><small>Connected {formatDate(grant.grantedAt)}{grant.website ? ` · ${safeHost(grant.website)}` : ''}</small></span>
-            <form action="/api/oauth/grants/revoke" method="post"><input type="hidden" name="client_id" value={grant.clientId} /><button className="text-button" type="submit"><Unplug aria-hidden="true" />Disconnect</button></form>
+            <form action="/api/oauth/grants/revoke" method="post"><input type="hidden" name="client_id" value={grant.clientId} /><input type="hidden" name="return_to" value={isClient ? '/client/settings' : '/consultant/settings'} /><button className="text-button" type="submit"><Unplug aria-hidden="true" />Disconnect</button></form>
           </article>
         ))}
       </section>
