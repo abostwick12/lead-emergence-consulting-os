@@ -231,6 +231,11 @@ export function LandingExperience() {
             <p className={styles.positioning}>Build the organization that should exist next.</p>
             <p>See reality clearly, challenge inherited assumptions, align around purpose, cultivate capability, and preserve why the organization was built that way.</p>
             <div className={styles.entryStack}>
+              <Link className={styles.entryLink} href="/intake/consulting">
+                <UserRound aria-hidden="true" />
+                <span><strong>Start a client conversation</strong><small>Share your context before creating a workspace</small></span>
+                <ArrowRight aria-hidden="true" />
+              </Link>
               <Link className={styles.entryLink} href="/login?returnTo=%2Fconsultant">
                 <UserRound aria-hidden="true" />
                 <span><strong>Consultant login</strong><small>Run engagements, frameworks, and deliverables</small></span>
