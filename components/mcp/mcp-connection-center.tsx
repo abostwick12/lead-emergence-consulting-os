@@ -34,7 +34,7 @@ export function McpConnectionCenter({ endpoint, readiness, grants, audience = 'c
 
       <div className="mcp-endpoint-panel">
         <div><span>Secure MCP server address</span><code>{endpoint}</code></div>
-        <button className="secondary-button compact" type="button" onClick={() => void copy(endpoint, 'endpoint')}>{copied === 'endpoint' ? <Check aria-hidden="true" /> : <Clipboard aria-hidden="true" />}{copied === 'endpoint' ? 'Ready to paste' : isClient ? 'Start setup · copy address' : 'Copy address'}</button>
+        <button className="secondary-button compact" type="button" onClick={() => void copy(endpoint, 'endpoint')}>{copied === 'endpoint' ? <Check aria-hidden="true" /> : <Clipboard aria-hidden="true" />}{copied === 'endpoint' ? isClient ? 'Ready to paste' : 'Copied' : isClient ? 'Start setup · copy address' : 'Copy address'}</button>
       </div>
 
       {!readiness.ready && <p className="mcp-activation-note"><CircleAlert aria-hidden="true" /><span><strong>One owner step remains.</strong> OAuth and automatic client registration must be enabled in the project before assistants can connect. The platform code is ready; users should wait until this status reads “Ready to connect.”</span></p>}
