@@ -105,6 +105,24 @@ describe('Consulting product-local consent and Entry continuation', () => {
     expect(set).toHaveBeenCalledWith('le_entry_sso_consent_return', '', expect.objectContaining({ maxAge: 0 }));
   });
 
+  it('keeps the pending consent destination available after a failed Entry callback', async () => {
+    const returnTo = `/oauth/consent?authorization_id=${authorizationId}`;
+    const values = new Map([
+      ['le_entry_sso_mode_sign-in', 'sign_in'],
+      ['le_entry_sso_consent_return', returnTo],
+    ]);
+    const set = vi.fn();
+    cookiesMock.mockResolvedValue({ get: (name: string) => ({ value: values.get(name) }), set });
+    const response = await entryCallback(new NextRequest('https://consulting.leademergence.com/auth/callback/sign-in?error=access_denied'), {
+      params: Promise.resolve({ mode: 'sign-in' }),
+    });
+    const destination = new URL(response.headers.get('location')!);
+    expect(destination.pathname).toBe('/login');
+    expect(destination.searchParams.get('returnTo')).toBe(returnTo);
+    expect(set).toHaveBeenCalledWith('le_entry_sso_consent_return', '', expect.objectContaining({ maxAge: 0 }));
+    expect(persist).not.toHaveBeenCalled();
+  });
+
   it('stores the exact consent return only for the normal Entry sign-in callback', async () => {
     const previousProvider = process.env.ENTRY_OIDC_PROVIDER;
     process.env.ENTRY_OIDC_PROVIDER = 'custom:lead-emergence-entry-dev';
