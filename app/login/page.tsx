@@ -5,6 +5,7 @@ import { getPortalSession, hasAuthenticatedIdentity } from '@/lib/portal/context
 import { isFixtureMode } from '@/lib/supabase/config';
 import { safeReturnPath } from '@/lib/portal/navigation';
 import { safeLoginError } from '@/lib/portal/login-messages';
+import { oauthConsentReturnPath } from '@/lib/auth/entry-identity';
 import { resolveLoginSurface } from '@/lib/portal/login-surface';
 import { notFound, redirect } from 'next/navigation';
 
@@ -18,7 +19,9 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   if (portalSession?.role === 'consultant' || portalSession?.role === 'client') redirect(returnTo);
   if (await hasAuthenticatedIdentity()) notFound();
   const surface = resolveLoginSurface({ fixture, hasError: Boolean(error), legacy });
-  if (surface === 'entry-redirect') redirect('/auth/entry');
+  const consentReturn = oauthConsentReturnPath(returnTo);
+  const entryHref = consentReturn ? `/auth/entry?returnTo=${encodeURIComponent(consentReturn)}` : '/auth/entry';
+  if (surface === 'entry-redirect') redirect(entryHref);
   if (surface === 'entry-error') {
     return (
       <main className="oauth-consent-page">
@@ -27,7 +30,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           <p className="eyebrow">SIGN-IN INTERRUPTED</p>
           <h1 id="entry-sign-in-error-title">Lead Emergence sign-in couldn&apos;t continue.</h1>
           <p className="oauth-consent-copy">{error} No Consulting session was created.</p>
-          <a className="primary-button" href="/auth/entry">Try Lead Emergence again <ArrowRight aria-hidden="true" /></a>
+          <a className="primary-button" href={entryHref}>Try Lead Emergence again <ArrowRight aria-hidden="true" /></a>
         </section>
       </main>
     );
@@ -72,7 +75,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
               <label>Password<input type="password" name="password" autoComplete="current-password" required /></label>
               <button className="secondary-button" type="submit">Legacy Consulting sign in</button>
             </form>
-            <a href="/auth/entry">Use Lead Emergence sign-in instead</a>
+            <a href={entryHref}>Use Lead Emergence sign-in instead</a>
           </>
         )}
           <div className="security-note"><LockKeyhole aria-hidden="true" /><span><strong>Protected workspace</strong>Private coaching and consultant material remain partitioned from general organizational knowledge.</span></div>

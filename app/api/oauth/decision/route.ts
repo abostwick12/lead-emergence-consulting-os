@@ -25,6 +25,11 @@ export async function POST(request: Request) {
   }
 
   const supabase = await createSupabaseServerClient();
+  const { data: product, error: productError } = await supabase.schema('workspace')
+    .rpc('resolve_oauth_consent_product', { p_authorization_id: authorizationId });
+  if (productError || product !== 'consulting') {
+    return NextResponse.json({ error: 'This connection request is not available for Consulting OS.' }, { status: 403 });
+  }
   const result = decision === 'approve'
     ? await supabase.auth.oauth.approveAuthorization(authorizationId)
     : await supabase.auth.oauth.denyAuthorization(authorizationId);

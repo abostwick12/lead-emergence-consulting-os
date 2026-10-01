@@ -28,6 +28,12 @@ export default async function OAuthConsentPage({ searchParams }: { searchParams:
     return <ConsentProblem title="Consulting OS access required" copy="This connection requires an active Lead Emergence consultant assignment or client engagement membership." />;
   }
 
+  const { data: product, error: productError } = await supabase.schema('workspace')
+    .rpc('resolve_oauth_consent_product', { p_authorization_id: authorizationId });
+  if (productError || product !== 'consulting') {
+    return <ConsentProblem title="Connection request unavailable" copy="This request does not belong to Consulting OS or is no longer available." />;
+  }
+
   const { data, error } = await supabase.auth.oauth.getAuthorizationDetails(authorizationId);
   if (error || !data) return <ConsentProblem title="Connection request expired" copy="Return to your AI assistant and start the connection again." />;
   if (!('authorization_id' in data)) redirect(data.redirect_url);

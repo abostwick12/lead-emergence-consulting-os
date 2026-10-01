@@ -5,6 +5,9 @@ import {
   entrySsoCallbackPath,
   entrySsoModeCookieName,
   entrySsoModeCookieOptions,
+  entrySsoConsentReturnCookieName,
+  entrySsoConsentReturnCookieOptions,
+  oauthConsentReturnPath,
   requireEntryProviderIdentifier,
 } from '@/lib/auth/entry-identity';
 import { resolveTrustedOrigin } from '@/lib/http/origin';
@@ -26,10 +29,18 @@ export async function GET(request: NextRequest) {
       options: { redirectTo: callback.toString(), skipBrowserRedirect: true },
     });
     if (error || !data.url) throw error ?? new Error('Entry authorization URL unavailable');
-    (await cookies()).set(modeCookie, mode, entrySsoModeCookieOptions(mode));
+    const cookieStore = await cookies();
+    cookieStore.set(modeCookie, mode, entrySsoModeCookieOptions(mode));
+    const returnTo = oauthConsentReturnPath(request.nextUrl.searchParams.get('returnTo'));
+    cookieStore.set(entrySsoConsentReturnCookieName(), returnTo ?? '', {
+      ...entrySsoConsentReturnCookieOptions(),
+      ...(returnTo ? {} : { maxAge: 0 }),
+    });
     return NextResponse.redirect(data.url, 303);
   } catch {
-    (await cookies()).set(modeCookie, '', { ...entrySsoModeCookieOptions(mode), maxAge: 0 });
+    const cookieStore = await cookies();
+    cookieStore.set(modeCookie, '', { ...entrySsoModeCookieOptions(mode), maxAge: 0 });
+    cookieStore.set(entrySsoConsentReturnCookieName(), '', { ...entrySsoConsentReturnCookieOptions(), maxAge: 0 });
     return NextResponse.redirect(new URL(`/login?error=${encodeURIComponent(loginErrors.entryUnavailable)}`, request.url), 303);
   }
 }
