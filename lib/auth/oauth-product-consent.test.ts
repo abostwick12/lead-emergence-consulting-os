@@ -159,6 +159,36 @@ describe('Consulting product-local consent and Entry continuation', () => {
     expect(persist).not.toHaveBeenCalled();
   });
 
+  it.each([
+    ['fails', { data: { user: null }, error: new Error('Synthetic user lookup failure') }],
+    ['returns no user', { data: { user: null }, error: null }],
+  ])('preserves the existing local session when linking getUser %s', async (_label, result) => {
+    const values = new Map([['le_entry_sso_mode_link-existing', 'link_existing']]);
+    cookiesMock.mockResolvedValue({ get: (name: string) => ({ value: values.get(name) }), set: vi.fn() });
+    const supabase = client();
+    const exchange = vi.fn().mockResolvedValue({ error: null });
+    const getUser = vi.fn().mockResolvedValue(result);
+    const signOut = vi.fn().mockResolvedValue({ error: null });
+    createClient.mockResolvedValue({
+      ...supabase,
+      auth: { ...supabase.auth, exchangeCodeForSession: exchange, getUser, signOut },
+    });
+
+    const response = await entryCallback(new NextRequest('https://consulting.leademergence.com/auth/callback/link-existing?code=synthetic'), {
+      params: Promise.resolve({ mode: 'link-existing' }),
+    });
+
+    expect(exchange).toHaveBeenCalledExactlyOnceWith('synthetic');
+    expect(getUser).toHaveBeenCalledTimes(1);
+    expect(signOut).not.toHaveBeenCalled();
+    expect(response.status).toBe(303);
+    const destination = new URL(response.headers.get('location')!);
+    expect(destination.pathname).toBe('/login');
+    expect(destination.searchParams.get('error')).toBe(loginErrors.entryUnavailable);
+    expect(destination.searchParams.has('returnTo')).toBe(false);
+    expect(persist).not.toHaveBeenCalled();
+  });
+
   it('stores the exact consent return only for the normal Entry sign-in callback', async () => {
     const previousProvider = process.env.ENTRY_OIDC_PROVIDER;
     process.env.ENTRY_OIDC_PROVIDER = 'custom:lead-emergence-entry-dev';
