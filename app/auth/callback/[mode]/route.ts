@@ -43,7 +43,10 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
   if (exchangeError) return loginRedirect(request, loginErrors.entryUnavailable, consentReturn);
   const { data, error: userError } = await supabase.auth.getUser();
-  if (userError || !data.user) return loginRedirect(request, loginErrors.entryUnavailable, consentReturn);
+  if (userError || !data.user) {
+    await supabase.auth.signOut({ scope: 'local' });
+    return loginRedirect(request, loginErrors.entryUnavailable, consentReturn);
+  }
 
   try {
     await persistEntryIdentity(data.user, mode);

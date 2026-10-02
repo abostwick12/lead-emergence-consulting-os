@@ -17,6 +17,7 @@ import { POST } from '@/app/api/oauth/decision/route';
 import { GET as entryCallback } from '@/app/auth/callback/[mode]/route';
 import { GET as entryBegin } from '@/app/auth/entry/route';
 import { NextRequest } from 'next/server';
+import { loginErrors } from '@/lib/portal/login-messages';
 
 const authorizationId = 'a'.repeat(32);
 const endpoint = 'https://consulting.leademergence.com/api/oauth/decision';
@@ -120,6 +121,41 @@ describe('Consulting product-local consent and Entry continuation', () => {
     expect(destination.pathname).toBe('/login');
     expect(destination.searchParams.get('returnTo')).toBe(returnTo);
     expect(set).toHaveBeenCalledWith('le_entry_sso_consent_return', '', expect.objectContaining({ maxAge: 0 }));
+    expect(persist).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['fails', { data: { user: null }, error: new Error('Synthetic user lookup failure') }],
+    ['returns no user', { data: { user: null }, error: null }],
+  ])('clears the exchanged local session before retry when getUser %s', async (_label, result) => {
+    const returnTo = `/oauth/consent?authorization_id=${authorizationId}`;
+    const values = new Map([
+      ['le_entry_sso_mode_sign-in', 'sign_in'],
+      ['le_entry_sso_consent_return', returnTo],
+    ]);
+    cookiesMock.mockResolvedValue({ get: (name: string) => ({ value: values.get(name) }), set: vi.fn() });
+    const supabase = client();
+    const exchange = vi.fn().mockResolvedValue({ error: null });
+    const getUser = vi.fn().mockResolvedValue(result);
+    const signOut = vi.fn().mockResolvedValue({ error: null });
+    createClient.mockResolvedValue({
+      ...supabase,
+      auth: { ...supabase.auth, exchangeCodeForSession: exchange, getUser, signOut },
+    });
+
+    const response = await entryCallback(new NextRequest('https://consulting.leademergence.com/auth/callback/sign-in?code=synthetic'), {
+      params: Promise.resolve({ mode: 'sign-in' }),
+    });
+
+    expect(exchange).toHaveBeenCalledExactlyOnceWith('synthetic');
+    expect(getUser).toHaveBeenCalledTimes(1);
+    expect(signOut).toHaveBeenCalledExactlyOnceWith({ scope: 'local' });
+    expect(signOut.mock.invocationCallOrder[0]).toBeGreaterThan(getUser.mock.invocationCallOrder[0]);
+    expect(response.status).toBe(303);
+    const destination = new URL(response.headers.get('location')!);
+    expect(destination.pathname).toBe('/login');
+    expect(destination.searchParams.get('error')).toBe(loginErrors.entryUnavailable);
+    expect(destination.searchParams.get('returnTo')).toBe(returnTo);
     expect(persist).not.toHaveBeenCalled();
   });
 
