@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { User } from '@supabase/supabase-js';
-import { entrySsoCallbackPath, entrySsoModeCookieName, entrySsoModeFromCallback, extractEntryProviderIdentity, isEntrySsoMode, requireEntryProviderIdentifier } from './entry-identity';
+import { entrySsoCallbackPath, entrySsoModeCookieName, entrySsoModeFromCallback, extractEntryProviderIdentity, isEntrySsoMode, oauthConsentReturnPath, requireEntryProviderIdentifier } from './entry-identity';
 
 const provider = 'custom:lead-emergence-entry-dev';
 const canonicalUserId = '21000000-0000-4000-8000-000000000001';
@@ -54,5 +54,13 @@ describe('Entry provider identity contract', () => {
     expect(entrySsoModeCookieName('link_existing')).toBe('le_entry_sso_mode_link-existing');
     expect(entrySsoModeFromCallback('sign-in')).toBe('sign_in');
     expect(entrySsoModeFromCallback('../shared')).toBeNull();
+  });
+
+  it('preserves only an exact pending consent path through Entry sign-in', () => {
+    const valid = `/oauth/consent?authorization_id=${'a'.repeat(32)}`;
+    expect(oauthConsentReturnPath(valid)).toBe(valid);
+    expect(oauthConsentReturnPath(`${valid}&destination=https://attacker.example`)).toBeNull();
+    expect(oauthConsentReturnPath('/oauth/consent?authorization_id=invalid')).toBeNull();
+    expect(oauthConsentReturnPath('https://attacker.example/oauth/consent')).toBeNull();
   });
 });

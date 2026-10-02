@@ -1,6 +1,8 @@
 import type { User } from '@supabase/supabase-js';
 
 const ENTRY_SSO_MODE_COOKIE_PREFIX = 'le_entry_sso_mode_';
+const ENTRY_SSO_CONSENT_RETURN_COOKIE = 'le_entry_sso_consent_return';
+const OAUTH_CONSENT_RETURN = /^\/oauth\/consent\?authorization_id=[a-z2-7]{32}$/;
 export type EntrySsoMode = 'sign_in' | 'link_existing';
 
 const CALLBACK_SEGMENTS: Record<EntrySsoMode, string> = {
@@ -30,6 +32,24 @@ export function entrySsoModeCookieOptions(mode: EntrySsoMode) {
     sameSite: 'lax' as const,
     secure: process.env.NODE_ENV === 'production',
     path: entrySsoCallbackPath(mode),
+    maxAge: 600,
+  };
+}
+
+export function oauthConsentReturnPath(value: string | null | undefined): string | null {
+  return typeof value === 'string' && OAUTH_CONSENT_RETURN.test(value) ? value : null;
+}
+
+export function entrySsoConsentReturnCookieName() {
+  return ENTRY_SSO_CONSENT_RETURN_COOKIE;
+}
+
+export function entrySsoConsentReturnCookieOptions() {
+  return {
+    httpOnly: true,
+    sameSite: 'lax' as const,
+    secure: process.env.NODE_ENV === 'production',
+    path: entrySsoCallbackPath('sign_in'),
     maxAge: 600,
   };
 }
